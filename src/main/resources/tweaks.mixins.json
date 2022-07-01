@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.melontini.tweaks.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "beds_revenge.BedBlockMixin",
+    "campfire_effects.CampfireBlockEntityMixin",
+    "cart_copy.MinecartItemMixin",
+    "crop_temperature.BambooBlockMixin",
+    "crop_temperature.CactusBlockMixin",
+    "crop_temperature.CropBlockMixin",
+    "crop_temperature.SaplingBlockMixin",
+    "crop_temperature.SugarCaneBlockMixin",
+    "falling_beehives.BeehiveBlockEntityMixin",
+    "falling_beehives.FallingBlockMixin",
+    "falling_beehives.PersistentProjectileEntityMixin",
+    "furnace_minecart.FurnaceMinecartMixin",
+    "leaf_tweak.EntityMixin",
+    "minecart_adder.AbstractMinecartEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

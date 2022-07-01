@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "m-tweaks",
+  "version": "${version}",
+  "name": "m-tweaks",
+  "description": "",
+  "authors": [
+    "melontini"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/m-tweaks/icon.png",
+  "environment": "*",
+  "accessWidener" : "mtweaks.accesswidener",
+  "entrypoints": {
+    "client": [
+      "me.melontini.tweaks.client.TweaksClient"
+    ],
+    "main": [
+      "me.melontini.tweaks.Tweaks"
+    ],
+    "modmenu": [
+      "me.melontini.tweaks.config.ModMenuIntegration"
+    ],
+    "mm:early_risers": [
+      "me.melontini.tweaks.TweaksEarlyRiser"
+    ]
+  },
+  "mixins": [
+    "tweaks.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "cloth-config": "*",
+    "minecraft": "1.18.2"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

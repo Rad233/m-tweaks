@@ -1,9 +1,6 @@
 package me.melontini.tweaks.mixin.falling_beehives;
 
-import me.melontini.tweaks.util.ItemStackUtil;
-import me.melontini.tweaks.util.LogUtil;
-import me.melontini.tweaks.util.LootTableUtil;
-import me.melontini.tweaks.util.PlayerUtil;
+import me.melontini.tweaks.util.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeehiveBlockEntity;
@@ -11,12 +8,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
-import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -63,20 +58,20 @@ public abstract class FallingBlockMixin extends Entity {
                         List<BeeEntity> beeEntities = world.getNonSpectatingEntities(BeeEntity.class, new Box(getBlockPos()).expand(50));
 
                         if (!players.isEmpty()) {
-                                world.breakBlock(beehiveBlockEntity.getPos(), false);
-                                PlayerEntity player = PlayerUtil.pickRandomPlayerFromList(players);
-                                for (int i = 0; i < nbeetlist.size(); ++i) {
-                                    BeeEntity bee = new BeeEntity(EntityType.BEE, world);
-                                    bee.setPosition(getPos());
-                                    bee.setTarget(player);
-                                    world.spawnEntity(bee);
-                                }
-                                for (BeeEntity bee : beeEntities) {
-                                    bee.setTarget(player);
-                                }
-                                for (ItemStack stack : stacks) {
-                                    ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world);
-                                }
+                            world.breakBlock(beehiveBlockEntity.getPos(), false);
+                            PlayerEntity player = MiscUtil.pickRandomEntryFromList(players);
+                            for (int i = 0; i < nbeetlist.size(); ++i) {
+                                BeeEntity bee = new BeeEntity(EntityType.BEE, world);
+                                bee.setPosition(getPos());
+                                bee.setTarget(player);
+                                world.spawnEntity(bee);
+                            }
+                            for (BeeEntity bee : beeEntities) {
+                                bee.setTarget(player);
+                            }
+                            for (ItemStack stack : stacks) {
+                                ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world);
+                            }
                         } else {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
                             for (int i = 0; i < nbeetlist.size(); ++i) {

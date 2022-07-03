@@ -33,12 +33,12 @@ jobs:
             cloth-config | depends | *
             modmenu | suggests | *
           
-          #curseforge-id: null
-          #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          #curseforge-dependencies: |
-          #  fabric-api | depends | *
-          #  cloth-config | depends | *
-          #  modmenu | suggests | *
+          curseforge-id: 639198
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-dependencies: |
+            fabric-api | depends | *
+            cloth-config | depends | *
+            modmenu | suggests | *
             
           game-versions: |
             1.18.2

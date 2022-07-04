@@ -1,7 +1,7 @@
 package me.melontini.tweaks.items.minecarts;
 
 import com.chocohead.mm.api.ClassTinkerers;
-import me.melontini.tweaks.entity.vehicle.JukeboxMinecartEntity;
+import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;

@@ -1,8 +1,10 @@
 package me.melontini.tweaks.items.minecarts;
 
 import com.chocohead.mm.api.ClassTinkerers;
-import me.melontini.tweaks.entity.vehicle.NoteBlockMinecartEntity;
-import net.minecraft.block.*;
+import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
+import net.minecraft.block.AbstractRailBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.enums.RailShape;
@@ -11,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MinecartItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPointer;

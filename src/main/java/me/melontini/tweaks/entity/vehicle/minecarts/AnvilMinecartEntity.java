@@ -1,4 +1,4 @@
-package me.melontini.tweaks.entity.vehicle;
+package me.melontini.tweaks.entity.vehicle.minecarts;
 
 import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.registries.EntityTypeRegistry;

@@ -2,9 +2,9 @@ package me.melontini.tweaks.mixin.minecart_adder;
 
 import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.config.TweaksConfig;
-import me.melontini.tweaks.entity.vehicle.AnvilMinecartEntity;
-import me.melontini.tweaks.entity.vehicle.JukeboxMinecartEntity;
-import me.melontini.tweaks.entity.vehicle.NoteBlockMinecartEntity;
+import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
+import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
+import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.world.World;

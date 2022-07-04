@@ -104,6 +104,27 @@ public class TweaksConfig implements ConfigData {
         @ConfigEntry.Gui.RequiresRestart
         public boolean isJukeboxMinecartOn = true;
     }
+
+    @ConfigEntry.Category("entities")
+    @Comment("New Boats")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public NewBoats newBoats = new NewBoats();
+
+    public static class NewBoats {
+        @ConfigEntry.Category("entities")
+        @Comment("")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean isFurnaceBoatOn = true;
+
+        @ConfigEntry.Category("entities")
+        @Comment("")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean isJukeboxBoatOn = true;
+    }
+
     @ConfigEntry.Category("items")
     @Comment("Allows players to \"pick\" blocks via minecarts")
     @ConfigEntry.Gui.Tooltip

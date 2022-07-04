@@ -3,6 +3,7 @@ accessWidener	v1	named
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inBlockState Lnet/minecraft/block/BlockState;
 accessible field net/minecraft/entity/vehicle/SpawnerMinecartEntity logic Lnet/minecraft/world/MobSpawnerLogic;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
+accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
 accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory;
 accessible field net/minecraft/block/entity/MobSpawnerBlockEntity logic Lnet/minecraft/world/MobSpawnerLogic;
 accessible field net/minecraft/block/entity/ChestBlockEntity inventory Lnet/minecraft/util/collection/DefaultedList;

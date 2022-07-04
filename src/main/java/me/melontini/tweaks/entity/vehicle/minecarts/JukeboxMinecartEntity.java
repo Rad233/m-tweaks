@@ -1,11 +1,10 @@
-package me.melontini.tweaks.entity.vehicle;
+package me.melontini.tweaks.entity.vehicle.minecarts;
 
 import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.LogUtil;
-import me.melontini.tweaks.util.PlayerUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -14,7 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.*;
+import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
@@ -57,11 +56,6 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
             this.clear();
             this.stopPlaying();
         }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
     }
 
     @Override

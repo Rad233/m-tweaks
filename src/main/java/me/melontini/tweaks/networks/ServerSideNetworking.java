@@ -1,7 +1,6 @@
 package me.melontini.tweaks.networks;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.mixin.access.WorldAccess;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
@@ -22,7 +21,7 @@ public class ServerSideNetworking {
                     if (d > 5.0) {
                         d = 5.0;
                     }
-                    Entity entity = ((WorldAccess) player.world).getEntityLookup().get(id);
+                    Entity entity = player.world.getEntityLookup().get(id);
                     player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), (float) (4.0 + player.world.random.nextDouble() * 1.5 * d), Explosion.DestructionType.DESTROY);
                     entity.discard();
                 });

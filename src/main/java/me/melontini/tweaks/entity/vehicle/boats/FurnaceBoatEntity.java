@@ -17,6 +17,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -45,7 +46,8 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
     public void tick() {
         super.tick();
         if (this.getFuel() > 0 && this.world.random.nextInt(4) == 0) {
-            this.world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY() + 0.8, this.getZ(), -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
+            Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+            this.world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + vec3d.x, this.getY() + 0.8, this.getZ() + vec3d.z, -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
         }
     }
 
@@ -81,23 +83,9 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
         setFuel(nbt.getInt("MT-Fuel"));
     }
 
-    @SuppressWarnings({"DuplicateBranchesInSwitch", "UnnecessaryDefault"})
     @Override
     public Item asItem() {
-        return switch (this.getBoatType()) {
-            case OAK -> Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.OAK.getName() + "_boat_with_furnace"));
-            case SPRUCE ->
-                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.SPRUCE.getName() + "_boat_with_furnace"));
-            case BIRCH ->
-                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.BIRCH.getName() + "_boat_with_furnace"));
-            case JUNGLE ->
-                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.JUNGLE.getName() + "_boat_with_furnace"));
-            case ACACIA ->
-                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.ACACIA.getName() + "_boat_with_furnace"));
-            case DARK_OAK ->
-                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.DARK_OAK.getName() + "_boat_with_furnace"));
-            default -> Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.OAK.getName() + "_boat_with_furnace"));
-        };
+        return Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + this.getBoatType().getName() + "_boat_with_furnace"));
     }
 
     public int getFuel() {

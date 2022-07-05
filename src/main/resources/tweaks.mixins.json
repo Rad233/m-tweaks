@@ -4,7 +4,6 @@
   "package": "me.melontini.tweaks.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "access.WorldAccess",
     "beds_revenge.BedBlockMixin",
     "boat_impl.BoatEntityMixin",
     "campfire_effects.CampfireBlockEntityMixin",

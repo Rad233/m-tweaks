@@ -17,6 +17,7 @@ accessible method net/minecraft/block/BambooBlock updateLeaves (Lnet/minecraft/b
 accessible method net/minecraft/block/CropBlock getAge (Lnet/minecraft/block/BlockState;)I
 accessible method net/minecraft/block/CropBlock getAvailableMoisture (Lnet/minecraft/block/Block;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)F
 accessible method net/minecraft/client/world/ClientWorld getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
+accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible method net/minecraft/entity/projectile/ProjectileEntity <init> (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
 accessible method net/minecraft/block/entity/BeehiveBlockEntity tryReleaseBee (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/entity/BeehiveBlockEntity$BeeState;)Ljava/util/List;
 accessible method net/minecraft/entity/projectile/PersistentProjectileEntity clearPiercingStatus ()V

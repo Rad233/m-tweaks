@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
@@ -21,6 +22,7 @@ import net.minecraft.util.Clearable;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -114,6 +116,11 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
             ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio"), buf);
         }
         LogUtil.info(this.record);
+    }
+
+    @Override
+    public Item asItem() {
+        return Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + this.getBoatType().getName() + "_boat_with_jukebox"));
     }
 
     @Override

@@ -30,14 +30,23 @@ public abstract class BoatEntityMixin extends Entity {
     public void aVoid(CallbackInfo ci, double e, double f) {
         BoatEntity boat = (BoatEntity) (Object) this;
         if (boat instanceof FurnaceBoatEntity furnaceBoat) {
+            Vec3d vec3d = this.getVelocity();
             if (furnaceBoat.getFuel() > 0 && this.location != BoatEntity.Location.ON_LAND) {
-                Vec3d vec3d = this.getVelocity();
                 this.setVelocity(this.getRotationVec(1.0F).getX() * 0.5, vec3d.y + e, this.getRotationVec(1.0F).getZ() * 0.5);
                 furnaceBoat.setFuel(furnaceBoat.getFuel() - 1);
                 this.yawVelocity *= this.velocityDecay;
                 if (f > 0.0) {
                     Vec3d vec3d2 = this.getVelocity();
                     this.setVelocity(this.getRotationVec(1.0F).getX() * 0.5, (vec3d2.y + f * 0.06153846016296973) * 0.75, this.getRotationVec(1.0F).getZ() * 0.5);
+                }
+                ci.cancel();
+            } else if (furnaceBoat.getFuel() > 0 && this.location == BoatEntity.Location.ON_LAND) {
+                this.setVelocity(this.getRotationVec(1.0F).getX() * 0.1, vec3d.y + e, this.getRotationVec(1.0F).getZ() * 0.1);
+                furnaceBoat.setFuel(furnaceBoat.getFuel() - 1);
+                this.yawVelocity *= this.velocityDecay;
+                if (f > 0.0) {
+                    Vec3d vec3d2 = this.getVelocity();
+                    this.setVelocity(this.getRotationVec(1.0F).getX() * 0.1, (vec3d2.y + f * 0.06153846016296973) * 0.75, this.getRotationVec(1.0F).getZ() * 0.1);
                 }
                 ci.cancel();
             }

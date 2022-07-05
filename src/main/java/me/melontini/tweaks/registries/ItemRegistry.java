@@ -1,9 +1,7 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.tweaks.config.TweaksConfig;
-import me.melontini.tweaks.items.boats.FurnaceBoatItem;
-import me.melontini.tweaks.items.boats.JukeboxBoatItem;
-import me.melontini.tweaks.items.boats.TNTBoatItem;
+import me.melontini.tweaks.items.boats.*;
 import me.melontini.tweaks.items.minecarts.AnvilMinecartItem;
 import me.melontini.tweaks.items.minecarts.JukeBoxMinecartItem;
 import me.melontini.tweaks.items.minecarts.NoteBlockMinecartItem;
@@ -47,13 +45,17 @@ public class ItemRegistry {
         if (config.newBoats.isFurnaceBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_furnace"), new FurnaceBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
-
         if (config.newBoats.isJukeboxBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_jukebox"), new JukeboxBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
-
         if (config.newBoats.isTNTBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_tnt"), new TNTBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+        }
+        if (config.newBoats.isHopperBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
+            Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+        }
+        if (config.newBoats.isChestBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
+            Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_chest"), new ChestBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
         LogUtil.info("ItemRegistry init complete!");
     }

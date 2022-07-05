@@ -89,17 +89,14 @@ public class TweaksConfig implements ConfigData {
 
     public static class NewMinecarts {
         @ConfigEntry.Category("entities")
-        @Comment("Enables the best minecart, the anvil minecart")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isAnvilMinecartOn = true;
         @ConfigEntry.Category("entities")
-        @Comment("Enables the second best minecart, the note block minecart")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isNoteBlockMinecartOn = true;
         @ConfigEntry.Category("entities")
-        @Comment("Enables jukebox minecart, might be buggy, especially on servers")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isJukeboxMinecartOn = true;
@@ -113,22 +110,29 @@ public class TweaksConfig implements ConfigData {
 
     public static class NewBoats {
         @ConfigEntry.Category("entities")
-        @Comment("")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isFurnaceBoatOn = true;
 
         @ConfigEntry.Category("entities")
-        @Comment("")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isTNTBoatOn = true;
 
         @ConfigEntry.Category("entities")
-        @Comment("")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isJukeboxBoatOn = true;
+
+        @ConfigEntry.Category("entities")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean isChestBoatOn = true;
+
+        @ConfigEntry.Category("entities")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean isHopperBoatOn = true;
     }
 
     @ConfigEntry.Category("items")

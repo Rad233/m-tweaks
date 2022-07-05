@@ -1,9 +1,7 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.tweaks.config.TweaksConfig;
-import me.melontini.tweaks.entity.vehicle.boats.FurnaceBoatEntity;
-import me.melontini.tweaks.entity.vehicle.boats.JukeboxBoatEntity;
-import me.melontini.tweaks.entity.vehicle.boats.TNTBoatEntity;
+import me.melontini.tweaks.entity.vehicle.boats.*;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
@@ -28,6 +26,10 @@ public class EntityTypeRegistry {
     public static EntityType<JukeboxMinecartEntity> JUKEBOX_MINECART_ENTITY;
 
     public static EntityType<JukeboxBoatEntity> BOAT_WITH_JUKEBOX;
+
+    public static EntityType<ChestBoatEntity> BOAT_WITH_CHEST;
+
+    public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER;
 
     public static void register() {
         TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
@@ -75,6 +77,22 @@ public class EntityTypeRegistry {
                     .trackRangeBlocks(10)
                     .build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "tnt_boat"), BOAT_WITH_TNT);
+        }
+
+        if (config.newBoats.isChestBoatOn) {
+            BOAT_WITH_CHEST = FabricEntityTypeBuilder.<ChestBoatEntity>create(SpawnGroup.MISC, ChestBoatEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
+                    .trackRangeBlocks(10)
+                    .build();
+            Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "chest_boat"), BOAT_WITH_CHEST);
+        }
+
+        if (config.newBoats.isHopperBoatOn) {
+            BOAT_WITH_HOPPER = FabricEntityTypeBuilder.<HopperBoatEntity>create(SpawnGroup.MISC, HopperBoatEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
+                    .trackRangeBlocks(10)
+                    .build();
+            Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "hopper_boat"), BOAT_WITH_HOPPER);
         }
 
         LogUtil.info("EntityTypeRegistry init complete!");

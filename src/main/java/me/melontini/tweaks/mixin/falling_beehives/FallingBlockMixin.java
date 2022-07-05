@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.falling_beehives;
 
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -45,7 +46,7 @@ public abstract class FallingBlockMixin extends Entity {
         BlockPos blockPos = this.getBlockPos();
         BlockEntity blockEntity = this.world.getBlockEntity(blockPos);
         if (blockEntity != null) {
-            if (blockEntity instanceof BeehiveBlockEntity beehiveBlockEntity) {
+            if (blockEntity instanceof BeehiveBlockEntity beehiveBlockEntity && Tweaks.CONFIG.canBeeNestsFall) {
                 if (this.block.getBlock() == Blocks.BEE_NEST) {
                     NbtCompound nbt = blockEntityData;
                     assert nbt != null;

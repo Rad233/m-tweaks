@@ -122,6 +122,12 @@ public class TweaksConfig implements ConfigData {
         @Comment("")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
+        public boolean isTNTBoatOn = true;
+
+        @ConfigEntry.Category("entities")
+        @Comment("")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
         public boolean isJukeboxBoatOn = true;
     }
 

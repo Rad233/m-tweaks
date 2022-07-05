@@ -3,6 +3,7 @@ package me.melontini.tweaks.registries;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.entity.vehicle.boats.FurnaceBoatEntity;
 import me.melontini.tweaks.entity.vehicle.boats.JukeboxBoatEntity;
+import me.melontini.tweaks.entity.vehicle.boats.TNTBoatEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.registry.Registry;
 import static me.melontini.tweaks.Tweaks.MODID;
 
 public class EntityTypeRegistry {
+    public static EntityType<TNTBoatEntity> BOAT_WITH_TNT;
     public static EntityType<FurnaceBoatEntity> BOAT_WITH_FURNACE;
     public static EntityType<AnvilMinecartEntity> ANVIL_MINECART_ENTITY;
 
@@ -65,6 +67,14 @@ public class EntityTypeRegistry {
                     .trackRangeBlocks(10)
                     .build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "jukebox_boat"), BOAT_WITH_JUKEBOX);
+        }
+
+        if (config.newBoats.isTNTBoatOn) {
+            BOAT_WITH_TNT = FabricEntityTypeBuilder.<TNTBoatEntity>create(SpawnGroup.MISC, TNTBoatEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
+                    .trackRangeBlocks(10)
+                    .build();
+            Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "tnt_boat"), BOAT_WITH_TNT);
         }
 
         LogUtil.info("EntityTypeRegistry init complete!");

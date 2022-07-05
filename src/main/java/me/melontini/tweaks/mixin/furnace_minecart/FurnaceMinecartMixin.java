@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.furnace_minecart;
 
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
@@ -25,15 +26,14 @@ public class FurnaceMinecartMixin {
 
     @Inject(at = @At("HEAD"), method = "interact", cancellable = true)
     public void mTweaks$interact(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         ItemStack stack = player.getStackInHand(hand);
         Item item = stack.getItem();
 
         FurnaceMinecartEntity furnaceMinecart = (FurnaceMinecartEntity) (Object) this;
-        if (config.betterFurnaceMinecart) {
+        if (Tweaks.CONFIG.betterFurnaceMinecart) {
             if (FuelRegistryImpl.INSTANCE.get(item) != null) {
                 int itemFuel = FuelRegistryImpl.INSTANCE.get(item);
-                if ((furnaceMinecart.fuel + (itemFuel * 2.25)) <= config.maxFurnaceMinecartFuel) {
+                if ((furnaceMinecart.fuel + (itemFuel * 2.25)) <= Tweaks.CONFIG.maxFurnaceMinecartFuel) {
                     if (!player.getAbilities().creativeMode) {
                         if (stack.getItem().getRecipeRemainder() != null)
                             player.inventory.insertStack(stack.getItem().getRecipeRemainder().getDefaultStack());

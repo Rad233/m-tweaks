@@ -3,6 +3,7 @@ package me.melontini.tweaks.registries;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.items.boats.FurnaceBoatItem;
 import me.melontini.tweaks.items.boats.JukeboxBoatItem;
+import me.melontini.tweaks.items.boats.TNTBoatItem;
 import me.melontini.tweaks.items.minecarts.AnvilMinecartItem;
 import me.melontini.tweaks.items.minecarts.JukeBoxMinecartItem;
 import me.melontini.tweaks.items.minecarts.NoteBlockMinecartItem;
@@ -42,13 +43,17 @@ public class ItemRegistry {
             JUKEBOX_MINECART = new JukeBoxMinecartItem(new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
             Registry.register(Registry.ITEM, new Identifier(MODID, "jukebox_minecart"), JUKEBOX_MINECART);
         }
-        //this is actually pretty cool
+
         if (config.newBoats.isFurnaceBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_furnace"), new FurnaceBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
 
         if (config.newBoats.isJukeboxBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_jukebox"), new JukeboxBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+        }
+
+        if (config.newBoats.isTNTBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
+            Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_tnt"), new TNTBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
         LogUtil.info("ItemRegistry init complete!");
     }

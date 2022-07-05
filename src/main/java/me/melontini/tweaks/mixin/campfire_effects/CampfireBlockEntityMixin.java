@@ -1,10 +1,9 @@
 package me.melontini.tweaks.mixin.campfire_effects;
 
-import me.melontini.tweaks.config.TweaksConfig;
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
@@ -24,18 +23,17 @@ import java.util.List;
 public class CampfireBlockEntityMixin {
     @Inject(at = @At("HEAD"), method = "litServerTick")
     private static void mTweaks$litServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.campfireTweaks.campfireEffects) {
+        if (Tweaks.CONFIG.campfireTweaks.campfireEffects) {
             if (world.getTime() % 180 == 0) {
                 if (state.get(CampfireBlock.LIT)) {
-                    List<PlayerEntity> players = PlayerUtil.findPlayersInRange(world, pos, config.campfireTweaks.campfireEffectsRange);
+                    List<PlayerEntity> players = PlayerUtil.findPlayersInRange(world, pos, Tweaks.CONFIG.campfireTweaks.campfireEffectsRange);
                     for (PlayerEntity player : players) {
-                        if (config.campfireTweaks.campfireEffectsList.size() == config.campfireTweaks.campfireEffectsAmplifierList.size()) {
-                            for (int i = 0; i < config.campfireTweaks.campfireEffectsList.size(); i++) {
+                        if (Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size() == Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size()) {
+                            for (int i = 0; i < Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(); i++) {
                                 StatusEffectInstance effectInstance = new StatusEffectInstance(
-                                        PotionUtil.getStatusEffect(Identifier.tryParse(config.campfireTweaks.campfireEffectsList.get(i))),
+                                        PotionUtil.getStatusEffect(Identifier.tryParse(Tweaks.CONFIG.campfireTweaks.campfireEffectsList.get(i))),
                                         200,
-                                        config.campfireTweaks.campfireEffectsAmplifierList.get(i),
+                                        Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.get(i),
                                         true,
                                         false,
                                         true

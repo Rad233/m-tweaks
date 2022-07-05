@@ -1,7 +1,6 @@
 package me.melontini.tweaks.mixin.leaf_tweak;
 
-import me.melontini.tweaks.config.TweaksConfig;
-import me.shedaniel.autoconfig.AutoConfig;
+import me.melontini.tweaks.Tweaks;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -34,18 +33,19 @@ public abstract class EntityMixin extends Entity {
 
     @Inject(at = @At("HEAD"), method = "baseTick")
     public void tick(CallbackInfo ci) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.leafSlowdown) {
+        if (Tweaks.CONFIG.leafSlowdown) {
             EntityAttributeInstance attributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (!this.world.isClient) {
-                if (((LivingEntity)(Object)this) instanceof PlayerEntity player && (player.isCreative() || player.isSpectator())) return;
+                if (((LivingEntity) (Object) this) instanceof PlayerEntity player && (player.isCreative() || player.isSpectator()))
+                    return;
                 if (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isIn(BlockTags.LEAVES)
                         || (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 2, getBlockZ())).isIn(BlockTags.LEAVES) && this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isOf(Blocks.AIR))) {
                     if (attributeInstance != null)
                         if (!attributeInstance.hasModifier(LEAF_SLOWNESS)) {
                             attributeInstance.addTemporaryModifier(LEAF_SLOWNESS);
                         }
-                    /*Does this even work?*/ setVelocity(getVelocity().getX(), getVelocity().getY() * 0.7, getVelocity().getZ());
+                    /*Does this even work?*/
+                    setVelocity(getVelocity().getX(), getVelocity().getY() * 0.7, getVelocity().getZ());
                 } else {
                     if (attributeInstance != null)
                         if (attributeInstance.hasModifier(LEAF_SLOWNESS)) {

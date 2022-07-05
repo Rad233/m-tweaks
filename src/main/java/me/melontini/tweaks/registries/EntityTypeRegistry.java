@@ -1,12 +1,11 @@
 package me.melontini.tweaks.registries;
 
-import me.melontini.tweaks.config.TweaksConfig;
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.entity.vehicle.boats.*;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
 import me.melontini.tweaks.util.LogUtil;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -32,22 +31,21 @@ public class EntityTypeRegistry {
     public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER;
 
     public static void register() {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.newMinecarts.isAnvilMinecartOn) {
+        if (Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn) {
             ANVIL_MINECART_ENTITY = FabricEntityTypeBuilder.<AnvilMinecartEntity>create(SpawnGroup.MISC, AnvilMinecartEntity::new)
                     .dimensions(EntityDimensions.fixed(0.98F, 0.7F))
                     .trackRangeBlocks(8)
                     .build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "anvil_minecart"), ANVIL_MINECART_ENTITY);
         }
-        if (config.newMinecarts.isNoteBlockMinecartOn) {
+        if (Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn) {
             NOTEBLOCK_MINECART_ENTITY = FabricEntityTypeBuilder.<NoteBlockMinecartEntity>create(SpawnGroup.MISC, NoteBlockMinecartEntity::new)
                     .dimensions(EntityDimensions.fixed(0.98F, 0.7F))
                     .trackRangeBlocks(8)
                     .build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "note_block_minecart"), NOTEBLOCK_MINECART_ENTITY);
         }
-        if (config.newMinecarts.isJukeboxMinecartOn) {
+        if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
             JUKEBOX_MINECART_ENTITY = FabricEntityTypeBuilder.<JukeboxMinecartEntity>create(SpawnGroup.MISC, JukeboxMinecartEntity::new)
                     .dimensions(EntityDimensions.fixed(0.98F, 0.7F))
                     .trackRangeBlocks(8)
@@ -55,7 +53,7 @@ public class EntityTypeRegistry {
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "jukebox_minecart"), JUKEBOX_MINECART_ENTITY);
         }
 
-        if (config.newBoats.isFurnaceBoatOn) {
+        if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn) {
             BOAT_WITH_FURNACE = FabricEntityTypeBuilder.<FurnaceBoatEntity>create(SpawnGroup.MISC, FurnaceBoatEntity::new)
                     .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)
@@ -63,7 +61,7 @@ public class EntityTypeRegistry {
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "furnace_boat"), BOAT_WITH_FURNACE);
         }
 
-        if (config.newBoats.isJukeboxBoatOn) {
+        if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn) {
             BOAT_WITH_JUKEBOX = FabricEntityTypeBuilder.<JukeboxBoatEntity>create(SpawnGroup.MISC, JukeboxBoatEntity::new)
                     .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)
@@ -71,7 +69,7 @@ public class EntityTypeRegistry {
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "jukebox_boat"), BOAT_WITH_JUKEBOX);
         }
 
-        if (config.newBoats.isTNTBoatOn) {
+        if (Tweaks.CONFIG.newBoats.isTNTBoatOn) {
             BOAT_WITH_TNT = FabricEntityTypeBuilder.<TNTBoatEntity>create(SpawnGroup.MISC, TNTBoatEntity::new)
                     .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)
@@ -79,7 +77,7 @@ public class EntityTypeRegistry {
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "tnt_boat"), BOAT_WITH_TNT);
         }
 
-        if (config.newBoats.isChestBoatOn) {
+        if (Tweaks.CONFIG.newBoats.isChestBoatOn) {
             BOAT_WITH_CHEST = FabricEntityTypeBuilder.<ChestBoatEntity>create(SpawnGroup.MISC, ChestBoatEntity::new)
                     .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)
@@ -87,7 +85,7 @@ public class EntityTypeRegistry {
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "chest_boat"), BOAT_WITH_CHEST);
         }
 
-        if (config.newBoats.isHopperBoatOn) {
+        if (Tweaks.CONFIG.newBoats.isHopperBoatOn) {
             BOAT_WITH_HOPPER = FabricEntityTypeBuilder.<HopperBoatEntity>create(SpawnGroup.MISC, HopperBoatEntity::new)
                     .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
                     .trackRangeBlocks(10)

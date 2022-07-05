@@ -6,15 +6,18 @@ import me.melontini.tweaks.registries.ItemRegistry;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
@@ -36,6 +39,21 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
         return ActionResult.success(world.isClient);
+    }
+
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        int i = MathHelper.ceil(fallDistance - 1.0F);
+        if (i >= 0) {
+            float f = (float) Math.min(MathHelper.floor(i * 2), 40);
+            for (Entity entity : world.getEntitiesByClass(Entity.class, this.getBoundingBox().expand(0.2), EntityPredicates.EXCEPT_SPECTATOR)) {
+                if (!(entity instanceof AbstractMinecartEntity)) {
+                    entity.damage(DamageSource.FALLING_BLOCK, f);
+                }
+            }
+
+        }
+        return false;
     }
 
     public void dropItems(DamageSource damageSource) {

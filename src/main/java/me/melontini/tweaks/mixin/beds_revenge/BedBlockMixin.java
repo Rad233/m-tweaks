@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.beds_revenge;
 
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.BedBlock;
@@ -34,8 +35,7 @@ public abstract class BedBlockMixin extends Block {
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;createExplosion(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/world/explosion/ExplosionBehavior;DDDFZLnet/minecraft/world/explosion/Explosion$DestructionType;)Lnet/minecraft/world/explosion/Explosion;"), method = "onUse")
     public Explosion mTweaks$explosionRedirect(@NotNull World instance, Entity entity, DamageSource damageSource, ExplosionBehavior behavior, double x, double y, double z, float power, boolean createFire, Explosion.DestructionType destructionType) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        float explosionPower = config.bedExplosionPower;
+        float explosionPower = Tweaks.CONFIG.bedExplosionPower;
         Explosion explosion = new Explosion(instance, entity, damageSource, behavior, x, y, z, explosionPower, createFire, destructionType);
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);

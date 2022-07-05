@@ -1,8 +1,7 @@
 package me.melontini.tweaks.mixin.cart_copy;
 
-import me.melontini.tweaks.config.TweaksConfig;
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -51,7 +50,6 @@ public abstract class MinecartItemMixin extends Item {
         private final ItemDispenserBehavior defaultBehavior = new ItemDispenserBehavior();
 
         public ItemStack dispenseSilently(@NotNull BlockPointer pointer, @NotNull ItemStack stack) {
-            TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
@@ -174,7 +172,7 @@ public abstract class MinecartItemMixin extends Item {
                 NbtCompound nbt = stack.getNbt();
                 //Just making sure
                 if (nbt != null) if (!(nbt.getInt("Fuel") <= 0)) {
-                    furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), config.maxFurnaceMinecartFuel);
+                    furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), Tweaks.CONFIG.maxFurnaceMinecartFuel);
                     furnaceMinecart.pushX = furnaceMinecart.getX() - blockPos.getX();
                     furnaceMinecart.pushZ = furnaceMinecart.getZ() - blockPos.getZ();
                 }
@@ -234,7 +232,6 @@ public abstract class MinecartItemMixin extends Item {
 
     @Inject(at = @At("HEAD"), method = "useOnBlock", cancellable = true)
     public void mTweaks$useOnStuff(@NotNull ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
         BlockState state = world.getBlockState(pos);
@@ -317,7 +314,7 @@ public abstract class MinecartItemMixin extends Item {
                     NbtCompound nbt = stack.getNbt();
                     //Just making sure
                     if (nbt != null) if (!(nbt.getInt("Fuel") <= 0)) {
-                        furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), config.maxFurnaceMinecartFuel);
+                        furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), Tweaks.CONFIG.maxFurnaceMinecartFuel);
                         furnaceMinecart.interact(player, player.getActiveHand());
                     }
 
@@ -330,7 +327,7 @@ public abstract class MinecartItemMixin extends Item {
                 cir.setReturnValue(ActionResult.success(world.isClient));
             }
         }
-        if (config.minecartBlockPicking) if (player.isSneaking()) {
+        if (Tweaks.CONFIG.minecartBlockPicking) if (player.isSneaking()) {
             if (state.isOf(Blocks.CHEST) && stack.getItem() == Items.MINECART) {
                 if (!world.isClient) {
                     ChestBlockEntity chestBlockEntity = (ChestBlockEntity) world.getBlockEntity(pos);
@@ -359,7 +356,7 @@ public abstract class MinecartItemMixin extends Item {
                 cir.setReturnValue(ActionResult.success(world.isClient));
             }
             if (state.isOf(Blocks.SPAWNER) && stack.getItem() == Items.MINECART) {
-                if (config.minecartSpawnerPicking) {
+                if (Tweaks.CONFIG.minecartSpawnerPicking) {
                     if (!world.isClient) {
                         MobSpawnerBlockEntity mobSpawnerBlockEntity = (MobSpawnerBlockEntity) world.getBlockEntity(pos);
                         if (!player.isCreative()) stack.decrement(1);
@@ -413,7 +410,7 @@ public abstract class MinecartItemMixin extends Item {
                 }
                 cir.setReturnValue(ActionResult.success(world.isClient));
             }
-            if (state.isOf(Blocks.NOTE_BLOCK) && stack.getItem() == Items.MINECART && config.newMinecarts.isNoteBlockMinecartOn) {
+            if (state.isOf(Blocks.NOTE_BLOCK) && stack.getItem() == Items.MINECART && Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn) {
                 NoteBlock noteBlock = (NoteBlock) state.getBlock();
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
@@ -429,7 +426,7 @@ public abstract class MinecartItemMixin extends Item {
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
             }
-            if (state.isOf(Blocks.JUKEBOX) && stack.getItem() == Items.MINECART && config.newMinecarts.isJukeboxMinecartOn) {
+            if (state.isOf(Blocks.JUKEBOX) && stack.getItem() == Items.MINECART && Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
                     JukeboxBlockEntity jukeboxBlockEntity = (JukeboxBlockEntity) world.getBlockEntity(pos);
@@ -450,7 +447,7 @@ public abstract class MinecartItemMixin extends Item {
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
             }
-            if (state.isOf(Blocks.ANVIL) && stack.getItem() == Items.MINECART && config.newMinecarts.isAnvilMinecartOn) {
+            if (state.isOf(Blocks.ANVIL) && stack.getItem() == Items.MINECART && Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn) {
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack anvilMinecart = new ItemStack(ItemRegistry.ANVIL_MINECART);

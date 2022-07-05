@@ -1,7 +1,6 @@
 package me.melontini.tweaks.mixin.falling_beehives;
 
-import me.melontini.tweaks.config.TweaksConfig;
-import me.shedaniel.autoconfig.AutoConfig;
+import me.melontini.tweaks.Tweaks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.entity.Entity;
@@ -29,13 +28,12 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
     @SuppressWarnings("ConstantConditions")
     @Inject(at = @At("TAIL"), method = "onBlockHit")
     private void mTweaks$onBeeNestHit(@NotNull BlockHitResult blockHitResult, CallbackInfo ci) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         Entity entity = this;
         BlockPos pos = blockHitResult.getBlockPos();
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
         if (entity instanceof ArrowEntity) {
-            if (config.canBeeNestsFall) {
+            if (Tweaks.CONFIG.canBeeNestsFall) {
                 if (block == Blocks.BEE_NEST) {
                     BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) world.getBlockEntity(pos);
                     if (beehiveBlockEntity != null)

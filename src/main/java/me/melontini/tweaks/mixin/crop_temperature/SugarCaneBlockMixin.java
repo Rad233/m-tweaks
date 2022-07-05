@@ -1,14 +1,12 @@
 package me.melontini.tweaks.mixin.crop_temperature;
 
-import me.melontini.tweaks.config.TweaksConfig;
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import org.apache.commons.logging.Log;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,11 +25,10 @@ public abstract class SugarCaneBlockMixin extends Block {
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/block/BlockState.get (Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;", shift = At.Shift.AFTER), method = "randomTick", cancellable = true)
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         int age = state.get(AGE);
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.cropsGrowSlowerInCold) {
+        if (Tweaks.CONFIG.cropsGrowSlowerInCold) {
             float temp = world.getBiome(pos).value().getTemperature();
             if (temp > 0 && temp < 0.6) {
-                if (world.getRandom().nextInt((int) ( 25 / (12.5 * (temp + 0.2)))) == 0) {
+                if (world.getRandom().nextInt((int) (25 / (12.5 * (temp + 0.2)))) == 0) {
                     LogUtil.info("cold");
                     if (age == 15) {
                         world.setBlockState(pos.up(), this.getDefaultState());

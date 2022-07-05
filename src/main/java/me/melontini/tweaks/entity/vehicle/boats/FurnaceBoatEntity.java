@@ -10,11 +10,14 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class FurnaceBoatEntity extends BoatEntityWithBlock {
@@ -76,6 +79,25 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         setFuel(nbt.getInt("MT-Fuel"));
+    }
+
+    @SuppressWarnings({"DuplicateBranchesInSwitch", "UnnecessaryDefault"})
+    @Override
+    public Item asItem() {
+        return switch (this.getBoatType()) {
+            case OAK -> Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.OAK.getName() + "_boat_with_furnace"));
+            case SPRUCE ->
+                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.SPRUCE.getName() + "_boat_with_furnace"));
+            case BIRCH ->
+                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.BIRCH.getName() + "_boat_with_furnace"));
+            case JUNGLE ->
+                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.JUNGLE.getName() + "_boat_with_furnace"));
+            case ACACIA ->
+                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.ACACIA.getName() + "_boat_with_furnace"));
+            case DARK_OAK ->
+                    Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.DARK_OAK.getName() + "_boat_with_furnace"));
+            default -> Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + Type.OAK.getName() + "_boat_with_furnace"));
+        };
     }
 
     public int getFuel() {

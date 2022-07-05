@@ -1,7 +1,6 @@
 package me.melontini.tweaks.mixin.crop_temperature;
 
-import me.melontini.tweaks.config.TweaksConfig;
-import me.shedaniel.autoconfig.AutoConfig;
+import me.melontini.tweaks.Tweaks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -18,9 +17,8 @@ public class SaplingBlockMixin {
     //TODO this should probably be tag based
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
     public void mTweaks$tick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         SaplingBlock block = (SaplingBlock) (Object) this;
-        if (config.cropsGrowSlowerInCold) {
+        if (Tweaks.CONFIG.cropsGrowSlowerInCold) {
             float temp = world.getBiome(pos).value().getTemperature();
             if (temp > 0 && temp < 0.6) {
                 //LogUtil.info("cold " + temp);

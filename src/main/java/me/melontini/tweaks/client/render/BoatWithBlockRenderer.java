@@ -40,8 +40,9 @@ public class BoatWithBlockRenderer extends BoatEntityRenderer {
             }
 
             matrixStack.scale(0.8F, 0.8F, 0.8F);
-            matrixStack.translate(-0.5, 4 / 16.0F, 1);
-            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
+            matrixStack.translate(0.5, 4 / 16.0F, 1);
+            //:sob:
+            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-180));
             MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(blockState, matrixStack, vertexConsumerProvider, i, OverlayTexture.DEFAULT_UV);
             matrixStack.pop();
         }

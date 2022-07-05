@@ -4,8 +4,11 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.Item;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class ChestBoatEntity extends StorageBoatEntity {
@@ -29,5 +32,10 @@ public class ChestBoatEntity extends StorageBoatEntity {
     @Override
     public int size() {
         return 27;
+    }
+
+    @Override
+    public Item asItem() {
+        return Registry.ITEM.get(Identifier.tryParse("m-tweaks:" + this.getBoatType().getName() + "_boat_with_chest"));
     }
 }

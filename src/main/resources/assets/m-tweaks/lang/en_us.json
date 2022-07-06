@@ -84,6 +84,8 @@
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsRange.@Tooltip": "Sets a range for campfire to emit effects",
 
   "text.autoconfig.m-tweaks.category.entities": "Entities",
+  "text.autoconfig.m-tweaks.option.villagersFollowEmeraldBlocks": "Villagers Follow Emerald Blocks",
+  "text.autoconfig.m-tweaks.option.villagersFollowEmeraldBlocks.@Tooltip": "Makes villagers follow if you have an emerald block in hand.",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart": "Better Furnace Minecart",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[0]": "A few tweaks to make furnace minecarts just a bit better.",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[1]": "- Fuel is now saved as an Integer, you can change fuel limit below.",

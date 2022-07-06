@@ -22,7 +22,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class AnvilMinecartEntity extends AbstractMinecartEntity {
-    //TODO damage entities on fall.
     public AnvilMinecartEntity(EntityType<? extends AnvilMinecartEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -46,7 +45,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
         int i = MathHelper.ceil(fallDistance - 1.0F);
         if (i >= 0) {
             float f = (float) Math.min(MathHelper.floor(i * 2), 40);
-            for (Entity entity : world.getEntitiesByClass(Entity.class, this.getBoundingBox().expand(0.2), EntityPredicates.EXCEPT_SPECTATOR)) {
+            for (Entity entity : world.getEntitiesByClass(Entity.class, this.getBoundingBox().expand(0.1), EntityPredicates.EXCEPT_SPECTATOR)) {
                 if (!(entity instanceof AbstractMinecartEntity)) {
                     entity.damage(DamageSource.FALLING_BLOCK, f);
                 }

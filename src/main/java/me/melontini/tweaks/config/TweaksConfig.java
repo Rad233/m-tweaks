@@ -78,6 +78,12 @@ public class TweaksConfig implements ConfigData {
     }
 
     @ConfigEntry.Category("entities")
+    @Comment("Makes villagers follow if you have an emerald block in hand")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean villagersFollowEmeraldBlocks = false;
+
+    @ConfigEntry.Category("entities")
     @Comment("Enables a few improvement to make FM suck a little less")
     @ConfigEntry.Gui.Tooltip(count = 3)
     public boolean betterFurnaceMinecart = true;

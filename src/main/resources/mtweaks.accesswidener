@@ -12,6 +12,9 @@ accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime 
 accessible field net/minecraft/item/MinecartItem type Lnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;
 accessible field net/minecraft/world/MobSpawnerLogic spawnEntry Lnet/minecraft/world/MobSpawnerEntry;
 # Methods
+accessible method net/minecraft/block/FireBlock getSpreadChance (Lnet/minecraft/block/BlockState;)I
+accessible method net/minecraft/block/FireBlock trySpreadingFire (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILjava/util/Random;I)V
+accessible method net/minecraft/block/FireBlock getStateWithAge (Lnet/minecraft/world/WorldAccess;Lnet/minecraft/util/math/BlockPos;I)Lnet/minecraft/block/BlockState;
 accessible method net/minecraft/block/BambooBlock countBambooBelow (Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)I
 accessible method net/minecraft/block/BambooBlock updateLeaves (Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;I)V
 accessible method net/minecraft/block/CropBlock getAge (Lnet/minecraft/block/BlockState;)I

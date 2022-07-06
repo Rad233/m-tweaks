@@ -24,6 +24,11 @@ public class TweaksConfig implements ConfigData {
     //TODO this should probably be tag based, so crops only grow slower in biomes they don't like
     public boolean cropsGrowSlowerInCold = false;
 
+    @ConfigEntry.Category("world")
+    @Comment("Makes fires spread a lot faster and wider")
+    @ConfigEntry.Gui.Tooltip
+    public boolean quickFire = false;
+
     @ConfigEntry.Category("blocks")
     @Comment("Makes beds explode in every dimension. conflicts with Safe Beds!")
     @ConfigEntry.Gui.Tooltip(count = 2)

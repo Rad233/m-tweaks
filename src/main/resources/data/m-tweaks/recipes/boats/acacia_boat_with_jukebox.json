@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:acacia_boat_with_jukebox"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:jukebox"
+    },
+    "B": {
+      "item": "minecraft:acacia_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:acacia_boat_with_jukebox"
+  }
+}

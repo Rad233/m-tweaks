@@ -30,30 +30,30 @@ public class ItemStackUtil {
         world.spawnEntity(itemEntity);
     }
 
-    public static void spawnItemWithRandVelocity(@NotNull BlockPos pos, ItemStack stack, World world) {
+    public static void spawnItemWithRandVelocity(@NotNull BlockPos pos, ItemStack stack, World world, double range) {
         ItemEntity itemEntity = new ItemEntity(
                 world,
                 pos.getX(),
                 pos.getY() + 0.2,
                 pos.getZ(),
                 stack,
-                (Math.random() - 0.5) * 0.5,
+                (Math.random() - range) * range,
                 0,
-                (Math.random() - 0.5) * 0.5);
+                (Math.random() - range) * range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }
 
-    public static void spawnItemWithRandVelocity(@NotNull Vec3d pos, ItemStack stack, World world) {
+    public static void spawnItemWithRandVelocity(@NotNull Vec3d pos, ItemStack stack, World world, double range) {
         ItemEntity itemEntity = new ItemEntity(
                 world,
                 pos.getX(),
                 pos.getY() + 0.2,
                 pos.getZ(),
                 stack,
-                (Math.random() - 0.5) * 0.5,
+                (Math.random() - range) * range,
                 0,
-                (Math.random() - 0.5) * 0.5);
+                (Math.random() - range) * range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }

@@ -13,6 +13,7 @@
     "crop_temperature.CropBlockMixin",
     "crop_temperature.SaplingBlockMixin",
     "crop_temperature.SugarCaneBlockMixin",
+    "epic_fire.AbstractFireBlockMixin",
     "falling_beehives.BeehiveBlockEntityMixin",
     "falling_beehives.FallingBlockMixin",
     "falling_beehives.PersistentProjectileEntityMixin",

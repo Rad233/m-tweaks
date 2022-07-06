@@ -1,0 +1,42 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:spruce_boat_with_furnace"
+      ]
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_boat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:spruce_boat"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "m-tweaks:boats/spruce_boat_with_furnace"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_boat",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "m-tweaks:boats/spruce_boat_with_furnace"
+    ]
+  }
+}

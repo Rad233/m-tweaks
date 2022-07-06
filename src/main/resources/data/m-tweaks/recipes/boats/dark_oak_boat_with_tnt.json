@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:dark_oak_boat_with_tnt"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:tnt"
+    },
+    "B": {
+      "item": "minecraft:dark_oak_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:dark_oak_boat_with_tnt"
+  }
+}

@@ -22,8 +22,8 @@ public class ServerSideNetworking {
                         d = 5.0;
                     }
                     Entity entity = player.world.getEntityLookup().get(id);
-                    player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), (float) (4.0 + player.world.random.nextDouble() * 1.5 * d), Explosion.DestructionType.DESTROY);
                     entity.discard();
+                    player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), (float) (4.0 + player.world.random.nextDouble() * 1.5 * d), Explosion.DestructionType.DESTROY);
                 });
             });
     }

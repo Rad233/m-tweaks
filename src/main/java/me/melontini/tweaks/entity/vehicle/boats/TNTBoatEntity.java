@@ -62,6 +62,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     @Override
     public boolean damage(DamageSource source, float amount) {
         Entity entity = source.getSource();
+
         if (entity instanceof PersistentProjectileEntity persistentProjectileEntity && persistentProjectileEntity.isOnFire()) {
             this.explode(persistentProjectileEntity.getVelocity().lengthSquared());
             return false;
@@ -82,7 +83,12 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             this.emitGameEvent(GameEvent.ENTITY_DAMAGED, source.getAttacker());
             boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity)source.getAttacker()).getAbilities().creativeMode;
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
-                this.explode(0.09);
+                if (entity != null) if (entity.getUuid() == this.getUuid()) {
+                    return false;
+                } else {
+                    this.explode(0.09);
+                    return true;
+                }
             }
 
             return true;
@@ -118,8 +124,8 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
                 d = 5.0;
             }
 
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), (float) (4.0 + this.random.nextDouble() * 1.5 * d), Explosion.DestructionType.BREAK);
             this.discard();
+            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), (float) (4.0 + this.random.nextDouble() * 1.5 * d), Explosion.DestructionType.BREAK);
         }
     }
 }

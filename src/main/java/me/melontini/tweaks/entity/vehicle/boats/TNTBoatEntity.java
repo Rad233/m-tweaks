@@ -16,6 +16,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 
 import static me.melontini.tweaks.Tweaks.MODID;
@@ -71,7 +72,23 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             return false;
         }
 
-        return super.damage(source, amount);
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else if (!this.world.isClient && !this.isRemoved()) {
+            this.setDamageWobbleSide(-this.getDamageWobbleSide());
+            this.setDamageWobbleTicks(10);
+            this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
+            this.scheduleVelocityUpdate();
+            this.emitGameEvent(GameEvent.ENTITY_DAMAGED, source.getAttacker());
+            boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity)source.getAttacker()).getAbilities().creativeMode;
+            if (bl || this.getDamageWobbleStrength() > 40.0F) {
+                this.explode(0.09);
+            }
+
+            return true;
+        } else {
+            return true;
+        }
     }
 
     @Override

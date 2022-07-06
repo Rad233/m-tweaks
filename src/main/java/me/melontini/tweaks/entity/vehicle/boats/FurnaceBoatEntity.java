@@ -22,7 +22,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class FurnaceBoatEntity extends BoatEntityWithBlock {
-    /*bad idea?*/ private static final TrackedData<Integer> FUEL = DataTracker.registerData(FurnaceBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> FUEL = DataTracker.registerData(FurnaceBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public FurnaceBoatEntity(EntityType<? extends BoatEntity> entityType, World world) {
         super(entityType, world);

@@ -71,7 +71,7 @@ public abstract class FallingBlockMixin extends Entity {
                                 bee.setTarget(player);
                             }
                             for (ItemStack stack : stacks) {
-                                ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world);
+                                ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world, 0.5);
                             }
                         } else {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
@@ -82,7 +82,7 @@ public abstract class FallingBlockMixin extends Entity {
                                 world.spawnEntity(bee);
                             }
                             for (ItemStack stack : stacks) {
-                                ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world);
+                                ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world, 0.5);
                             }
                         }
                         LogUtil.info("broke Bee Nest generated from Falling Block");

@@ -52,7 +52,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
     public void onActivatorRail(int x, int y, int z, boolean powered) {
         if (powered && !this.record.isEmpty()) {
             ItemStackUtil.spawnItemWithRandVelocity(
-                    new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world);
+                    new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world, 0.5);
             this.clear();
             this.stopPlaying();
         }
@@ -106,7 +106,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
         if (!world.isClient())
             if (!this.record.isEmpty()) {
                 ItemStackUtil.spawnItemWithRandVelocity(
-                        new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world);
+                        new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world, 0.5);
                 this.stopPlaying();
                 this.clear();
             } else if (stackInHand.getItem() instanceof MusicDiscItem) {

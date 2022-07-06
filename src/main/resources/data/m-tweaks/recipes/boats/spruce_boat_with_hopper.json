@@ -1,0 +1,26 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:spruce_boat_with_hopper"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:hopper"
+    },
+    "B": {
+      "item": "minecraft:spruce_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:spruce_boat_with_hopper"
+  }
+}

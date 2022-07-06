@@ -97,7 +97,7 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
             NbtCompound nbt = new NbtCompound();
             nbt.putInt("Note", this.note);
             noteBlock.setNbt(nbt);
-            ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), noteBlock, this.world);
+            ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), noteBlock, this.world, 0.5);
         }
     }
 

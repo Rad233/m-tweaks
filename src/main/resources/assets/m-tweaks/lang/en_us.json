@@ -57,6 +57,8 @@
   "text.autoconfig.m-tweaks.option.leafSlowdown": "Leaf Slowdown",
   "text.autoconfig.m-tweaks.option.leafSlowdown.@Tooltip[0]": "Makes entities slower whilst standing on leaves.",
   "text.autoconfig.m-tweaks.option.leafSlowdown.@Tooltip[1]": "This should discourage players from running above all the fun things",
+  "text.autoconfig.m-tweaks.option.quickFire": "Fast Fire Spread",
+  "text.autoconfig.m-tweaks.option.quickFire.@Tooltip": "Makes fire spread a lot faster and wider.",
 
   "text.autoconfig.m-tweaks.category.blocks": "Blocks",
   "text.autoconfig.m-tweaks.option.bedsExplodeEverywhere": "Beds Explode Everywhere",

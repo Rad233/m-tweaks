@@ -1,4 +1,4 @@
-## 0.2.1 update
+## 0.2.2 update
 ### What's new:
-* Fixed boats not having recipes and recipe advancements
-* New tweak: Fast Fire Spread, this tweak makes fire spread a lot faster and wider.
+* Fixed StackOverFlow when trying to explode TNT boats in a chain
+* New tweak: Villagers follow emerald blocks. off by default.

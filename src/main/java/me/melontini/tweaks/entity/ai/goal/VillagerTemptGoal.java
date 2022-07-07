@@ -1,4 +1,4 @@
-package me.melontini.tweaks.entity.ai;
+package me.melontini.tweaks.entity.ai.goal;
 
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.goal.TemptGoal;

@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.baiting_villagers;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.entity.ai.VillagerTemptGoal;
+import me.melontini.tweaks.entity.ai.goal.VillagerTemptGoal;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;

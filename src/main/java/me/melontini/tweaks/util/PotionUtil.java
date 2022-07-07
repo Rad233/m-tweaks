@@ -1,6 +1,5 @@
 package me.melontini.tweaks.util;
 
-import me.melontini.tweaks.Tweaks;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

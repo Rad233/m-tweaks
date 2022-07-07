@@ -20,7 +20,7 @@ public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
     }
 
     @Inject(at = @At("HEAD"), method = "trySpreadingFire", cancellable = true)
-    public void spreadFire(World world, BlockPos pos, int spreadFactor, Random rand, int currentAge, CallbackInfo ci) {
+    public void mTweaks$spreadFire(World world, BlockPos pos, int spreadFactor, Random rand, int currentAge, CallbackInfo ci) {
         if (Tweaks.CONFIG.quickFire) {
             FireBlock fireBlock = (FireBlock) (Object) this;
             int i = fireBlock.getSpreadChance(world.getBlockState(pos));
@@ -44,7 +44,7 @@ public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
 
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FireBlock;trySpreadingFire(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILjava/util/Random;I)V", ordinal = 0, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "scheduledTick")
-    public void trySpreadBlocks(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci, int i, boolean bl2, int k) {
+    public void mTweaks$trySpreadBlocks(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci, int i, boolean bl2, int k) {
         if (Tweaks.CONFIG.quickFire) {
             FireBlock fireBlock = (FireBlock) (Object) this;
             for (int x = -3; x < 3; x++) {

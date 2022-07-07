@@ -42,7 +42,7 @@ public abstract class FallingBlockMixin extends Entity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/world/World.getBlockEntity (Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/entity/BlockEntity;", shift = At.Shift.AFTER), method = "tick")
-    public void tick(CallbackInfo ci) {
+    public void mTweaks$tick(CallbackInfo ci) {
         BlockPos blockPos = this.getBlockPos();
         BlockEntity blockEntity = this.world.getBlockEntity(blockPos);
         if (blockEntity != null) {

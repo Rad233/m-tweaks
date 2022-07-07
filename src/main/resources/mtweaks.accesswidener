@@ -1,4 +1,4 @@
-accessWidener	v1	named
+accessWidener  v2	named
 # Fields
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inBlockState Lnet/minecraft/block/BlockState;
 accessible field net/minecraft/entity/vehicle/SpawnerMinecartEntity logic Lnet/minecraft/world/MobSpawnerLogic;

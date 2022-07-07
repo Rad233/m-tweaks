@@ -32,7 +32,7 @@ public abstract class EntityMixin extends Entity {
     public abstract @Nullable EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
 
     @Inject(at = @At("HEAD"), method = "baseTick")
-    public void tick(CallbackInfo ci) {
+    public void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.leafSlowdown) {
             EntityAttributeInstance attributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (!this.world.isClient) {

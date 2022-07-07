@@ -489,7 +489,7 @@ public abstract class MinecartItemMixin extends Item {
 
     @Nullable
     private Identifier getEntityId(MobSpawnerBlockEntity mobSpawnerBlockEntity) {
-        String string = mobSpawnerBlockEntity.logic.spawnEntry.comp_64().getString("id");
+        String string = mobSpawnerBlockEntity.logic.spawnEntry.getNbt().getString("id");
 
         try {
             return StringUtils.isEmpty(string) ? null : new Identifier(string);

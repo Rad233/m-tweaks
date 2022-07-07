@@ -20,8 +20,8 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("world")
     @Comment("With this rule on, crops will grow slower in colder biomes, and not grow at all in freezing biomes")
     @ConfigEntry.Gui.Tooltip
-    //TODO saplings, chorus, cactus =(
-    //TODO this should probably be tag based, so crops only grow slower in biomes they don't like
+    //TODO chorus
+    //TODO this should probably be tag based, so crops only grow slower in temperatures they don't like
     public boolean cropsGrowSlowerInCold = false;
 
     @ConfigEntry.Category("world")
@@ -151,10 +151,12 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     //TODO picking up fused TNT
     public boolean minecartBlockPicking = true;
+
     @ConfigEntry.Category("items")
     @Comment("Allows players to \"pick\" spawners via minecarts, does nothing if Minecart Block Picking is off")
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean minecartSpawnerPicking = true;
+
     @ConfigEntry.Category("misc")
     @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip

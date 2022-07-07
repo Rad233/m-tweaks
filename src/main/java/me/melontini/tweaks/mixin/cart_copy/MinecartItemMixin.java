@@ -221,6 +221,7 @@ public abstract class MinecartItemMixin extends Item {
         }
     };
     private static final Logger LOGGER = LogManager.getLogger();
+
     @Shadow
     @Final
     public AbstractMinecartEntity.Type type;

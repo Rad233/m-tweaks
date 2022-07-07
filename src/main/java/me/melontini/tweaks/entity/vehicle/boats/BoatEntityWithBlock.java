@@ -28,6 +28,6 @@ public class BoatEntityWithBlock extends BoatEntity {
 
     @Override
     public boolean canAddPassenger(Entity passenger) {
-        return this.getPassengerList().size() < 1 && !this.isSubmergedIn(FluidTags.WATER);
+        return this.getPassengerList().size() == 0 && !this.isSubmergedIn(FluidTags.WATER);
     }
 }

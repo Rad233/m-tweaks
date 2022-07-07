@@ -63,7 +63,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public double getMaxSpeed() {
+    public double getMaxOffRailSpeed() {
         return (this.isTouchingWater() ? 0.08 : 0.1) / 20.0;
     }
 

@@ -1,4 +1,5 @@
-## 0.2.2 update
+## 0.3.0 update
 ### What's new:
-* Fixed StackOverFlow when trying to explode TNT boats in a chain
-* New tweak: Villagers follow emerald blocks. off by default.
+* 1.19 update
+* Removed chest boat.
+* Added mangrove boat variants

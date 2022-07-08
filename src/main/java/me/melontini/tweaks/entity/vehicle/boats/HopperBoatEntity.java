@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
-
     private final BlockPos currentBlockPos = BlockPos.ORIGIN;
     public int transferCooldown = -1;
 

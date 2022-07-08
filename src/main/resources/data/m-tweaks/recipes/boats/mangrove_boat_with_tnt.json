@@ -3,7 +3,7 @@
     {
       "condition": "m-tweaks:items_registered",
       "values": [
-        "m-tweaks:jungle_boat_with_chest"
+        "m-tweaks:mangrove_boat_with_tnt"
       ]
     }
   ],
@@ -14,13 +14,13 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:chest"
+      "item": "minecraft:tnt"
     },
     "B": {
-      "item": "minecraft:jungle_boat"
+      "item": "minecraft:mangrove_boat"
     }
   },
   "result": {
-    "item": "m-tweaks:jungle_boat_with_chest"
+    "item": "m-tweaks:mangrove_boat_with_tnt"
   }
 }

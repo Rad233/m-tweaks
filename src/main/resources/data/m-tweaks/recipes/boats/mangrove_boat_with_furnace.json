@@ -3,7 +3,7 @@
     {
       "condition": "m-tweaks:items_registered",
       "values": [
-        "m-tweaks:dark_oak_boat_with_chest"
+        "m-tweaks:mangrove_boat_with_furnace"
       ]
     }
   ],
@@ -14,13 +14,13 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:chest"
+      "item": "minecraft:furnace"
     },
     "B": {
-      "item": "minecraft:dark_oak_boat"
+      "item": "minecraft:mangrove_boat"
     }
   },
   "result": {
-    "item": "m-tweaks:dark_oak_boat_with_chest"
+    "item": "m-tweaks:mangrove_boat_with_furnace"
   }
 }

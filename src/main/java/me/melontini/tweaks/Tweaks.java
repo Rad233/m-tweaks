@@ -21,7 +21,7 @@ public class Tweaks implements ModInitializer {
     public static final String MODID = "m-tweaks";
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
 
-    public static final ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);
+    public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
 
     @Override
     public void onInitialize() {
@@ -30,6 +30,9 @@ public class Tweaks implements ModInitializer {
         ServerSideNetworking.register();
         ResourceConditionRegistry.register();
 
-        if (CONFIG.usefulFletching) Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
+        if (CONFIG.usefulFletching) {
+            FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);
+            Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
+        }
     }
 }

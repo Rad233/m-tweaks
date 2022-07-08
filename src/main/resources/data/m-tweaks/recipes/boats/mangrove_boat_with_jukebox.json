@@ -3,7 +3,7 @@
     {
       "condition": "m-tweaks:items_registered",
       "values": [
-        "m-tweaks:spruce_boat_with_chest"
+        "m-tweaks:mangrove_boat_with_jukebox"
       ]
     }
   ],
@@ -14,13 +14,13 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:chest"
+      "item": "minecraft:jukebox"
     },
     "B": {
-      "item": "minecraft:spruce_boat"
+      "item": "minecraft:mangrove_boat"
     }
   },
   "result": {
-    "item": "m-tweaks:spruce_boat_with_chest"
+    "item": "m-tweaks:mangrove_boat_with_jukebox"
   }
 }

@@ -3,7 +3,7 @@
     {
       "condition": "m-tweaks:items_registered",
       "values": [
-        "m-tweaks:oak_boat_with_chest"
+        "m-tweaks:mangrove_boat_with_hopper"
       ]
     }
   ],
@@ -14,13 +14,13 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:chest"
+      "item": "minecraft:hopper"
     },
     "B": {
-      "item": "minecraft:oak_boat"
+      "item": "minecraft:mangrove_boat"
     }
   },
   "result": {
-    "item": "m-tweaks:oak_boat_with_chest"
+    "item": "m-tweaks:mangrove_boat_with_hopper"
   }
 }

@@ -80,7 +80,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             this.setDamageWobbleTicks(10);
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
             this.scheduleVelocityUpdate();
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGED, source.getAttacker());
+            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
             boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
                 this.explode(0.09);

@@ -1,7 +1,10 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.items.boats.*;
+import me.melontini.tweaks.items.boats.FurnaceBoatItem;
+import me.melontini.tweaks.items.boats.HopperBoatItem;
+import me.melontini.tweaks.items.boats.JukeboxBoatItem;
+import me.melontini.tweaks.items.boats.TNTBoatItem;
 import me.melontini.tweaks.items.minecarts.AnvilMinecartItem;
 import me.melontini.tweaks.items.minecarts.JukeBoxMinecartItem;
 import me.melontini.tweaks.items.minecarts.NoteBlockMinecartItem;
@@ -52,9 +55,9 @@ public class ItemRegistry {
         if (Tweaks.CONFIG.newBoats.isHopperBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
-        if (Tweaks.CONFIG.newBoats.isChestBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
+        /*if (Tweaks.CONFIG.newBoats.isChestBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_chest"), new ChestBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
-        }
+        }*/
         LogUtil.info("ItemRegistry init complete!");
     }
 }

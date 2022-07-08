@@ -29,8 +29,6 @@ public class TweaksClient implements ClientModInitializer {
             EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_JUKEBOX, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.JUKEBOX.getDefaultState())));
         if (config.newBoats.isTNTBoatOn)
             EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_TNT, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.TNT.getDefaultState())));
-        /*if (config.newBoats.isChestBoatOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_CHEST, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.NORTH))));*/
         if (config.newBoats.isHopperBoatOn)
             EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_HOPPER, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.HOPPER.getDefaultState())));
 

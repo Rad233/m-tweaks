@@ -1,6 +1,8 @@
 package me.melontini.tweaks.client;
 
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
+import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
@@ -11,6 +13,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FurnaceBlock;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.math.Direction;
@@ -22,6 +25,8 @@ public class TweaksClient implements ClientModInitializer {
         TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
 
         ClientSideNetworking.register();
+
+        if (Tweaks.CONFIG.usefulFletching) HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
 
         if (config.newBoats.isFurnaceBoatOn)
             EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_FURNACE, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, Direction.NORTH))));

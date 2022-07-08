@@ -1,5 +1,9 @@
 ## 0.3.0 update
 ### What's new:
-* 1.19 update
-* Removed chest boat.
-* Added mangrove boat variants
+* Added functionality to the forever so useless fletching table
+
+Now you can tighten your bow's string with strings!
+
+A tightened bow will have improved accuracy.
+
+You'll get a tooltip for how much "tightened" usage you have left.

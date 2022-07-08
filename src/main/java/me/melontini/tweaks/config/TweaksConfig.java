@@ -30,6 +30,12 @@ public class TweaksConfig implements ConfigData {
     public boolean quickFire = false;
 
     @ConfigEntry.Category("blocks")
+    @Comment("Makes fletching table a little more useful by allowing you to tighten bow string!")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean usefulFletching = true;
+
+    @ConfigEntry.Category("blocks")
     @Comment("Makes beds explode in every dimension. conflicts with Safe Beds!")
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean bedsExplodeEverywhere = false;

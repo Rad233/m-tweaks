@@ -6,6 +6,9 @@
   "mixins": [
     "baiting_villagers.VillagerEntityMixin",
     "beds_revenge.BedBlockMixin",
+    "better_fletching_table.BowItemMixin",
+    "better_fletching_table.FletchingTableBlockMixin",
+    "better_fletching_table.ItemMixin",
     "boat_impl.BoatEntityMixin",
     "campfire_effects.CampfireBlockEntityMixin",
     "cart_copy.MinecartItemMixin",

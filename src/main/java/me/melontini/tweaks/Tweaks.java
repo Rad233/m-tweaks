@@ -5,9 +5,13 @@ import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
+import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.UUID;
 
@@ -17,11 +21,15 @@ public class Tweaks implements ModInitializer {
     public static final String MODID = "m-tweaks";
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
 
+    public static final ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);
+
     @Override
     public void onInitialize() {
         ItemRegistry.register();
         EntityTypeRegistry.register();
         ServerSideNetworking.register();
         ResourceConditionRegistry.register();
+
+        if (CONFIG.usefulFletching) Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
     }
 }

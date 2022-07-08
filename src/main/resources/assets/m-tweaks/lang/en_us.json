@@ -1,4 +1,6 @@
 {
+  "item.m-tweaks.bow.tight": "*Tightened, usages left: %s",
+
   "item.m-tweaks.spawner_minecart": "Spawner Minecart",
   "item.m-tweaks.spawner_minecart.filled": "Spawner Minecart with %s",
   "item.m-tweaks.spawner_minecart.filled.custom": "%s with %s",
@@ -43,6 +45,8 @@
   "entity.m-tweaks.hopper_boat": "Boat with Hopper",
   "entity.m-tweaks.tnt_boat": "Boat with TNT",
 
+  "gui.m-tweaks.fletching": "Tighten Bow String",
+
   "m-tweaks.safebeds.action": "You can't sleep here!",
 
   "text.autoconfig.m-tweaks.title": "m-tweaks config",
@@ -58,6 +62,9 @@
   "text.autoconfig.m-tweaks.option.quickFire.@Tooltip": "Makes fire spread a lot faster and wider.",
 
   "text.autoconfig.m-tweaks.category.blocks": "Blocks",
+  "text.autoconfig.m-tweaks.option.usefulFletching": "Useful Fletching Table",
+  "text.autoconfig.m-tweaks.option.usefulFletching.@Tooltip[0]": "Gives the Fletching Table a GUI,",
+  "text.autoconfig.m-tweaks.option.usefulFletching.@Tooltip[1]": "where you can tighten your bow's string, improving accuracy.",
   "text.autoconfig.m-tweaks.option.bedsExplodeEverywhere": "Beds Explode Everywhere",
   "text.autoconfig.m-tweaks.option.bedsExplodeEverywhere.@Tooltip[0]": "Makes beds explode in every dimension.",
   "text.autoconfig.m-tweaks.option.bedsExplodeEverywhere.@Tooltip[1]": "Conflicts with Safe Beds!",

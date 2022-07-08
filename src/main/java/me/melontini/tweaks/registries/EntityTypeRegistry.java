@@ -29,8 +29,6 @@ public class EntityTypeRegistry {
 
     public static EntityType<JukeboxBoatEntity> BOAT_WITH_JUKEBOX;
 
-    /*public static EntityType<ChestBoatEntity> BOAT_WITH_CHEST;*/
-
     public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER;
 
     public static void register() {
@@ -73,13 +71,6 @@ public class EntityTypeRegistry {
                     .build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "tnt_boat"), BOAT_WITH_TNT);
         }
-
-        /*if (Tweaks.CONFIG.newBoats.isChestBoatOn) {
-            BOAT_WITH_CHEST = FabricEntityTypeBuilder.<ChestBoatEntity>create(SpawnGroup.MISC, ChestBoatEntity::new)
-                    .dimensions(EntityDimensions.fixed(1.375F, 0.5625F))
-                    .build();
-            Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, "chest_boat"), BOAT_WITH_CHEST);
-        }*/
 
         if (Tweaks.CONFIG.newBoats.isHopperBoatOn) {
             BOAT_WITH_HOPPER = FabricEntityTypeBuilder.<HopperBoatEntity>create(SpawnGroup.MISC, HopperBoatEntity::new)

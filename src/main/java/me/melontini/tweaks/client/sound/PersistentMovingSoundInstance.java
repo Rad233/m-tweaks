@@ -23,7 +23,6 @@ public class PersistentMovingSoundInstance extends MovingSoundInstance {
 
     @Override
     public void tick() {
-        //TODO maybe figure out why JBMC unloads so early on servers
         Entity entity = world.getEntityLookup().get(entityId);
         if (entity != null) {
             volume = 3;

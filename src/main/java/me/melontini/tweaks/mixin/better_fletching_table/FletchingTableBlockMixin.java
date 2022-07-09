@@ -8,7 +8,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.CraftingTableBlock;
 import net.minecraft.block.FletchingTableBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.text.Text;
@@ -34,14 +33,9 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);
 
-            player.openHandledScreen(this.createScreenHandlerFactory(state, world, pos));
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), Text.translatable("gui.m-tweaks.fletching")));
             cir.setReturnValue(ActionResult.SUCCESS);
             LogUtil.info("HELLO");
         }
-    }
-
-    @Override /*how does mixin handle multiple @Overrides of the same class?*/
-    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedScreenHandlerFactory(((syncId, inv, player) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), Text.translatable("gui.m-tweaks.fletching"));
     }
 }

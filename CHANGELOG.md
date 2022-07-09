@@ -1,9 +1,4 @@
-## 0.3.1 update
+## 0.3.2 update
 ### What's new:
-* Added functionality to the forever so useless fletching table
-
-Now you can tighten your bow's string with strings!
-
-A tightened bow will have improved accuracy.
-
-You'll get a tooltip for how much "tightened" usage you have left.
+* Fixed fletching table nuking custom names, enchantments etc.
+* Added a proper cap to how much you can tighten your bow. now it's 32

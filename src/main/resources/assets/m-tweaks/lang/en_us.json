@@ -1,5 +1,5 @@
 {
-  "item.m-tweaks.bow.tight": "*Tightened, usages left: %s",
+  "tooltip.m-tweaks.bow.tight": "*Tightened, usages left: %s",
 
   "item.m-tweaks.spawner_minecart": "Spawner Minecart",
   "item.m-tweaks.spawner_minecart.filled": "Spawner Minecart with %s",

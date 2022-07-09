@@ -1,4 +1,4 @@
-## 0.3.0 update
+## 0.3.1 update
 ### What's new:
 * Added functionality to the forever so useless fletching table
 

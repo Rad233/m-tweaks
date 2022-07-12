@@ -1,8 +1,7 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
+import me.melontini.tweaks.entity.MinecartTypes;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.registries.ItemRegistry;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,8 +10,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -31,7 +30,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
 
     @Override
     public AbstractMinecartEntity.Type getMinecartType() {
-        return ClassTinkerers.getEnum(Type.class, "M_TWEAKS_ANVIL");
+        return MinecartTypes.M_TWEAKS_ANVIL;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier) {
         int i = MathHelper.ceil(fallDistance - 1.0F);
         if (i >= 0) {
             float f = (float) Math.min(MathHelper.floor(i * 2), 40);
@@ -55,12 +54,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public Item getItem() {
-        return ItemRegistry.ANVIL_MINECART;
-    }
-
-    @Override
-    public double getMaxSpeed() {
+    public double getMaxOffRailSpeed() {
         return (this.isTouchingWater() ? 0.08 : 0.1) / 20.0;
     }
 
@@ -70,7 +64,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(ItemRegistry.ANVIL_MINECART);
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

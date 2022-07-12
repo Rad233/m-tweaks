@@ -27,13 +27,13 @@
     ]
   },
   "mixins": [
-    "tweaks.mixins.json"
+    "mtweaks.mixins.json"
   ],
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "cloth-config": "*",
-    "minecraft": ">=1.19"
+    "cloth-config2": "*",
+    "minecraft": "1.16.5"
   },
   "suggests": {
     "modmenu": "*"

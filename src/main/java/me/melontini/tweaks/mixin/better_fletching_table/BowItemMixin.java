@@ -24,15 +24,15 @@ public abstract class BowItemMixin extends RangedWeaponItem {
     }
 
     //sin
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setVelocity(Lnet/minecraft/entity/Entity;FFFFF)V", shift = At.Shift.AFTER), method = "onStoppedUsing", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+    @Inject(at = @At(value = "INVOKE", target = "net/minecraft/entity/projectile/PersistentProjectileEntity.setProperties (Lnet/minecraft/entity/Entity;FFFFF)V", shift = At.Shift.AFTER), method = "onStoppedUsing", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
     public void m_tweaks$setVelocity(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci, PlayerEntity playerEntity, boolean bl, ItemStack itemStack, int i, float f, boolean bl2, ArrowItem arrowItem, PersistentProjectileEntity persistentProjectileEntity) {
-        NbtCompound stackNbt = stack.getNbt();
+        NbtCompound stackNbt = stack.getTag();
         if (Tweaks.CONFIG.usefulFletching) if (stackNbt != null) if (stackNbt.contains("MT-Tightened")) if (stackNbt.getInt("MT-Tightened") > 0) {
             int a = stackNbt.getInt("MT-Tightened");
-            persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 3.0F, 0.2F);
+            persistentProjectileEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw, 0.0F, f * 3.0F, 0.2F);
             LogUtil.info(a);
             stackNbt.putInt("MT-Tightened", a - 1);
-            stack.setNbt(stackNbt);
+            stack.setTag(stackNbt);
         }
 
     }

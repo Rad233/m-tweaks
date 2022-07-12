@@ -36,10 +36,11 @@ public class ItemStackUtil {
                 pos.getX(),
                 pos.getY() + 0.2,
                 pos.getZ(),
-                stack,
+                stack);
+        itemEntity.setVelocity(new Vec3d(
                 (Math.random() - range) * range,
                 0,
-                (Math.random() - range) * range);
+                (Math.random() - range) * range));
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }
@@ -50,10 +51,11 @@ public class ItemStackUtil {
                 pos.getX(),
                 pos.getY() + 0.2,
                 pos.getZ(),
-                stack,
+                stack);
+        itemEntity.setVelocity(new Vec3d(
                 (Math.random() - range) * range,
                 0,
-                (Math.random() - range) * range);
+                (Math.random() - range) * range));
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }

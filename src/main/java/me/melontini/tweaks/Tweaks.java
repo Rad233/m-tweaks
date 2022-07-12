@@ -4,7 +4,6 @@ import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
-import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
@@ -28,7 +27,6 @@ public class Tweaks implements ModInitializer {
         ItemRegistry.register();
         EntityTypeRegistry.register();
         ServerSideNetworking.register();
-        ResourceConditionRegistry.register();
 
         if (CONFIG.usefulFletching) {
             FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);

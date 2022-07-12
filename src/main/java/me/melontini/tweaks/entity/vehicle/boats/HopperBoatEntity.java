@@ -8,6 +8,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -16,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -45,9 +48,15 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
         return 5;
     }
 
+    @Nullable
+    @Override
+    public World getWorld() {
+        return world;
+    }
+
     @Override
     public double getHopperX() {
-        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.yaw * (Math.PI / 180.0) - (Math.PI / 2)));
         return this.getX() + vec3d.x;
     }
 
@@ -58,7 +67,7 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
 
     @Override
     public double getHopperZ() {
-        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.yaw * (Math.PI / 180.0) - (Math.PI / 2)));
         return this.getZ() + vec3d.z;
     }
 
@@ -90,7 +99,7 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
     }
 
     public boolean canOperate() {
-        if (HopperBlockEntity.extract(this.world, this)) {
+        if (HopperBlockEntity.extract(this)) {
             return true;
         } else {
             List<ItemEntity> list = this.world.getEntitiesByClass(ItemEntity.class, this.getBoundingBox().expand(0.25, 0.0, 0.25), EntityPredicates.VALID_ENTITY);
@@ -108,5 +117,10 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
 
     public boolean isCoolingDown() {
         return this.transferCooldown > 0;
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

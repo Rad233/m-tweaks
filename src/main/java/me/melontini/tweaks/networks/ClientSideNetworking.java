@@ -10,38 +10,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ClientSideNetworking {
 
-    public static Map<UUID, SoundInstance> soundInstanceMap = new HashMap<>();
+    public static Map<Integer, SoundInstance> soundInstanceMap = new HashMap<>();
 
     public static void register() {
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
             ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "jukebox_minecart_audio"), (client, handler, buf, responseSender) -> {
-                UUID id = buf.readUuid();
+                int id = buf.readInt();
                 ItemStack stack = buf.readItemStack();
                 client.execute(() -> {
                     assert client.world != null;
-                    Entity entity = client.world.getEntityLookup().get(id);
-                    if (stack.getItem() instanceof MusicDiscItem disc) {
+                    Entity entity = client.world.getEntityById(id);
+                    if (stack.getItem() instanceof MusicDiscItem) {
+                        MusicDiscItem disc = (MusicDiscItem) stack.getItem();
 
                         MutableText discName = disc.getDescription();
-                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world, Random.create());
+                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world);
                         soundInstanceMap.put(id, instance);
                         client.getSoundManager().play(instance);
 
                         if (discName != null)
                             if (client.player != null) if (entity != null) if (entity.distanceTo(client.player) < 76) {
-                                client.player.sendMessage(Text.translatable("record.nowPlaying", discName), true);
+                                client.player.sendMessage(new TranslatableText("record.nowPlaying", discName), true);
                             }
                     }
                 });
@@ -49,7 +48,7 @@ public class ClientSideNetworking {
         }
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
             ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "jukebox_minecart_audio_stop"), (client, handler, buf, responseSender) -> {
-                UUID id = buf.readUuid();
+                int id = buf.readInt();
                 client.execute(() -> {
                     SoundInstance instance = soundInstanceMap.get(id);
                     if (client.getSoundManager().isPlaying(instance)) {

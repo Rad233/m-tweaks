@@ -11,12 +11,10 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -41,7 +39,7 @@ public class TNTBoatItem extends Item {
             double d = 5.0;
             List<Entity> list = world.getOtherEntities(user, user.getBoundingBox().stretch(vec3d.multiply(5.0)).expand(1.0), RIDERS);
             if (!list.isEmpty()) {
-                Vec3d vec3d2 = user.getEyePos();
+                Vec3d vec3d2 = user.getCameraPosVec(1);
 
                 for (Entity entity : list) {
                     Box box = entity.getBoundingBox().expand(entity.getTargetingMargin());
@@ -54,14 +52,13 @@ public class TNTBoatItem extends Item {
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 TNTBoatEntity tntBoat = new TNTBoatEntity(world, hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
                 tntBoat.setBoatType(this.type);
-                tntBoat.setYaw(user.getYaw());
+                tntBoat.yaw = (user.yaw);
                 if (!world.isSpaceEmpty(tntBoat, tntBoat.getBoundingBox())) {
                     return TypedActionResult.fail(itemStack);
                 } else {
                     if (!world.isClient) {
                         world.spawnEntity(tntBoat);
-                        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, new BlockPos(hitResult.getPos()));
-                        if (!user.getAbilities().creativeMode) {
+                        if (!user.isCreative()) {
                             itemStack.decrement(1);
                         }
                     }

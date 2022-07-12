@@ -5,7 +5,6 @@ import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
@@ -25,7 +26,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -49,20 +49,19 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
     public boolean damage(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.world.isClient && !this.isRemoved()) {
+        } else if (!this.world.isClient && this.isAlive()) {
             this.setDamageWobbleSide(-this.getDamageWobbleSide());
             this.setDamageWobbleTicks(10);
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
             this.scheduleVelocityUpdate();
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
-            boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
+            boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).isCreative();
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
                 this.stopPlaying();
                 if (!bl && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
                     this.dropItem(this.asItem());
                 }
 
-                this.discard();
+                this.remove();
             }
 
             return true;
@@ -74,7 +73,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
     @Override
     public void kill() {
         this.stopPlaying();
-        this.remove(Entity.RemovalReason.KILLED);
+        this.remove();
     }
 
     @Override
@@ -100,7 +99,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
 
     public void stopPlaying() {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(this.getUuid());
+        buf.writeInt(this.getEntityId());
 
         for (PlayerEntity player1 : world.getPlayers()) {
             ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio_stop"), buf);
@@ -109,7 +108,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
 
     public void startPlaying() {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(this.uuid);
+        buf.writeInt(this.getEntityId());
         buf.writeItemStack(this.record);
 
         for (PlayerEntity player1 : world.getPlayers()) {
@@ -141,5 +140,10 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
     @Override
     public void clear() {
         this.record = ItemStack.EMPTY;
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

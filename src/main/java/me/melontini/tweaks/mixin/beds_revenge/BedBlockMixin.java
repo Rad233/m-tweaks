@@ -9,7 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.minecraft.block.BedBlock.isBedWorking;
+import static net.minecraft.block.BedBlock.isOverworld;
 
 @Mixin(BedBlock.class)
 public abstract class BedBlockMixin extends Block {
@@ -67,8 +67,8 @@ public abstract class BedBlockMixin extends Block {
                 cir.setReturnValue(ActionResult.SUCCESS);
             }
             if (config.safeBeds) {
-                if (!isBedWorking(world)) {
-                    player.sendMessage(Text.translatable("m-tweaks.safebeds.action"), true);
+                if (!isOverworld(world)) {
+                    player.sendMessage(new TranslatableText("m-tweaks.safebeds.action"), true);
                     cir.setReturnValue(ActionResult.SUCCESS);
                 }
             }

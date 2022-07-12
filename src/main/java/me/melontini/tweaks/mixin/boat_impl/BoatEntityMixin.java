@@ -29,7 +29,8 @@ public abstract class BoatEntityMixin extends Entity {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 1, shift = At.Shift.BEFORE), method = "updateVelocity", locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
     public void mTweaks$aVoid(CallbackInfo ci, double e, double f) {
         BoatEntity boat = (BoatEntity) (Object) this;
-        if (boat instanceof FurnaceBoatEntity furnaceBoat) {
+        if (boat instanceof FurnaceBoatEntity) {
+            FurnaceBoatEntity furnaceBoat = (FurnaceBoatEntity) boat;
             Vec3d vec3d = this.getVelocity();
             if (furnaceBoat.getFuel() > 0 && this.location != BoatEntity.Location.ON_LAND) {
                 this.setVelocity(this.getRotationVec(1.0F).getX() * 0.4, vec3d.y + e, this.getRotationVec(1.0F).getZ() * 0.4);

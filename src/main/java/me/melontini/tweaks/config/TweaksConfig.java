@@ -13,9 +13,10 @@ import java.util.List;
 @Config.Gui.Background("minecraft:textures/block/dirt.png")
 public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("world")
-    @Comment("Pretty self-descriptive. Makes Bee Nests fall after some time, you can also shoot them with arrows")
+    @Comment("Broken and I won't fix it. sorry")
     @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean canBeeNestsFall = true;
+    @ConfigEntry.Gui.Excluded
+    public boolean canBeeNestsFall = false;
 
     @ConfigEntry.Category("world")
     @Comment("With this rule on, crops will grow slower in colder biomes, and not grow at all in freezing biomes")

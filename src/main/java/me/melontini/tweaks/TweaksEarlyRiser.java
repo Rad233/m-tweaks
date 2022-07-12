@@ -8,7 +8,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
 
-public class TweaksEarlyRiser implements Runnable{
+public class TweaksEarlyRiser implements Runnable {
     @Override
     public void run() {
         //lol

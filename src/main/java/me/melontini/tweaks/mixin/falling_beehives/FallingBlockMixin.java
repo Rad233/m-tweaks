@@ -46,7 +46,8 @@ public abstract class FallingBlockMixin extends Entity {
         BlockPos blockPos = this.getBlockPos();
         BlockEntity blockEntity = this.world.getBlockEntity(blockPos);
         if (blockEntity != null) {
-            if (blockEntity instanceof BeehiveBlockEntity beehiveBlockEntity && Tweaks.CONFIG.canBeeNestsFall) {
+            if (blockEntity instanceof BeehiveBlockEntity && Tweaks.CONFIG.canBeeNestsFall) {
+                BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) blockEntity;
                 if (this.block.getBlock() == Blocks.BEE_NEST) {
                     NbtCompound nbt = blockEntityData;
                     assert nbt != null;
@@ -63,7 +64,7 @@ public abstract class FallingBlockMixin extends Entity {
                             PlayerEntity player = MiscUtil.pickRandomEntryFromList(players);
                             for (int i = 0; i < nbeetlist.size(); ++i) {
                                 BeeEntity bee = new BeeEntity(EntityType.BEE, world);
-                                bee.setPosition(getPos());
+                                bee.setPosition(getPos().x, getPos().y, getPos().z);
                                 bee.setTarget(player);
                                 world.spawnEntity(bee);
                             }
@@ -77,7 +78,7 @@ public abstract class FallingBlockMixin extends Entity {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
                             for (int i = 0; i < nbeetlist.size(); ++i) {
                                 BeeEntity bee = new BeeEntity(EntityType.BEE, world);
-                                bee.setPosition(getPos());
+                                bee.setPosition(getPos().x, getPos().y, getPos().z);
                                 bee.setCannotEnterHiveTicks(400);
                                 world.spawnEntity(bee);
                             }

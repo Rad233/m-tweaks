@@ -1,6 +1,5 @@
 package me.melontini.tweaks.util;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.entity.FallingBlockEntity;
@@ -27,7 +26,7 @@ public class BeeNestUtil {
         //Thanks AccessWidener!
         fallingBlock.readCustomDataFromNbt(tileData);
 
-        world.setBlockState(pos, state.getFluidState().getBlockState(), Block.NOTIFY_ALL);
+        world.setBlockState(pos, state.getFluidState().getBlockState());
         world.spawnEntity(fallingBlock);
     }
 }

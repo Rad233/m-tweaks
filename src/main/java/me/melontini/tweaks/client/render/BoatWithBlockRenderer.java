@@ -6,7 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.BoatEntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.util.math.MathHelper;
@@ -16,8 +16,8 @@ import net.minecraft.util.math.Vec3f;
 public class BoatWithBlockRenderer extends BoatEntityRenderer {
     private final BlockState blockState;
 
-    public BoatWithBlockRenderer(EntityRendererFactory.Context context, BlockState blockState) {
-        super(context, false);
+    public BoatWithBlockRenderer(EntityRenderDispatcher dispatcher, BlockState blockState) {
+        super(dispatcher);
         this.blockState = blockState;
     }
 

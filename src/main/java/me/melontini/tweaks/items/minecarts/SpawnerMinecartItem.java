@@ -35,7 +35,7 @@ public class SpawnerMinecartItem extends MinecartItem {
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
             double e = Math.floor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
-            BlockPos blockPos = pointer.getPos().offset(direction);
+            BlockPos blockPos = pointer.getBlockPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);
             RailShape railShape = blockState.getBlock() instanceof AbstractRailBlock ? blockState.get(((AbstractRailBlock) blockState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
             double k;
@@ -62,9 +62,9 @@ public class SpawnerMinecartItem extends MinecartItem {
             AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.SPAWNER);
             SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
 
-            NbtCompound nbt = stack.getNbt();
+            NbtCompound nbt = stack.getTag();
             if (nbt != null) if (nbt.getString("Entity") != null) {
-                spawnerMinecartEntity.getLogic().setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
+                spawnerMinecartEntity.logic.setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
             }
 
             if (stack.hasCustomName()) {
@@ -76,8 +76,8 @@ public class SpawnerMinecartItem extends MinecartItem {
             return stack;
         }
 
-        public void playSound(@NotNull BlockPointer pointer) {
-            pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
+        protected void playSound(BlockPointer pointer) {
+            pointer.getWorld().syncWorldEvent(1000, pointer.getBlockPos(), 0);
         }
     };
     public final AbstractMinecartEntity.Type type;
@@ -109,9 +109,9 @@ public class SpawnerMinecartItem extends MinecartItem {
                 AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, this.type);
                 SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
 
-                NbtCompound nbt = stack.getNbt();
+                NbtCompound nbt = stack.getTag();
                 if (nbt != null) if (nbt.getString("Entity") != null) {
-                    spawnerMinecartEntity.getLogic().setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
+                    spawnerMinecartEntity.logic.setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
                 }
 
                 if (itemStack.hasCustomName()) {

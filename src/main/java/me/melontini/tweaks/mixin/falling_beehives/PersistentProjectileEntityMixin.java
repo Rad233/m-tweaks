@@ -40,26 +40,27 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
                         if (world.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock() instanceof AirBlock) {
                             for (int i = 0; i < 4; i++) {
                                 switch (i) {
-                                    case 0 -> {
+                                    case 0:
+                                        //I've run out of ways to check if the bee nest is on a tree.
                                         if (world.getBlockState(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())).getBlock() instanceof PillarBlock)
                                             if (world.getBlockState(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ())).getMaterial() == Material.WOOD)
                                                 trySpawnFallingBeeNest(world, pos, state, beehiveBlockEntity);
-                                    }
-                                    case 1 -> {
+                                        break;
+                                    case 1:
                                         if (world.getBlockState(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())).getBlock() instanceof PillarBlock)
                                             if (world.getBlockState(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ())).getMaterial() == Material.WOOD)
                                                 trySpawnFallingBeeNest(world, pos, state, beehiveBlockEntity);
-                                    }
-                                    case 2 -> {
+                                        break;
+                                    case 2:
                                         if (world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)).getBlock() instanceof PillarBlock)
                                             if (world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1)).getMaterial() == Material.WOOD)
                                                 trySpawnFallingBeeNest(world, pos, state, beehiveBlockEntity);
-                                    }
-                                    case 3 -> {
+                                        break;
+                                    case 3:
                                         if (world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)).getBlock() instanceof PillarBlock)
                                             if (world.getBlockState(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1)).getMaterial() == Material.WOOD)
                                                 trySpawnFallingBeeNest(world, pos, state, beehiveBlockEntity);
-                                    }
+                                        break;
                                 }
                             }
                         }

@@ -1,6 +1,6 @@
 package me.melontini.tweaks.items.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
+import me.melontini.tweaks.entity.MinecartTypes;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -8,7 +8,6 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.enums.RailShape;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MinecartItem;
@@ -19,8 +18,6 @@ import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.event.GameEvent;
 
 public class JukeBoxMinecartItem extends MinecartItem {
     private static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
@@ -33,7 +30,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
             double e = Math.floor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
-            BlockPos blockPos = pointer.getPos().offset(direction);
+            BlockPos blockPos = pointer.getBlockPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);
             RailShape railShape = blockState.getBlock() instanceof AbstractRailBlock
                     ? blockState.get(((AbstractRailBlock) blockState.getBlock()).getShapeProperty())
@@ -61,9 +58,9 @@ public class JukeBoxMinecartItem extends MinecartItem {
                 }
             }
 
-            JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, d, e + g, f, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+            JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, d, e + g, f, MinecartTypes.M_TWEAKS_JUKEBOX);
 
-            NbtCompound nbt = stack.getNbt();
+            NbtCompound nbt = stack.getTag();
             if (nbt != null) if (nbt.getCompound("Items") != null) {
                 jukeBoxMinecartEntity.record = ItemStack.fromNbt(nbt.getCompound("Items"));
             }
@@ -80,12 +77,12 @@ public class JukeBoxMinecartItem extends MinecartItem {
 
         @Override
         protected void playSound(BlockPointer pointer) {
-            pointer.getWorld().syncWorldEvent(WorldEvents.DISPENSER_DISPENSES, pointer.getPos(), 0);
+            pointer.getWorld().syncWorldEvent(1000, pointer.getBlockPos(), 0);
         }
     };
 
     public JukeBoxMinecartItem(Settings settings) {
-        super(ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"), settings);
+        super(MinecartTypes.M_TWEAKS_JUKEBOX, settings);
         DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 
@@ -107,9 +104,9 @@ public class JukeBoxMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+                JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, MinecartTypes.M_TWEAKS_JUKEBOX);
 
-                NbtCompound nbt = itemStack.getNbt();
+                NbtCompound nbt = itemStack.getTag();
                 if (nbt != null) if (nbt.getCompound("Items") != null) {
                     jukeBoxMinecartEntity.record = ItemStack.fromNbt(nbt.getCompound("Items"));
                 }
@@ -119,7 +116,6 @@ public class JukeBoxMinecartItem extends MinecartItem {
                 }
 
                 world.spawnEntity(jukeBoxMinecartEntity);
-                world.emitGameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
                 if (nbt != null) if (nbt.getCompound("Items") != null) jukeBoxMinecartEntity.startPlaying();
             }
 

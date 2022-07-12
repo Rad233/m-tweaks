@@ -29,11 +29,12 @@ public class FletchingScreenHandler extends ForgingScreenHandler {
     }
 
     @Override
-    protected void onTakeOutput(PlayerEntity player, ItemStack stack) {
+    protected ItemStack onTakeOutput(PlayerEntity player, ItemStack stack) {
         stack.onCraft(player.world, player, stack.getCount());
         this.output.unlockLastRecipe(player);
         this.decrementStack(0);
         this.decrementStack(1);
+        return stack;
     }
 
     private void decrementStack(int slot) {
@@ -45,7 +46,7 @@ public class FletchingScreenHandler extends ForgingScreenHandler {
     @Override
     public void updateResult() {
         ItemStack itemStack = this.input.getStack(0);
-        NbtCompound oldNbt = itemStack.getNbt();
+        NbtCompound oldNbt = itemStack.getTag();
         int i = 0;
         if (!(itemStack.getItem() instanceof BowItem) || !(this.input.getStack(1).getItem() == Items.STRING)) {
             this.output.setStack(0, ItemStack.EMPTY);
@@ -60,7 +61,7 @@ public class FletchingScreenHandler extends ForgingScreenHandler {
             else nbt = new NbtCompound();
 
             nbt.putInt("MT-Tightened", (int) (Math.min(i + Math.floor(Math.random() * (3) + 1), 32)));
-            newStack.setNbt(nbt);
+            newStack.setTag(nbt);
             this.output.setStack(0, newStack);
         }
     }

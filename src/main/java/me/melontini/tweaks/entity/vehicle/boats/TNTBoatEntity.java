@@ -11,12 +11,13 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
 
 import static me.melontini.tweaks.Tweaks.MODID;
@@ -42,16 +43,18 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             --this.fuseTicks;
             this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5, this.getZ(), 0.0, 0.0, 0.0);
         } else if (this.fuseTicks == 0) {
-            this.explode(this.getVelocity().horizontalLengthSquared());
+            this.explode(this.getVelocity().lengthSquared());
         }
 
         if (this.horizontalCollision) {
-            double d = this.getVelocity().horizontalLengthSquared();
-            if ((this.getFirstPassenger() instanceof PlayerEntity)) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeUuid(this.getUuid());
-                buf.writeDouble(d);
-                ClientPlayNetworking.send(new Identifier(MODID, "boat_explosion_server"), buf);
+            double d = this.getVelocity().lengthSquared();
+            if (!getPassengerList().isEmpty()) {
+                if (this.getPassengerList().get(0) instanceof PlayerEntity) {
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeUuid(this.getUuid());
+                    buf.writeDouble(d);
+                    ClientPlayNetworking.send(new Identifier(MODID, "boat_explosion_server"), buf);
+                }
             } else {
                 this.explode(d);
             }
@@ -63,25 +66,27 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     public boolean damage(DamageSource source, float amount) {
         Entity entity = source.getSource();
 
-        if (entity instanceof PersistentProjectileEntity persistentProjectileEntity && persistentProjectileEntity.isOnFire()) {
-            this.explode(persistentProjectileEntity.getVelocity().lengthSquared());
-            return false;
+        if (entity instanceof PersistentProjectileEntity) {
+            PersistentProjectileEntity persistentProjectileEntity = (PersistentProjectileEntity) entity;
+            if (persistentProjectileEntity.isOnFire()) {
+                this.explode(persistentProjectileEntity.getVelocity().lengthSquared());
+                return false;
+            }
         }
         if (source.isFire()) {
-            double d = this.getVelocity().horizontalLengthSquared();
+            double d = this.getVelocity().lengthSquared();
             this.explode(d);
             return false;
         }
 
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.world.isClient && !this.isRemoved()) {
+        } else if (!this.world.isClient && this.isAlive()) {
             this.setDamageWobbleSide(-this.getDamageWobbleSide());
             this.setDamageWobbleTicks(10);
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
             this.scheduleVelocityUpdate();
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
-            boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
+            boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).isCreative();
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
                 this.explode(0.09);
                 return true;
@@ -120,8 +125,13 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
                 d = 5.0;
             }
 
-            this.discard();
+            this.remove();
             this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), (float) (4.0 + this.random.nextDouble() * 1.5 * d), Explosion.DestructionType.BREAK);
         }
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

@@ -1,8 +1,7 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
+import me.melontini.tweaks.entity.MinecartTypes;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.registries.ItemRegistry;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -12,9 +11,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.stat.Stats;
@@ -89,7 +88,7 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
 
     @Override
     public Type getMinecartType() {
-        return ClassTinkerers.getEnum(Type.class, "M_TWEAKS_NOTEBLOCK");
+        return MinecartTypes.M_TWEAKS_NOTEBLOCK;
     }
 
     @Override
@@ -107,23 +106,13 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public Item getItem() {
-        return ItemRegistry.NOTE_BLOCK_MINECART;
-    }
-
-    @Override
     public BlockState getDefaultContainedBlock() {
         return Blocks.NOTE_BLOCK.getDefaultState();
     }
 
-    @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(ItemRegistry.NOTE_BLOCK_MINECART);
-    }
-
     public void cycleNote() {
         int nextNote = this.note + 1;
-        if (nextNote < Properties.NOTE.stream().toList().size()) {
+        if (nextNote < Properties.NOTE.stream().toArray().length) {
             this.note = nextNote;
         } else {
             this.note = 0;
@@ -135,5 +124,10 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
         float f = (float) Math.pow(2.0, (i - 12) / 12.0);
         this.world.playSound(null, new BlockPos(pos), (Instrument.fromBlockState(world.getBlockState(new BlockPos(pos)))).getSound(), SoundCategory.RECORDS, 3.0F, f);
         this.world.addParticle(ParticleTypes.NOTE, pos.getX(), pos.getY() + 1.2, pos.getZ(), i / 24.0, 0.0, 0.0);
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

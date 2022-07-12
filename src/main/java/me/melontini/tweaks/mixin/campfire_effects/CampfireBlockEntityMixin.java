@@ -6,12 +6,12 @@ import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,9 +20,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(CampfireBlockEntity.class)
-public class CampfireBlockEntityMixin {
-    @Inject(at = @At("HEAD"), method = "litServerTick")
-    private static void mTweaks$litServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {
+public class CampfireBlockEntityMixin extends BlockEntity {
+    public CampfireBlockEntityMixin(BlockEntityType<?> type) {
+        super(type);
+    }
+
+    @Inject(at = @At("HEAD"), method = "tick")
+    private void mTweaks$litServerTick(CallbackInfo ci) {
+        BlockState state = this.getCachedState();
         if (Tweaks.CONFIG.campfireTweaks.campfireEffects) {
             if (world.getTime() % 180 == 0) {
                 if (state.get(CampfireBlock.LIT)) {

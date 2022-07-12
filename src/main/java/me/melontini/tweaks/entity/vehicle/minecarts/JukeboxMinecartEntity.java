@@ -1,24 +1,23 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
+import me.melontini.tweaks.entity.MinecartTypes;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
@@ -28,7 +27,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -46,7 +44,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
 
     @Override
     public Type getMinecartType() {
-        return /*who asked?*/ ClassTinkerers.getEnum(Type.class, "M_TWEAKS_JUKEBOX");
+        return /*who asked?*/ MinecartTypes.M_TWEAKS_JUKEBOX;
     }
 
     @Override
@@ -61,7 +59,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.world.isClient || this.isRemoved()) {
+        if (this.world.isClient || !this.isAlive()) {
             return true;
         } else if (this.isInvulnerableTo(source)) {
             return false;
@@ -70,13 +68,12 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
             this.setDamageWobbleTicks(10);
             this.scheduleVelocityUpdate();
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
-            boolean isCreativePlayer = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
+            boolean isCreativePlayer = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).isCreative();
             if (isCreativePlayer || this.getDamageWobbleStrength() > 40.0F) {
                 this.removeAllPassengers();
                 this.stopPlaying();
                 if (isCreativePlayer && !this.hasCustomName()) {
-                    this.discard();
+                    this.remove();
                 } else {
                     this.dropItems(source);
                 }
@@ -97,7 +94,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
     @Override
     public void kill() {
         this.stopPlaying();
-        this.remove(Entity.RemovalReason.KILLED);
+        this.remove();
     }
 
     @Override
@@ -120,7 +117,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
 
     public void stopPlaying() {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(this.getUuid());
+        buf.writeInt(this.getEntityId());
 
         for (PlayerEntity player1 : world.getPlayers()) {
             ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio_stop"), buf);
@@ -129,7 +126,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
 
     public void startPlaying() {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeUuid(this.uuid);
+        buf.writeInt(this.getEntityId());
         buf.writeItemStack(this.record);
 
         for (PlayerEntity player1 : world.getPlayers()) {
@@ -154,22 +151,17 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
     }
 
     @Override
-    public Item getItem() {
-        return ItemRegistry.JUKEBOX_MINECART;
-    }
-
-    @Override
     public BlockState getDefaultContainedBlock() {
         return Blocks.JUKEBOX.getDefaultState();
     }
 
     @Override
-    public ItemStack getPickBlockStack() {
-        return new ItemStack(ItemRegistry.JUKEBOX_MINECART);
+    public void clear() {
+        this.record = ItemStack.EMPTY;
     }
 
     @Override
-    public void clear() {
-        this.record = ItemStack.EMPTY;
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

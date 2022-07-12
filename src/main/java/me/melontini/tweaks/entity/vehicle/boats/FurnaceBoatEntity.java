@@ -13,6 +13,8 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -48,7 +50,7 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
         if (this.getFuel() > 0) {
             this.setFuel(this.getFuel() - 1);
             if (this.world.random.nextInt(4) == 0) {
-                Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+                Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.yaw * (Math.PI / 180.0) - (Math.PI / 2)));
                 this.world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + vec3d.x, this.getY() + 0.8, this.getZ() + vec3d.z, -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
             }
         }
@@ -61,7 +63,7 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
         if (FuelRegistryImpl.INSTANCE.get(itemStack.getItem()) != null) {
             int itemFuel = FuelRegistryImpl.INSTANCE.get(itemStack.getItem());
             if ((this.getFuel() + (itemFuel * 2.25)) <= config.maxFurnaceMinecartFuel) {
-                if (!player.getAbilities().creativeMode) {
+                if (!player.isCreative()) {
                     if (itemStack.getItem().getRecipeRemainder() != null)
                         player.inventory.insertStack(itemStack.getItem().getRecipeRemainder().getDefaultStack());
                     itemStack.decrement(1);
@@ -97,5 +99,10 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
 
     public void setFuel(int fuel) {
         this.dataTracker.set(FUEL, fuel);
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
     }
 }

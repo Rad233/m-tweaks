@@ -1,7 +1,6 @@
 package me.melontini.tweaks.entity.vehicle.boats;
 
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,13 +8,14 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,7 +26,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -87,22 +86,6 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
     }
 
     @Override
-    public StackReference getStackReference(int mappedIndex) {
-        return mappedIndex >= 0 && mappedIndex < this.size() ? new StackReference() {
-            @Override
-            public ItemStack get() {
-                return StorageBoatEntity.this.getStack(mappedIndex);
-            }
-
-            @Override
-            public boolean set(ItemStack stack) {
-                StorageBoatEntity.this.setStack(mappedIndex, stack);
-                return true;
-            }
-        } : super.getStackReference(mappedIndex);
-    }
-
-    @Override
     public void markDirty() {
     }
 
@@ -113,7 +96,6 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
         } else super.interact(player, hand);
 
         if (!player.world.isClient) {
-            this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
             PiglinBrain.onGuardedBlockInteracted(player, true);
             return ActionResult.CONSUME;
         } else return ActionResult.SUCCESS;
@@ -121,7 +103,7 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        if (this.isRemoved()) {
+        if (!this.isAlive()) {
             return false;
         } else {
             return !(player.squaredDistanceTo(this) > 64.0);
@@ -129,12 +111,12 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
     }
 
     @Override
-    public void remove(Entity.RemovalReason reason) {
-        if (!this.world.isClient && reason.shouldDestroy()) {
+    public void remove() {
+        if (!this.world.isClient) {
             ItemScatterer.spawn(this.world, this, this);
         }
 
-        super.remove(reason);
+        super.remove();
     }
 
     @Nullable
@@ -190,7 +172,7 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
         if (this.lootTableId != null && this.world.getServer() != null) {
             LootTable lootTable = this.world.getServer().getLootManager().getTable(this.lootTableId);
             if (player instanceof ServerPlayerEntity) {
-                Criteria.PLAYER_GENERATES_CONTAINER_LOOT.trigger((ServerPlayerEntity) player, this.lootTableId);
+                Criteria.PLAYER_GENERATES_CONTAINER_LOOT.test((ServerPlayerEntity) player, this.lootTableId);
             }
 
             this.lootTableId = null;
@@ -205,4 +187,9 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
     }
 
     public abstract ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory);
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return new EntitySpawnS2CPacket(this);
+    }
 }

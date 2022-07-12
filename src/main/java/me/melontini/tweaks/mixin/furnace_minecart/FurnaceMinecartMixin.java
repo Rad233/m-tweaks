@@ -34,7 +34,7 @@ public class FurnaceMinecartMixin {
             if (FuelRegistryImpl.INSTANCE.get(item) != null) {
                 int itemFuel = FuelRegistryImpl.INSTANCE.get(item);
                 if ((furnaceMinecart.fuel + (itemFuel * 2.25)) <= Tweaks.CONFIG.maxFurnaceMinecartFuel) {
-                    if (!player.getAbilities().creativeMode) {
+                    if (!player.isCreative()) {
                         if (stack.getItem().getRecipeRemainder() != null)
                             player.inventory.insertStack(stack.getItem().getRecipeRemainder().getDefaultStack());
                         stack.decrement(1);

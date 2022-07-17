@@ -40,7 +40,6 @@ public abstract class BeeEntityMixin extends AnimalEntity {
             }
             if (pollinateGoal != null) {
                 if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.canPlant()) {
-                    plantingCoolDown = (int) Math.floor(Math.random() * (6490 - 3600) + 3600);
                     this.growFlower();
                     LogUtil.info(plantingCoolDown);
                     LogUtil.info("{} stopped pollinating flower at {}", bee, flowerPos);
@@ -58,19 +57,23 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     private void readNbt(NbtCompound nbt, CallbackInfo ci) {
         this.plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
     }
+
     @Unique
     private void growFlower() {
         if (this.flowerPos != null) {
+
             var flowerState = world.getBlockState(flowerPos);
-            var flowerBlock = (FlowerBlock) flowerState.getBlock();
-            for (int i = -2; i <= 2; i++) {
-                for (int b = -2; b <= 2; b++) {
-                    for (int c = -2; c <= 2; c++) {
-                        var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                        var state = world.getBlockState(pos);
-                        if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                            if (world.getRandom().nextInt(12) == 0) {
-                                world.setBlockState(pos, flowerState);
+            if (flowerState.getBlock() instanceof FlowerBlock flowerBlock) {
+                plantingCoolDown = (int) Math.floor(Math.random() * (6490 - 3600) + 3600);
+                for (int i = -2; i <= 2; i++) {
+                    for (int b = -2; b <= 2; b++) {
+                        for (int c = -2; c <= 2; c++) {
+                            var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
+                            var state = world.getBlockState(pos);
+                            if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
+                                if (world.getRandom().nextInt(12) == 0) {
+                                    world.setBlockState(pos, flowerState);
+                                }
                             }
                         }
                     }

@@ -21,6 +21,7 @@
     "falling_beehives.BeehiveBlockEntityMixin",
     "falling_beehives.FallingBlockMixin",
     "falling_beehives.PersistentProjectileEntityMixin",
+    "flower_duplication.BeeEntityMixin",
     "furnace_minecart.FurnaceMinecartMixin",
     "leaf_tweak.EntityMixin",
     "minecart_adder.AbstractMinecartEntityMixin"

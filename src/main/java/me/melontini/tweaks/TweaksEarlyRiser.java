@@ -14,8 +14,8 @@ public class TweaksEarlyRiser implements Runnable{
         //lol
         AutoConfig.register(TweaksConfig.class, JanksonConfigSerializer::new);
 
-        final MappingResolver mappingResolver = FabricLoader.getInstance().getMappingResolver();
-        final String minecartTypes = mappingResolver.mapClassName("intermediary", "net.minecraft.class_1688$class_1689");
+        MappingResolver mappingResolver = FabricLoader.getInstance().getMappingResolver();
+        String minecartTypes = mappingResolver.mapClassName("intermediary", "net.minecraft.class_1688$class_1689");
 
         //new minecarts
         ClassTinkerers.enumBuilder(minecartTypes)

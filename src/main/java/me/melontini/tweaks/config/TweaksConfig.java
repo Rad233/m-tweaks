@@ -84,6 +84,11 @@ public class TweaksConfig implements ConfigData {
     }
 
     @ConfigEntry.Category("entities")
+    @Comment("When a bee pollinates a flower, the flower has a chance to spread, similar to grass. This won't happen every pollination, since there's a 3-6 minute cooldown.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean beeFlowerDuplication = true;
+
+    @ConfigEntry.Category("entities")
     @Comment("Makes villagers follow if you have an emerald block in hand")
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart

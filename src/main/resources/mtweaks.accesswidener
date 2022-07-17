@@ -1,5 +1,6 @@
 accessWidener  v2	named
 # Fields
+accessible field net/minecraft/entity/passive/BeeEntity pollinateGoal Lnet/minecraft/entity/passive/BeeEntity$PollinateGoal;
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inBlockState Lnet/minecraft/block/BlockState;
 accessible field net/minecraft/entity/vehicle/SpawnerMinecartEntity logic Lnet/minecraft/world/MobSpawnerLogic;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
@@ -15,6 +16,8 @@ accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/
 accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
 accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/FireBlock getSpreadChance (Lnet/minecraft/block/BlockState;)I
 accessible method net/minecraft/block/FireBlock trySpreadingFire (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/math/random/Random;I)V

@@ -41,7 +41,7 @@ public class CampfireBlockEntityMixin {
                                 player.addStatusEffect(effectInstance);
                             }
                         } else {
-                            LogUtil.error("campfireEffectsList & campfireEffectsAmplifierList don't match in size!");
+                            LogUtil.error("campfireEffectsList {} & campfireEffectsAmplifierList {} don't match in size!", Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(), Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size());
                         }
                     }
                 }

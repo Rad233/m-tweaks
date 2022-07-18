@@ -6,14 +6,12 @@ import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.passive.TraderLlamaEntity;
 import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestTypes;
@@ -21,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CustomTraderManager {
+public class CustomTraderManager extends PersistentState {
 
     private final Random random;
 
@@ -32,11 +30,21 @@ public class CustomTraderManager {
         this.random = Random.create();
     }
 
+    public void fromTag(NbtCompound nbt) {
+        this.cooldown = nbt.getInt("mt-trd-cooldown");
+    }
+
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt) {
+        nbt.putInt("mt-trd-cooldown", this.cooldown);
+        return nbt;
+    }
+
     public void tick() {
         if (this.cooldown > 0) {
             --this.cooldown;
         }
-        //LogUtil.info(this.cooldown);
+        LogUtil.info(cooldown);
     }
 
     public void trySpawn(ServerWorld world, ServerWorldProperties properties, PlayerEntity player) {
@@ -85,10 +93,10 @@ public class CustomTraderManager {
         BlockPos blockPos = null;
 
         for (int i = 0; i < 10; ++i) {
-            int j = pos.getX() + this.random.nextInt(range * 2) - range;
-            int k = pos.getZ() + this.random.nextInt(range * 2) - range;
-            int l = world.getTopY(Heightmap.Type.WORLD_SURFACE, j, k);
-            BlockPos blockPos2 = new BlockPos(j, l, k);
+            int x = pos.getX() + this.random.nextInt(range * 2) - range;
+            int z = pos.getZ() + this.random.nextInt(range * 2) - range;
+            int y = world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
+            BlockPos blockPos2 = new BlockPos(x, y, z);
             if (SpawnHelper.canSpawn(SpawnRestriction.Location.ON_GROUND, world, blockPos2, EntityType.WANDERING_TRADER)) {
                 blockPos = blockPos2;
                 break;

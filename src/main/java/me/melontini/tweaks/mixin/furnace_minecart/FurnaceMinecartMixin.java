@@ -1,8 +1,6 @@
 package me.melontini.tweaks.mixin.furnace_minecart;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.config.TweaksConfig;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
@@ -55,14 +53,12 @@ public class FurnaceMinecartMixin {
 
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;putShort(Ljava/lang/String;S)V"), method = "writeCustomDataToNbt")
     private void mTweaks$fuelIntToNbt(NbtCompound nbt, String key, /* short */ short value) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.betterFurnaceMinecart) nbt.putInt(key, this.fuel);
+        if (Tweaks.CONFIG.betterFurnaceMinecart) nbt.putInt(key, this.fuel);
         else nbt.putShort(key, value);
     }
 
     @Inject(at = @At(value = "TAIL"), method = "readCustomDataFromNbt")
     public void mTweaks$fuelIntFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        if (config.betterFurnaceMinecart) this.fuel = nbt.getInt("Fuel");
+        if (Tweaks.CONFIG.betterFurnaceMinecart) this.fuel = nbt.getInt("Fuel");
     }
 }

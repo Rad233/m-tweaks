@@ -25,7 +25,8 @@
     "flower_duplication.BoneMealItemMixin",
     "furnace_minecart.FurnaceMinecartMixin",
     "leaf_tweak.EntityMixin",
-    "minecart_adder.AbstractMinecartEntityMixin"
+    "minecart_adder.AbstractMinecartEntityMixin",
+    "wandering_trader.GoatHornMixin"
   ],
   "client": [
   ],

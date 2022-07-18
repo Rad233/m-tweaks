@@ -89,6 +89,11 @@ public class TweaksConfig implements ConfigData {
     public boolean beeFlowerDuplication = true;
 
     @ConfigEntry.Category("entities")
+    @Comment("Enables bee flower duplication for tall flowers, also disables bonemealing tall flowers.")
+    @ConfigEntry.Gui.Tooltip
+    public boolean beeTallFlowerDuplication = true;
+
+    @ConfigEntry.Category("entities")
     @Comment("Makes villagers follow if you have an emerald block in hand")
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.RequiresRestart

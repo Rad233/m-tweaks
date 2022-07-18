@@ -36,10 +36,10 @@ public abstract class EntityMixin extends Entity {
         if (Tweaks.CONFIG.leafSlowdown) {
             EntityAttributeInstance attributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (!this.world.isClient) {
-                if (((LivingEntity) (Object) this) instanceof PlayerEntity player && (player.isCreative() || player.isSpectator()))
-                    return;
                 if (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isIn(BlockTags.LEAVES)
                         || (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 2, getBlockZ())).isIn(BlockTags.LEAVES) && this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isOf(Blocks.AIR))) {
+                    if (((LivingEntity) (Object) this) instanceof PlayerEntity player && (player.isCreative() || player.isSpectator()))
+                        return;
                     if (attributeInstance != null)
                         if (!attributeInstance.hasModifier(LEAF_SLOWNESS)) {
                             attributeInstance.addTemporaryModifier(LEAF_SLOWNESS);

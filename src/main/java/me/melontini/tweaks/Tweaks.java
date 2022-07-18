@@ -40,9 +40,9 @@ public class Tweaks implements ModInitializer {
             Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
         }
 
-        CUSTOM_TRADER_MANAGER = new CustomTraderManager();
+        if (CONFIG.tradingGoatHorn) CUSTOM_TRADER_MANAGER = new CustomTraderManager();
         ServerTickEvents.END_WORLD_TICK.register(world -> {
-            if (world.getRegistryKey() == World.OVERWORLD) CUSTOM_TRADER_MANAGER.tick();
+            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD) CUSTOM_TRADER_MANAGER.tick();
         });
     }
 }

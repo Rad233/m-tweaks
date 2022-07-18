@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.wandering_trader;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.MiscUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.Instrument;
@@ -32,12 +33,12 @@ public class GoatHornMixin {
                 LogUtil.info("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
                     LogUtil.info("goat horn is sing_goat_horn");
-                    LogUtil.info("Trader spawn cooldown: {}", Tweaks.CUSTOM_TRADER_MANAGER.cooldown);
+                    LogUtil.info("Trader spawn cooldown: {}", MiscUtil.getTraderManager((ServerWorld) world).cooldown);
                     //cursed
                     var server = world.getServer();
                     if (server != null) {
                         if (world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
-                            Tweaks.CUSTOM_TRADER_MANAGER.trySpawn((ServerWorld) world, server.getSaveProperties().getMainWorldProperties(), user);
+                            MiscUtil.getTraderManager((ServerWorld) world).trySpawn((ServerWorld) world, server.getSaveProperties().getMainWorldProperties(), user);
                     }
                 }
             }

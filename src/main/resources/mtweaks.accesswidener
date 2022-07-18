@@ -1,5 +1,6 @@
 accessWidener  v2	named
 # Fields
+accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 accessible field net/minecraft/entity/passive/BeeEntity pollinateGoal Lnet/minecraft/entity/passive/BeeEntity$PollinateGoal;
 accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inBlockState Lnet/minecraft/block/BlockState;
 accessible field net/minecraft/entity/vehicle/SpawnerMinecartEntity logic Lnet/minecraft/world/MobSpawnerLogic;

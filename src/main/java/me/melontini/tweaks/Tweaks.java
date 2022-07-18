@@ -6,10 +6,12 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
-import me.melontini.tweaks.util.CustomTraderManager;
+import me.melontini.tweaks.util.MiscUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -23,9 +25,6 @@ public class Tweaks implements ModInitializer {
     public static final EntityAttributeModifier LEAF_SLOWNESS = new EntityAttributeModifier(UUID.fromString("f72625eb-d4c4-4e1d-8e5c-1736b9bab349"), "Leaf Slowness", -0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE);
     public static final String MODID = "m-tweaks";
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-
-    public static CustomTraderManager CUSTOM_TRADER_MANAGER;
-
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
 
     @Override
@@ -40,9 +39,24 @@ public class Tweaks implements ModInitializer {
             Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
         }
 
-        if (CONFIG.tradingGoatHorn) CUSTOM_TRADER_MANAGER = new CustomTraderManager();
+        ServerWorldEvents.LOAD.register((server, world) -> {
+            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)
+                MiscUtil.getTraderManager(world);
+        });
+
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> server.getWorlds().forEach(world -> {
+            var manager = world.getPersistentStateManager();
+            if (CONFIG.tradingGoatHorn) if (manager.loadedStates.containsKey("mt_trader_statemanager")) {
+                    MiscUtil.getTraderManager(world).setDirty(true);
+                }
+        }));
+
         ServerTickEvents.END_WORLD_TICK.register(world -> {
-            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD) CUSTOM_TRADER_MANAGER.tick();
+            var manager = world.getPersistentStateManager();
+            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)
+                if (manager.loadedStates.containsKey("mt_trader_statemanager")) {
+                    MiscUtil.getTraderManager(world).tick();
+                }
         });
     }
 }

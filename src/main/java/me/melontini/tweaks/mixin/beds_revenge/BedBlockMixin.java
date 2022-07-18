@@ -1,8 +1,6 @@
 package me.melontini.tweaks.mixin.beds_revenge;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.config.TweaksConfig;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,9 +43,8 @@ public abstract class BedBlockMixin extends Block {
     @Inject(at = @At("HEAD"), method = "onUse", cancellable = true)
     public void mTweaks$onUse(BlockState state, @NotNull World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         if (!world.isClient) {
-            TweaksConfig config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-            if (config.bedsExplodeEverywhere) {
-                float explosionPower = config.bedExplosionPower;
+            if (Tweaks.CONFIG.bedsExplodeEverywhere) {
+                float explosionPower = Tweaks.CONFIG.bedExplosionPower;
                 world.removeBlock(pos, false);
                 BlockPos blockPos = pos.offset(state.get(BedBlock.FACING).getOpposite());
                 if (world.getBlockState(blockPos).isOf(this)) {
@@ -66,7 +63,7 @@ public abstract class BedBlockMixin extends Block {
                 );
                 cir.setReturnValue(ActionResult.SUCCESS);
             }
-            if (config.safeBeds) {
+            if (Tweaks.CONFIG.safeBeds) {
                 if (!isBedWorking(world)) {
                     player.sendMessage(Text.translatable("m-tweaks.safebeds.action"), true);
                     cir.setReturnValue(ActionResult.SUCCESS);

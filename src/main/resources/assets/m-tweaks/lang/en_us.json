@@ -120,6 +120,7 @@
   "text.autoconfig.m-tweaks.option.newBoats.isJukeboxBoatOn.@Tooltip": "Never get bored whilst sailing across the ocean ever again!",
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn": "Boat with Hopper",
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
+
   "text.autoconfig.m-tweaks.category.items": "Items",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn": "Wandering Trader Horn",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip": "Every 2 days you can blow the \"sing\" horn to summon a wandering trader.",
@@ -128,6 +129,7 @@
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking": "Minecart Spawner Picking",
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking.@Tooltip[0]": "Allows players to \"pick\" spawners via minecarts",
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking.@Tooltip[1]": "Does nothing if Minecart Block Picking is off",
+
   "text.autoconfig.m-tweaks.category.misc": "Misc",
   "text.autoconfig.m-tweaks.option.debugMessages": "Enable debug messages?",
   "text.autoconfig.m-tweaks.option.debugMessages.@Tooltip": "When on, your log will get spammed into the oblivion, you've been warned"

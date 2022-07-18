@@ -28,7 +28,7 @@ public abstract class BeehiveBlockEntityMixin extends BlockEntity {
     private static void mTweaks$fallingHive(@NotNull World world, BlockPos pos, BlockState state, BeehiveBlockEntity beehiveBlockEntity, CallbackInfo ci) {
         if (Tweaks.CONFIG.canBeeNestsFall) {
             if (world.getBlockState(pos).getBlock() == Blocks.BEE_NEST) {
-                if (world.random.nextInt(24000) == 0) {
+                if (world.random.nextInt(32000) == 0) {
                     if (world.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ())).getBlock() instanceof AirBlock) {
                         for (int i = 0; i < 4; i++) {
                             switch (i) {

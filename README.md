@@ -1,5 +1,6 @@
 # m-tweaks
-A minecraft mod providing various tweaks &amp; features
+
+A minecraft mod providing various tweaks & features
 
 # Current Tweaks
 
@@ -23,7 +24,7 @@ Arrows also work!
 
 ### Crops Grow Slower in Cold Biomes (off by default)
 
-Currently, not very configurable. I do plan on allowing you to choose which crops don't like cold and which ones do. 
+Currently, not very configurable. I do plan on allowing you to choose which crops don't like cold and which ones do.
 
 [Put a cool crop montage here]
 
@@ -44,7 +45,6 @@ A joke tweak making beds explode in the overworld.
 ### Safe Beds (off by default)
 
 Makes beds NOT explode when outside the overworld. Instead, sends the player a friendly message.
-
 <img src="https://user-images.githubusercontent.com/104443436/172161254-4623e90f-38b6-475d-bdf7-44dd8c75bca4.png" width="548">
 
 ### Leaf Slowdown (off by default)
@@ -56,7 +56,6 @@ Makes it difficult to traverse biomes atop of trees, by slowing entities down wh
 ### Campfire Effects (on by default)
 
 Gives players configurable effects when in a configurable range to a campfire.
-
 <img src="https://user-images.githubusercontent.com/104443436/177003400-f91494b1-149e-4ef8-8987-855fe9f91be2.png" width="548">
 
 ## Entity Tweaks
@@ -65,19 +64,15 @@ Gives players configurable effects when in a configurable range to a campfire.
 
 Makes a few changes to furnace mine carts to make them a bit better.
 
-- Fuel is now saved as an Integer.
-
-- You can now configure cart's max allowed fuel. (45000 by default, 2147483647 max)
-
-- The same fuel you can use in a normal furnace is now usable in minecarts with furnace.
+* Fuel is now saved as an Integer.
+* You can now configure cart's max allowed fuel. (45000 by default, 2147483647 max)
+* The same fuel you can use in a normal furnace is now usable in minecarts with furnace.
 
 ### New Minecarts (on by default)
 
-- Anvil Minecart, it's slow. Woo-Hoo!
-
-- Note Block Minecart.
-
-- Jukebox Minecart.
+* Anvil Minecart, it's slow. Woo-Hoo!
+* Note Block Minecart.
+* Jukebox Minecart.
 
 ## Item Tweaks
 

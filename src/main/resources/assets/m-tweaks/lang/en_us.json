@@ -91,6 +91,8 @@
   "text.autoconfig.m-tweaks.option.beeFlowerDuplication": "Bee Flower Duplication",
   "text.autoconfig.m-tweaks.option.beeFlowerDuplication.@Tooltip[0]": "When a bee pollinates a flower, the flower has a chance to spread, similar to grass.",
   "text.autoconfig.m-tweaks.option.beeFlowerDuplication.@Tooltip[1]": "This won't happen every pollination, since there's a 3-6 minute cooldown.",
+  "text.autoconfig.m-tweaks.option.beeTallFlowerDuplication": "Bee Tall Flower Duplication",
+  "text.autoconfig.m-tweaks.option.beeTallFlowerDuplication.@Tooltip": "Enables bee flower duplication for tall flowers, also disables bonemealing tall flowers.",
   "text.autoconfig.m-tweaks.option.villagersFollowEmeraldBlocks": "Villagers Follow Emerald Blocks",
   "text.autoconfig.m-tweaks.option.villagersFollowEmeraldBlocks.@Tooltip": "Makes villagers follow if you have an emerald block in hand.",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart": "Better Furnace Minecart",

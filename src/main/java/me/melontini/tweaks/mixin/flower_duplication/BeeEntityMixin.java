@@ -87,7 +87,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                             var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
                             var state = world.getBlockState(pos);
                             if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                                if (world.getRandom().nextInt(9) == 0) {
+                                if (world.getRandom().nextInt(6) == 0) {
                                     TallFlowerBlock.placeAt(world, flowerState, pos, Block.NOTIFY_LISTENERS);
                                 }
                             }

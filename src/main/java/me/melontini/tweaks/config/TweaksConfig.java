@@ -174,6 +174,10 @@ public class TweaksConfig implements ConfigData {
     public boolean minecartSpawnerPicking = true;
 
     @ConfigEntry.Category("misc")
+    @Comment("makes the player explode after taking any damage")
+    @ConfigEntry.Gui.Tooltip
+    public boolean minorInconvenience = false;
+    @ConfigEntry.Category("misc")
     @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip
     public boolean debugMessages = false;

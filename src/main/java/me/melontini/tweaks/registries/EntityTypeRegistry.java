@@ -22,13 +22,9 @@ public class EntityTypeRegistry {
     public static EntityType<TNTBoatEntity> BOAT_WITH_TNT;
     public static EntityType<FurnaceBoatEntity> BOAT_WITH_FURNACE;
     public static EntityType<AnvilMinecartEntity> ANVIL_MINECART_ENTITY;
-
     public static EntityType<NoteBlockMinecartEntity> NOTEBLOCK_MINECART_ENTITY;
-
     public static EntityType<JukeboxMinecartEntity> JUKEBOX_MINECART_ENTITY;
-
     public static EntityType<JukeboxBoatEntity> BOAT_WITH_JUKEBOX;
-
     public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER;
 
     public static void register() {

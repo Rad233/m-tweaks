@@ -151,11 +151,6 @@ public class TweaksConfig implements ConfigData {
         @ConfigEntry.Gui.RequiresRestart
         public boolean isJukeboxBoatOn = true;
 
-        /*@ConfigEntry.Category("entities")
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.RequiresRestart
-        public boolean isChestBoatOn = true;*/
-
         @ConfigEntry.Category("entities")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart

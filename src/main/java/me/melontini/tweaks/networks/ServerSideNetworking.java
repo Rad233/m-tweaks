@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.explosion.Explosion;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static me.melontini.tweaks.Tweaks.MODID;
@@ -22,7 +23,7 @@ public class ServerSideNetworking {
                         d = 5.0;
                     }
                     Entity entity = player.world.getEntityLookup().get(id);
-                    entity.discard();
+                    Objects.requireNonNull(entity, String.format("Server Received Invalid TNT Boat UUID: %s", id)).discard();
                     player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), (float) (4.0 + player.world.random.nextDouble() * 1.5 * d), Explosion.DestructionType.DESTROY);
                 });
             });

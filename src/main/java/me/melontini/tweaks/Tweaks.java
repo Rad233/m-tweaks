@@ -6,7 +6,7 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
-import me.melontini.tweaks.util.MiscUtil;
+import me.melontini.tweaks.util.WorldUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -42,7 +42,7 @@ public class Tweaks implements ModInitializer {
 
         ServerWorldEvents.LOAD.register((server, world) -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)
-                MiscUtil.getTraderManager(world);
+                WorldUtil.getTraderManager(world);
         });
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
@@ -51,7 +51,7 @@ public class Tweaks implements ModInitializer {
                 if (world != null) {
                     var manager = world.getPersistentStateManager();
                     if (manager.loadedStates.containsKey("mt_trader_statemanager"))
-                        MiscUtil.getTraderManager(world).setDirty(true);
+                        WorldUtil.getTraderManager(world).setDirty(true);
                 }
             }
         });
@@ -59,7 +59,7 @@ public class Tweaks implements ModInitializer {
         ServerTickEvents.END_WORLD_TICK.register(world -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD) {
                 var manager = world.getPersistentStateManager();
-                if (manager.loadedStates.containsKey("mt_trader_statemanager")) MiscUtil.getTraderManager(world).tick();
+                if (manager.loadedStates.containsKey("mt_trader_statemanager")) WorldUtil.getTraderManager(world).tick();
             }
         });
     }

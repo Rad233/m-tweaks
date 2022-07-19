@@ -18,6 +18,7 @@
     "entities.minecart_adder.AbstractMinecartEntityMixin",
     "items.cart_copy.MinecartItemMixin",
     "items.wandering_trader.GoatHornMixin",
+    "misc.PlayerEntityMixin",
     "world.crop_temperature.BambooBlockMixin",
     "world.crop_temperature.CactusBlockMixin",
     "world.crop_temperature.CropBlockMixin",

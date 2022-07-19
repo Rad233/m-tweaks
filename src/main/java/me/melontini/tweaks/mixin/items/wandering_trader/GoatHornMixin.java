@@ -32,9 +32,8 @@ public class GoatHornMixin {
             if (nbtCompound.getString("instrument") != null) {
                 LogUtil.info("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
-                    LogUtil.info("goat horn is sing_goat_horn");
                     LogUtil.info("Trader spawn cooldown: {}", WorldUtil.getTraderManager((ServerWorld) world).cooldown);
-                    //cursed
+
                     var server = world.getServer();
                     if (server != null) {
                         if (world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))

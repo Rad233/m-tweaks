@@ -133,6 +133,8 @@
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking.@Tooltip[1]": "Does nothing if Minecart Block Picking is off",
 
   "text.autoconfig.m-tweaks.category.misc": "Misc",
+  "text.autoconfig.m-tweaks.option.minorInconvenience": "Minor Inconvenience",
+  "text.autoconfig.m-tweaks.option.minorInconvenience.@Tooltip": "Makes the player explode after taking any damage",
   "text.autoconfig.m-tweaks.option.debugMessages": "Enable debug messages?",
   "text.autoconfig.m-tweaks.option.debugMessages.@Tooltip": "When on, your log will get spammed into the oblivion, you've been warned"
 }

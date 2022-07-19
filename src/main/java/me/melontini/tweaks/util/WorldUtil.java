@@ -29,16 +29,12 @@ public class WorldUtil {
     }
 
     public static List<ItemStack> prepareLoot(World world, Identifier lootId) {
-        return (
-                (ServerWorld) world)
-                .getServer()
+        return ((ServerWorld) world).getServer()
                 .getLootManager()
                 .getTable(lootId)
-                .generateLoot((
-                        new LootContext.Builder((ServerWorld) world))
+                .generateLoot((new LootContext.Builder((ServerWorld) world))
                         .random(world.random)
-                        .build(LootContextTypes.EMPTY)
-                );
+                        .build(LootContextTypes.EMPTY));
     }
 
     public static void trySpawnFallingBeeNest(World world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BeehiveBlockEntity beehiveBlockEntity) {

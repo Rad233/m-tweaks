@@ -164,7 +164,7 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("items")
     @Comment("Every 2 days you can blow the \"sing\" horn to summon a wandering trader.")
-    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.Tooltip(count = 3)
     public boolean tradingGoatHorn = true;
 
     @ConfigEntry.Category("items")

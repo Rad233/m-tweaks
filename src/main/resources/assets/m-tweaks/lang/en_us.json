@@ -123,7 +123,9 @@
 
   "text.autoconfig.m-tweaks.category.items": "Items",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn": "Wandering Trader Horn",
-  "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip": "Every 2 days you can blow the \"sing\" horn to summon a wandering trader.",
+  "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip[0]": "Every 2 days you can blow the \"sing\" horn to summon a wandering trader.",
+  "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip[1]": "Please note, wandering traders will still spawn naturally",
+  "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip[2]": "You can disable the \"doTraderSpawning\" gamerule if you don't want them to",
   "text.autoconfig.m-tweaks.option.minecartBlockPicking": "Minecart Block Picking",
   "text.autoconfig.m-tweaks.option.minecartBlockPicking.@Tooltip": "Allows players to \"pick\" blocks via minecarts",
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking": "Minecart Spawner Picking",

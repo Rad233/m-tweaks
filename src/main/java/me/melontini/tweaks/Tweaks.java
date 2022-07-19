@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -44,19 +45,22 @@ public class Tweaks implements ModInitializer {
                 MiscUtil.getTraderManager(world);
         });
 
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> server.getWorlds().forEach(world -> {
-            var manager = world.getPersistentStateManager();
-            if (CONFIG.tradingGoatHorn) if (manager.loadedStates.containsKey("mt_trader_statemanager")) {
-                    MiscUtil.getTraderManager(world).setDirty(true);
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            if (CONFIG.tradingGoatHorn) {
+                ServerWorld world = server.getWorld(World.OVERWORLD);
+                if (world != null) {
+                    var manager = world.getPersistentStateManager();
+                    if (manager.loadedStates.containsKey("mt_trader_statemanager"))
+                        MiscUtil.getTraderManager(world).setDirty(true);
                 }
-        }));
+            }
+        });
 
         ServerTickEvents.END_WORLD_TICK.register(world -> {
-            var manager = world.getPersistentStateManager();
-            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)
-                if (manager.loadedStates.containsKey("mt_trader_statemanager")) {
-                    MiscUtil.getTraderManager(world).tick();
-                }
+            if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD) {
+                var manager = world.getPersistentStateManager();
+                if (manager.loadedStates.containsKey("mt_trader_statemanager")) MiscUtil.getTraderManager(world).tick();
+            }
         });
     }
 }

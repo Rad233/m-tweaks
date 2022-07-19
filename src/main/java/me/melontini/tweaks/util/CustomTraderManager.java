@@ -44,7 +44,7 @@ public class CustomTraderManager extends PersistentState {
         if (this.cooldown > 0) {
             --this.cooldown;
         }
-        LogUtil.info(cooldown);
+        //LogUtil.info(cooldown);
     }
 
     public void trySpawn(ServerWorld world, ServerWorldProperties properties, PlayerEntity player) {

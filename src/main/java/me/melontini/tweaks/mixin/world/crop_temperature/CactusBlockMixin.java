@@ -8,6 +8,7 @@ import net.minecraft.block.CactusBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,7 +27,41 @@ public abstract class CactusBlockMixin extends Block {
         int age = state.get(AGE);
         if (Tweaks.CONFIG.cropsGrowSlowerInCold) {
             float temp = world.getBiome(pos).value().getTemperature();
-            if (temp > 0 && temp < 0.6) {
+            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((CactusBlock) (Object) this));
+            if (data != null) {
+                var rand = temp < 1.0D ? (25 / (12.5 * (temp + 0.2))) : (25 / (12.5 / (temp - 0.2)));
+                LogUtil.info(data.identifier);
+                if (temp >= data.min && temp <= data.max) {
+                    //LogUtil.info("normal {} ", temp);
+                    if (age == 15) {
+                        world.setBlockState(pos.up(), this.getDefaultState());
+                        world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
+                    } else {
+                        world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
+                    }
+                } else if (temp > data.max && temp <= data.aMax) {
+                    //LogUtil.info("hot {} ", temp);
+                    if (world.getRandom().nextInt((int) rand) == 0) {
+                        if (age == 15) {
+                            world.setBlockState(pos.up(), this.getDefaultState());
+                            world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
+                        } else {
+                            world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
+                        }
+                    }
+                } else if (temp < data.min && temp >= data.aMin) {
+                    //LogUtil.info("cold {} ", temp);
+                    if (world.getRandom().nextInt((int) rand) == 0) {
+                        if (age == 15) {
+                            world.setBlockState(pos.up(), this.getDefaultState());
+                            world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
+                        } else {
+                            world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
+                        }
+                    }
+                }
+            } else {
+                //LogUtil.info(Registry.BLOCK.getId((CactusBlock) (Object) this));
                 if (world.getRandom().nextInt((int) (25 / (12.5 * (temp + 0.2)))) == 0) {
                     LogUtil.info("cold");
                     if (age == 15) {
@@ -35,15 +70,14 @@ public abstract class CactusBlockMixin extends Block {
                     } else {
                         world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
                     }
-                }
-
-            } else if (temp >= 0.6) {
-                LogUtil.info("normal");
-                if (age == 15) {
-                    world.setBlockState(pos.up(), this.getDefaultState());
-                    world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
-                } else {
-                    world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
+                } else if (temp >= 0.6) {
+                    LogUtil.info("normal");
+                    if (age == 15) {
+                        world.setBlockState(pos.up(), this.getDefaultState());
+                        world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
+                    } else {
+                        world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
+                    }
                 }
             }
             ci.cancel();

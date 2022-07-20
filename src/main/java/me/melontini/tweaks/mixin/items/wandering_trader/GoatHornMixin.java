@@ -30,6 +30,9 @@ public class GoatHornMixin {
         NbtCompound nbtCompound = itemStack.getNbt();
         if (Tweaks.CONFIG.tradingGoatHorn) if (!world.isClient()) if (nbtCompound != null) {
             if (nbtCompound.getString("instrument") != null) {
+                Tweaks.PLANT_DATA.forEach((identifier, plantData) -> {
+                    LogUtil.info("identifier: {}, min: {}, max: {}", identifier, plantData.min, plantData.max);
+                });
                 LogUtil.info("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
                     LogUtil.info("Trader spawn cooldown: {}", WorldUtil.getTraderManager((ServerWorld) world).cooldown);

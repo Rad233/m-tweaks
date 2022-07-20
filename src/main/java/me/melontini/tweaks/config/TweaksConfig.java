@@ -20,8 +20,7 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("world")
     @Comment("With this rule on, crops will grow slower in colder biomes, and not grow at all in freezing biomes")
     @ConfigEntry.Gui.Tooltip
-    //TODO chorus
-    //TODO this should probably be tag based, so crops only grow slower in temperatures they don't like
+    //TODO chorus kelp
     public boolean cropsGrowSlowerInCold = false;
 
     @ConfigEntry.Category("world")

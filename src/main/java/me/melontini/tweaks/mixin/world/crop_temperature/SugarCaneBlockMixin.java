@@ -24,7 +24,7 @@ public abstract class SugarCaneBlockMixin extends Block {
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/block/BlockState.get (Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;", shift = At.Shift.AFTER), method = "randomTick", cancellable = true)
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         int age = state.get(AGE);
-        if (Tweaks.CONFIG.cropsGrowSlowerInCold) {
+        if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             float temp = world.getBiome(pos).value().getTemperature();
             var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((SugarCaneBlock) (Object) this));
             if (data != null) {
@@ -56,25 +56,11 @@ public abstract class SugarCaneBlockMixin extends Block {
                     }
                 }
             } else {
-                if (temp > 0 && temp < 0.6) {
-                    if (world.getRandom().nextInt((int) (25 / (12.5 * (temp + 0.2)))) == 0) {
-                        //LogUtil.info("cold");
-                        if (age == 15) {
-                            world.setBlockState(pos.up(), this.getDefaultState());
-                            world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
-                        } else {
-                            world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
-                        }
-                    }
-
-                } else if (temp >= 0.6) {
-                    //LogUtil.info("normal");
-                    if (age == 15) {
-                        world.setBlockState(pos.up(), this.getDefaultState());
-                        world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
-                    } else {
-                        world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
-                    }
+                if (age == 15) {
+                    world.setBlockState(pos.up(), this.getDefaultState());
+                    world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
+                } else {
+                    world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
                 }
             }
             ci.cancel();

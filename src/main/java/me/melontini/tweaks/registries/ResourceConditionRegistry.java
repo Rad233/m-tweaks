@@ -25,7 +25,7 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ResourceConditionRegistry {
 
-    static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void register() {
         ResourceConditions.register(new Identifier(MODID, "items_registered"), object -> {
@@ -54,9 +54,9 @@ public class ResourceConditionRegistry {
                 var map = manager.findResources("mt_crop_temperatures", identifier -> identifier.getPath().endsWith(".json"));
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
-                        JsonElement jsonObject = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
-                        LogUtil.info(jsonObject);
-                        PlantData data = gson.fromJson(jsonObject, PlantData.class);
+                        JsonElement jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
+                        LogUtil.info(jsonElement);
+                        PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
                         if (Registry.BLOCK.get(Identifier.tryParse(data.identifier)) == Blocks.AIR) {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid identifier provided! %s", data.identifier));

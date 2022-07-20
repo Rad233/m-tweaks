@@ -17,6 +17,8 @@ accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/
 accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
 accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/CropBlock getAvailableMoisture (Lnet/minecraft/block/Block;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)F
 accessible method net/minecraft/client/world/ClientWorld getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;

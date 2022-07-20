@@ -25,12 +25,12 @@ public abstract class CactusBlockMixin extends Block {
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/block/BlockState.get (Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;", shift = At.Shift.AFTER), method = "randomTick", cancellable = true)
     public void mTweaks$tick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         int age = state.get(AGE);
-        if (Tweaks.CONFIG.cropsGrowSlowerInCold) {
+        if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             float temp = world.getBiome(pos).value().getTemperature();
             var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((CactusBlock) (Object) this));
             if (data != null) {
                 var rand = temp < 1.0D ? (25 / (12.5 * (temp + 0.2))) : (25 / (12.5 / (temp - 0.2)));
-                LogUtil.info(data.identifier);
+                //LogUtil.info(data.identifier);
                 if (temp >= data.min && temp <= data.max) {
                     //LogUtil.info("normal {} ", temp);
                     if (age == 15) {

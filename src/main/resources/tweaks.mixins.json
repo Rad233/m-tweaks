@@ -17,6 +17,9 @@
     "entities.furnace_minecart.FurnaceMinecartMixin",
     "entities.minecart_adder.AbstractMinecartEntityMixin",
     "items.cart_copy.MinecartItemMixin",
+    "items.mending_fix.AnvilScreenHandlerMixin",
+    "items.mending_fix.ExperienceOrbMixin",
+    "items.mending_fix.ItemStackMixin",
     "items.wandering_trader.GoatHornMixin",
     "misc.PlayerEntityMixin",
     "world.crop_temperature.AbstractPlantStemBlockMixin",
@@ -32,6 +35,7 @@
     "world.falling_beehives.PersistentProjectileEntityMixin"
   ],
   "client": [
+    "items.mending_fix.AnvilScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

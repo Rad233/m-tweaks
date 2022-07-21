@@ -26,13 +26,10 @@ import java.util.Optional;
 @Mixin(GoatHornItem.class)
 public class GoatHornMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILSOFT, method = "use")
-    private void wanderingGoatHorn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, ItemStack itemStack, Optional<RegistryEntry<Instrument>> optional, Instrument instrument) {
+    private void mTweaks$wanderingGoatHorn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, ItemStack itemStack, Optional<RegistryEntry<Instrument>> optional, Instrument instrument) {
         NbtCompound nbtCompound = itemStack.getNbt();
         if (Tweaks.CONFIG.tradingGoatHorn) if (!world.isClient()) if (nbtCompound != null) {
             if (nbtCompound.getString("instrument") != null) {
-                Tweaks.PLANT_DATA.forEach((identifier, plantData) -> {
-                    LogUtil.info("identifier: {}, min: {}, max: {}", identifier, plantData.min, plantData.max);
-                });
                 LogUtil.info("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
                     LogUtil.info("Trader spawn cooldown: {}", WorldUtil.getTraderManager((ServerWorld) world).cooldown);

@@ -6,7 +6,6 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
-import me.melontini.tweaks.util.PlantData;
 import me.melontini.tweaks.util.WorldUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
@@ -20,8 +19,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class Tweaks implements ModInitializer {
@@ -30,7 +27,6 @@ public class Tweaks implements ModInitializer {
     public static final String MODID = "m-tweaks";
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
-    public static Map<Identifier, PlantData> PLANT_DATA = new HashMap<>();
 
     @Override
     public void onInitialize() {
@@ -50,7 +46,6 @@ public class Tweaks implements ModInitializer {
         });
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            Tweaks.PLANT_DATA.clear();
             if (CONFIG.tradingGoatHorn) {
                 ServerWorld world = server.getWorld(World.OVERWORLD);
                 if (world != null) {

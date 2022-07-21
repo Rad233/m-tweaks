@@ -20,7 +20,6 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("world")
     @Comment("With this rule on, crops will have to planted in biomes they like, otherwise they won't grow. This rule is data-driven! checkout [link] for more info")
     @ConfigEntry.Gui.Tooltip
-    //TODO chorus, kelp, cocoa
     public boolean temperatureBasedCropGrowthSpeed = false;
 
     @ConfigEntry.Category("world")

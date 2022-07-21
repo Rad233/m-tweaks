@@ -33,7 +33,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;tick()V", shift = At.Shift.AFTER), method = "tick")
-    private void tick(CallbackInfo ci) {
+    private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
             var pollinateGoal = bee.pollinateGoal;

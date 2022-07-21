@@ -38,6 +38,7 @@ public abstract class AbstractPlantStemBlockMixin extends AbstractPlantPartBlock
             float temp = world.getBiome(pos).value().getTemperature();
             var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((AbstractPlantStemBlock) (Object) this));
             if (data != null) {
+                //TODO
                 if (temp >= data.min && temp <= data.max) {
                     if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
                         BlockPos blockPos = pos.offset(this.growthDirection);
@@ -46,22 +47,16 @@ public abstract class AbstractPlantStemBlockMixin extends AbstractPlantPartBlock
                         }
                     }
                 } else if (temp > data.max && temp <= data.aMax) {
-                    /*if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
+                    if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
                         BlockPos blockPos = pos.offset(this.growthDirection);
                         if (this.chooseStemState(world.getBlockState(blockPos))) {
                             world.setBlockState(blockPos, this.age(state, world.random));
                         }
-                    }*/
+                    }
                 } else if (temp < data.min && temp >= data.aMin) {
 
                 }
-            } else {
-                if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
-                    BlockPos blockPos = pos.offset(this.growthDirection);
-                    if (this.chooseStemState(world.getBlockState(blockPos))) {
-                        world.setBlockState(blockPos, this.age(state, world.random));
-                    }
-                }
+                ci.cancel();
             }
         }
     }

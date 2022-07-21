@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CropBlock.class)
 public abstract class CropBlockMixin extends PlantBlock implements Fertilizable {
-    @Shadow public abstract int getAge(BlockState state);
+    @Shadow
+    protected abstract int getAge(BlockState state);
 
     @Shadow public abstract BlockState withAge(int age);
 
@@ -61,13 +62,8 @@ public abstract class CropBlockMixin extends PlantBlock implements Fertilizable 
                         world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                     }
                 }
-            } else {
-                if (random.nextInt((int) ((25.0F / f) + 1)) == 0) {
-                    world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
-                }
+                ci.cancel();
             }
-            //sheeeeesh
-            ci.cancel();
         }
     }
 }

@@ -16,11 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(FireBlock.class)
 public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
-    @Shadow public abstract int getSpreadChance(BlockState state);
+    @Shadow
+    protected abstract int getSpreadChance(BlockState state);
 
-    @Shadow public abstract BlockState getStateWithAge(WorldAccess world, BlockPos pos, int age);
+    @Shadow
+    protected abstract BlockState getStateWithAge(WorldAccess world, BlockPos pos, int age);
 
-    @Shadow public abstract void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge);
+    @Shadow
+    protected abstract void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge);
 
     public AbstractFireBlockMixin(Settings settings, float damage) {
         super(settings, damage);

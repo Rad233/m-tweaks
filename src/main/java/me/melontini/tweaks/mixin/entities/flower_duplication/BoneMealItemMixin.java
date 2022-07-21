@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BoneMealItem.class)
 public class BoneMealItemMixin {
     @Inject(at = @At("HEAD"), method = "useOnFertilizable", cancellable = true)
-    private static void mTweaks$useOnFertilizable(ItemStack stack, World world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private static void useOnFertilizable(ItemStack stack, World world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         var blockState = world.getBlockState(pos);
         if (blockState.getBlock() instanceof TallFlowerBlock && Tweaks.CONFIG.beeTallFlowerDuplication) {
             cir.setReturnValue(false);

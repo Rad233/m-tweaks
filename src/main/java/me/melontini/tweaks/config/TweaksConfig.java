@@ -18,6 +18,12 @@ public class TweaksConfig implements ConfigData {
     public boolean canBeeNestsFall = true;
 
     @ConfigEntry.Category("world")
+    @Comment("With this rule on, crops will have to planted in biomes they like, otherwise they won't grow. This rule is data-driven! checkout [link] for more info")
+    @ConfigEntry.Gui.Tooltip
+    //TODO chorus, kelp, cocoa
+    public boolean temperatureBasedCropGrowthSpeed = false;
+
+    @ConfigEntry.Category("world")
     @Comment("Makes fires spread a lot faster and wider")
     @ConfigEntry.Gui.Tooltip
     public boolean quickFire = false;

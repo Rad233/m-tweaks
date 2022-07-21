@@ -22,6 +22,7 @@
     "world.crop_temperature.AbstractPlantStemBlockMixin",
     "world.crop_temperature.BambooBlockMixin",
     "world.crop_temperature.CactusBlockMixin",
+    "world.crop_temperature.CocoaBlockMixin",
     "world.crop_temperature.CropBlockMixin",
     "world.crop_temperature.SaplingBlockMixin",
     "world.crop_temperature.SugarCaneBlockMixin",

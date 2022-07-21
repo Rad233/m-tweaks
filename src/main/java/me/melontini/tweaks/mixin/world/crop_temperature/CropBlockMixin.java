@@ -25,13 +25,17 @@ public abstract class CropBlockMixin extends PlantBlock implements Fertilizable 
     }
 
     /*
+    float temp = world.getBiome(pos).value().getTemperature();
     var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(block));
-    if (temp >= data.min && temp <= data.max) {
+    if (data != null) {
+       if (temp >= data.min && temp <= data.max) {
 
-    } else if (temp > data.max && temp <= data.aMax) {
+       } else if (temp > data.max && temp <= data.aMax) {
 
-    } else if (temp < data.min && temp >= data.aMin) {
+       } else if (temp < data.min && temp >= data.aMin) {
 
+       }
+       ci.cancel();
     }
      */
 
@@ -51,7 +55,7 @@ public abstract class CropBlockMixin extends PlantBlock implements Fertilizable 
                         world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                     }
                 } else if ((temp > data.max && temp <= data.aMax) || (temp < data.min && temp >= data.aMin)) {
-                    LogUtil.info("hot {} ", temp);
+                    LogUtil.info("not normal {} ", temp);
                     if (random.nextInt((int) ((25.0F / f) + 5)) == 0) {
                         world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                     }

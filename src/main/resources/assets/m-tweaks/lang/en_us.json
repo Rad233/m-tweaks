@@ -55,6 +55,8 @@
   "text.autoconfig.m-tweaks.option.canBeeNestsFall": "Can Bee Nests Fall?",
   "text.autoconfig.m-tweaks.option.canBeeNestsFall.@Tooltip[0]": "Pretty self-descriptive. Makes Bee Nests fall after some time,",
   "text.autoconfig.m-tweaks.option.canBeeNestsFall.@Tooltip[1]": "you can also shoot them with an arrow",
+  "text.autoconfig.m-tweaks.option.temperatureBasedCropGrowthSpeed": "Temperature Based Crop Growth Speed",
+  "text.autoconfig.m-tweaks.option.temperatureBasedCropGrowthSpeed.@Tooltip": "words",
   "text.autoconfig.m-tweaks.option.leafSlowdown": "Leaf Slowdown",
   "text.autoconfig.m-tweaks.option.leafSlowdown.@Tooltip[0]": "Makes entities slower whilst standing on leaves.",
   "text.autoconfig.m-tweaks.option.leafSlowdown.@Tooltip[1]": "This should discourage players from running above all the fun things",

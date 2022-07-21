@@ -38,12 +38,8 @@ public abstract class SaplingBlockMixin {
                         this.generate(world, pos, state, random);
                     }
                 }
-            } else {
-                if (world.getLightLevel(pos.up()) >= 9 && random.nextInt(7) == 0) {
-                    this.generate(world, pos, state, random);
-                }
+                ci.cancel();
             }
-            ci.cancel();
         }
     }
 }

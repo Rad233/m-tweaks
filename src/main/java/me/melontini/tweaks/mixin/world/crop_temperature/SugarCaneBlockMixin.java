@@ -55,15 +55,8 @@ public abstract class SugarCaneBlockMixin extends Block {
                         }
                     }
                 }
-            } else {
-                if (age == 15) {
-                    world.setBlockState(pos.up(), this.getDefaultState());
-                    world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
-                } else {
-                    world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
-                }
+                ci.cancel();
             }
-            ci.cancel();
         }
     }
 }

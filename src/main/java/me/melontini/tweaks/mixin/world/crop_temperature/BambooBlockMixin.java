@@ -21,9 +21,11 @@ import static net.minecraft.block.BambooBlock.STAGE;
 
 @Mixin(BambooBlock.class)
 public abstract class BambooBlockMixin extends Block implements Fertilizable {
-    @Shadow public abstract int countBambooBelow(BlockView world, BlockPos pos);
+    @Shadow
+    protected abstract int countBambooBelow(BlockView world, BlockPos pos);
 
-    @Shadow public abstract void updateLeaves(BlockState state, World world, BlockPos pos, Random random, int height);
+    @Shadow
+    protected abstract void updateLeaves(BlockState state, World world, BlockPos pos, Random random, int height);
 
     public BambooBlockMixin(Settings settings) {
         super(settings);
@@ -59,16 +61,9 @@ public abstract class BambooBlockMixin extends Block implements Fertilizable {
                             }
                         }
                     }
-                } else {
-                    if (world.getRandom().nextInt(3) == 0 && world.isAir(pos.up()) && world.getBaseLightLevel(pos.up(), 0) >= 9) {
-                        int bambooCount = this.countBambooBelow(world, pos) + 1;
-                        if (bambooCount < 16) {
-                            this.updateLeaves(state, world, pos, random, bambooCount);
-                        }
-                    }
+                    ci.cancel();
                 }
             }
-            ci.cancel();
         }
     }
 }

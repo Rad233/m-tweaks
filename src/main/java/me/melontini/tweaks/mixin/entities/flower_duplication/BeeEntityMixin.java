@@ -25,6 +25,8 @@ public abstract class BeeEntityMixin extends AnimalEntity {
 
     @Shadow
     @Nullable BlockPos flowerPos;
+    @Shadow
+    private BeeEntity.PollinateGoal pollinateGoal;
     @Unique
     private int plantingCoolDown;
 
@@ -36,7 +38,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     private void tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
-            var pollinateGoal = bee.pollinateGoal;
+            var pollinateGoal = this.pollinateGoal;
             if (plantingCoolDown > 0) {
                 --plantingCoolDown;
             }

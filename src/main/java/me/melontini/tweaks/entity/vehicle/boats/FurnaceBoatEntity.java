@@ -63,7 +63,7 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
             if ((this.getFuel() + (itemFuel * 2.25)) <= config.maxFurnaceMinecartFuel) {
                 if (!player.getAbilities().creativeMode) {
                     if (itemStack.getItem().getRecipeRemainder() != null)
-                        player.inventory.insertStack(itemStack.getItem().getRecipeRemainder().getDefaultStack());
+                        player.getInventory().insertStack(itemStack.getItem().getRecipeRemainder().getDefaultStack());
                     itemStack.decrement(1);
                 }
 

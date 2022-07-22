@@ -31,18 +31,18 @@ public class FurnaceMinecartMixin {
         if (Tweaks.CONFIG.betterFurnaceMinecart) {
             if (FuelRegistryImpl.INSTANCE.get(item) != null) {
                 int itemFuel = FuelRegistryImpl.INSTANCE.get(item);
-                if ((furnaceMinecart.fuel + (itemFuel * 2.25)) <= Tweaks.CONFIG.maxFurnaceMinecartFuel) {
+                if ((this.fuel + (itemFuel * 2.25)) <= Tweaks.CONFIG.maxFurnaceMinecartFuel) {
                     if (!player.getAbilities().creativeMode) {
                         if (stack.getItem().getRecipeRemainder() != null)
-                            player.inventory.insertStack(stack.getItem().getRecipeRemainder().getDefaultStack());
+                            player.getInventory().insertStack(stack.getItem().getRecipeRemainder().getDefaultStack());
                         stack.decrement(1);
                     }
 
-                    furnaceMinecart.fuel += (itemFuel * 2.25);
+                    this.fuel += (itemFuel * 2.25);
                 }
             }
 
-            if (furnaceMinecart.fuel > 0) {
+            if (this.fuel > 0) {
                 furnaceMinecart.pushX = furnaceMinecart.getX() - player.getX();
                 furnaceMinecart.pushZ = furnaceMinecart.getZ() - player.getZ();
             }

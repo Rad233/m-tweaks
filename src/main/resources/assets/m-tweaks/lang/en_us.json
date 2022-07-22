@@ -1,9 +1,8 @@
 {
   "tooltip.m-tweaks.bow.tight": "*Tightened, usages left: %s",
+  "tooltip.m-tweaks.spawner_minecart.filled": "*Entity inside: %s",
 
-  "item.m-tweaks.spawner_minecart": "Spawner Minecart",
-  "item.m-tweaks.spawner_minecart.filled": "Spawner Minecart with %s",
-  "item.m-tweaks.spawner_minecart.filled.custom": "%s with %s",
+  "item.m-tweaks.spawner_minecart": "Minecart with Spawner",
   "item.m-tweaks.anvil_minecart": "Minecart with Anvil",
   "item.m-tweaks.note_block_minecart": "Minecart with Note Block",
   "item.m-tweaks.jukebox_minecart": "Minecart with Jukebox",

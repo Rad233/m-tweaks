@@ -30,9 +30,7 @@ public abstract class CropBlockMixin extends PlantBlock implements Fertilizable 
     if (data != null) {
        if (temp >= data.min && temp <= data.max) {
 
-       } else if (temp > data.max && temp <= data.aMax) {
-
-       } else if (temp < data.min && temp >= data.aMin) {
+       } else if ((temp > data.max && temp <= data.aMax) && (temp < data.min && temp >= data.aMin)) {
 
        }
        ci.cancel();

@@ -1,4 +1,4 @@
-package me.melontini.tweaks.mixin.misc;
+package me.melontini.tweaks.mixin.misc.minor_inconvenience;
 
 import me.melontini.tweaks.Tweaks;
 import net.minecraft.entity.EntityType;

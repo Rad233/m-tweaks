@@ -180,6 +180,12 @@ public class TweaksConfig implements ConfigData {
     @Comment("makes the player explode after taking any damage")
     @ConfigEntry.Gui.Tooltip
     public boolean minorInconvenience = false;
+
+    @ConfigEntry.Category("misc")
+    @Comment("Doesn't load mixins if their related option is disabled, improving mod compatibility. The only downside is that you'd need to restart the game after enabling/disabling any option.")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean compatMode = false;
     @ConfigEntry.Category("misc")
     @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip

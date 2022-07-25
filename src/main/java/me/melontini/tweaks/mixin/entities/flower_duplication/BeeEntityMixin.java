@@ -26,7 +26,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     @Shadow
     @Nullable BlockPos flowerPos;
     @Shadow
-    private BeeEntity.PollinateGoal pollinateGoal;
+    BeeEntity.PollinateGoal pollinateGoal;
     @Unique
     private int plantingCoolDown;
 
@@ -35,7 +35,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;tick()V", shift = At.Shift.AFTER), method = "tick")
-    private void tick(CallbackInfo ci) {
+    private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
             var pollinateGoal = this.pollinateGoal;
@@ -53,12 +53,12 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     }
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
-    private void writeNbt(NbtCompound nbt, CallbackInfo ci) {
+    private void mTweaks$writeNbt(NbtCompound nbt, CallbackInfo ci) {
         nbt.putInt("MT-plantingCoolDown", this.plantingCoolDown);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
-    private void readNbt(NbtCompound nbt, CallbackInfo ci) {
+    private void mTweaks$readNbt(NbtCompound nbt, CallbackInfo ci) {
         this.plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
     }
 

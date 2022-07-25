@@ -20,7 +20,7 @@ import java.util.List;
 @Mixin(Item.class)
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")
-    public void m_tweaks$tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
+    public void mTweaks$tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         if (stack.getItem() instanceof BowItem) if (Tweaks.CONFIG.usefulFletching) {
             NbtCompound stackNbt = stack.getNbt();
             if (stackNbt != null) if (stackNbt.contains("MT-Tightened")) if (stackNbt.getInt("MT-Tightened") > 0) {

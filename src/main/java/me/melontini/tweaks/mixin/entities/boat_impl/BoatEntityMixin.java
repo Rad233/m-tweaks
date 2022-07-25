@@ -36,7 +36,7 @@ public abstract class BoatEntityMixin extends Entity {
                 this.yawVelocity *= this.velocityDecay;
                 if (f > 0.0) {
                     Vec3d vec3d2 = this.getVelocity();
-                    this.setVelocity(this.getRotationVec(1.0F).getX() * 0.4, (vec3d2.y + f * 0.06153846016296973) * 0.75, this.getRotationVec(1.0F).getZ() * 0.4);
+                    this.setVelocity(this.getRotationVec(1.0F).getX() * 0.4, (vec3d2.y + f * 0.06) * 0.75, this.getRotationVec(1.0F).getZ() * 0.4);
                 }
                 ci.cancel();
             } else if (furnaceBoat.getFuel() > 0 && this.location == BoatEntity.Location.ON_LAND) {
@@ -44,7 +44,7 @@ public abstract class BoatEntityMixin extends Entity {
                 this.yawVelocity *= this.velocityDecay;
                 if (f > 0.0) {
                     Vec3d vec3d2 = this.getVelocity();
-                    this.setVelocity(this.getRotationVec(1.0F).getX() * 0.1, (vec3d2.y + f * 0.06153846016296973) * 0.75, this.getRotationVec(1.0F).getZ() * 0.1);
+                    this.setVelocity(this.getRotationVec(1.0F).getX() * 0.1, (vec3d2.y + f * 0.06) * 0.75, this.getRotationVec(1.0F).getZ() * 0.1);
                 }
                 ci.cancel();
             }

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ExperienceOrbEntity.class)
 public class ExperienceOrbMixin {
     @Inject(at = @At("HEAD"), method = "repairPlayerGears", cancellable = true)
-    private void repair(PlayerEntity player, int amount, CallbackInfoReturnable<Integer> cir) {
+    private void mTweaks$repair(PlayerEntity player, int amount, CallbackInfoReturnable<Integer> cir) {
         if (Tweaks.CONFIG.balancedMending) cir.setReturnValue(amount);
     }
 }

@@ -28,7 +28,7 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
     }
 
     @Inject(at = @At("HEAD"), method = "onUse", cancellable = true)
-    private void m_tweaks$onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+    private void mTweaks$onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         if (Tweaks.CONFIG.usefulFletching) if (state.isOf(Blocks.FLETCHING_TABLE)) {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);

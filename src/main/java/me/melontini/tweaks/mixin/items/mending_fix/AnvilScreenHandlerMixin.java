@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(AnvilScreenHandler.class)
 public class AnvilScreenHandlerMixin {
     @ModifyConstant(method = "updateResult", constant = @Constant(intValue = 40, ordinal = 2))
-    private int updateResult(int constant) {
+    private int mTweaks$updateResult(int constant) {
         //based
         return Tweaks.CONFIG.balancedMending ? Integer.MAX_VALUE : constant;
     }

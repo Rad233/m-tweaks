@@ -21,7 +21,7 @@ public class CocoaBlockMixin {
     @Shadow @Final public static IntProperty AGE;
 
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
-    private void tick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+    private void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             float temp = world.getBiome(pos).value().getTemperature();
             var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((CocoaBlock) (Object) this));

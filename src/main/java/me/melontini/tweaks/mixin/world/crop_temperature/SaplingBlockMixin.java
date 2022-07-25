@@ -18,7 +18,7 @@ public abstract class SaplingBlockMixin {
     @Shadow public abstract void generate(ServerWorld world, BlockPos pos, BlockState state, Random random);
 
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
-    public void mTweaks$tick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+    public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         SaplingBlock block = (SaplingBlock) (Object) this;
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             float temp = world.getBiome(pos).value().getTemperature();

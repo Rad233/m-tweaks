@@ -33,12 +33,11 @@ public abstract class AbstractPlantStemBlockMixin extends AbstractPlantPartBlock
     @Shadow protected abstract BlockState age(BlockState state, Random random);
 
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
-    private void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+    private void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             float temp = world.getBiome(pos).value().getTemperature();
             var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((AbstractPlantStemBlock) (Object) this));
             if (data != null) {
-                //TODO
                 if (temp >= data.min && temp <= data.max) {
                     if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
                         BlockPos blockPos = pos.offset(this.growthDirection);

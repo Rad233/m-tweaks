@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemStackMixin {
 
     @Inject(at = @At("RETURN"), method = "getRepairCost", cancellable = true)
-    private void getRepairCost(CallbackInfoReturnable<Integer> cir) {
+    private void mTweaks$getRepairCost(CallbackInfoReturnable<Integer> cir) {
         if (Tweaks.CONFIG.balancedMending && cir.getReturnValue() >= 40 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
             cir.setReturnValue(40);
         }

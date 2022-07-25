@@ -51,10 +51,11 @@ public class ResourceConditionRegistry {
 
             @Override
             public void reload(ResourceManager manager) {
+                Tweaks.PLANT_DATA.clear();
                 var map = manager.findResources("mt_crop_temperatures", identifier -> identifier.getPath().endsWith(".json"));
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
-                        JsonElement jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
+                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
                         LogUtil.info(jsonElement);
                         PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
@@ -62,8 +63,7 @@ public class ResourceConditionRegistry {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid identifier provided! %s", data.identifier));
                         }
 
-                        if (!Tweaks.PLANT_DATA.containsKey(Identifier.tryParse(data.identifier)))
-                            Tweaks.PLANT_DATA.put(Identifier.tryParse(data.identifier), data);
+                        Tweaks.PLANT_DATA.putIfAbsent(Identifier.tryParse(data.identifier), data);
                     } catch (IOException e) {
                         LogUtil.error(e);
                     }

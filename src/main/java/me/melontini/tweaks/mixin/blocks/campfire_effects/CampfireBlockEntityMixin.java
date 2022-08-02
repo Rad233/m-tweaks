@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.campfire_effects;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.InvalidConfigEntryException;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
 import net.minecraft.block.BlockState;
@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Objects;
 
 @Mixin(CampfireBlockEntity.class)
 public class CampfireBlockEntityMixin {
@@ -31,7 +32,7 @@ public class CampfireBlockEntityMixin {
                         if (Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size() == Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size()) {
                             for (int i = 0; i < Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(); i++) {
                                 StatusEffectInstance effectInstance = new StatusEffectInstance(
-                                        PotionUtil.getStatusEffect(Identifier.tryParse(Tweaks.CONFIG.campfireTweaks.campfireEffectsList.get(i))),
+                                        Objects.requireNonNull(PotionUtil.getStatusEffect(Identifier.tryParse(Tweaks.CONFIG.campfireTweaks.campfireEffectsList.get(i))), String.format("One of campfireEffectsList entries was null! This means that you probably provided an invalid identifier! null entry index: %s", i)),
                                         200,
                                         Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.get(i),
                                         true,
@@ -41,7 +42,7 @@ public class CampfireBlockEntityMixin {
                                 player.addStatusEffect(effectInstance);
                             }
                         } else {
-                            LogUtil.error("campfireEffectsList {} & campfireEffectsAmplifierList {} don't match in size!", Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(), Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size());
+                            throw new InvalidConfigEntryException(String.format("campfireEffectsList (size: %s) & campfireEffectsAmplifierList (size: %s) don't match in size!", Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(), Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size()));
                         }
                     }
                 }

@@ -39,6 +39,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
         OPTION_MAP.put("world.falling_beehives", CONFIG.canBeeNestsFall);
 
         OPTION_MAP.put("misc.minor_inconvenience", CONFIG.minorInconvenience);
+        OPTION_MAP.put("misc.unknown", CONFIG.unknown);
     }
 
     @Override

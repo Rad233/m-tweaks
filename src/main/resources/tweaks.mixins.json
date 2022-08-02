@@ -23,6 +23,7 @@
     "items.mending_fix.ItemStackMixin",
     "items.wandering_trader.GoatHornMixin",
     "misc.minor_inconvenience.PlayerEntityMixin",
+    "misc.unknown.rose_of_the_valley.ItemMixin",
     "world.crop_temperature.AbstractPlantStemBlockMixin",
     "world.crop_temperature.BambooBlockMixin",
     "world.crop_temperature.CactusBlockMixin",

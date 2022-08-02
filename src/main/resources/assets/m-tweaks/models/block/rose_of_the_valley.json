@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "m-tweaks:block/rose_of_the_valley"
+  }
+}

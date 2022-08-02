@@ -157,7 +157,7 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("items")
     @Comment(" . ")
-    @ConfigEntry.Gui.Tooltip(count = 3)
+    @ConfigEntry.Gui.Tooltip(count = 4)
     public boolean balancedMending = true;
 
     @ConfigEntry.Category("items")

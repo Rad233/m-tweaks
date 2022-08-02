@@ -121,6 +121,11 @@
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
 
   "text.autoconfig.m-tweaks.category.items": "Items",
+  "text.autoconfig.m-tweaks.option.balancedMending": "Balanced Mending",
+  "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[0]": "Makes mending a bit less OP by making it remove the \"Too Expensive\" error",
+  "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[1]": "instead of repairing items via XP",
+  "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[2]": "Also sets anvil's XP cap to 40 levels (but not really!)",
+  "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[3]": "Inspired by TheMisterEpic's \"This Minecraft Enchantment has been BROKEN for 3 YEARS...\" video",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn": "Wandering Trader Horn",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip[0]": "Every 2 days you can blow the \"sing\" horn to summon a wandering trader.",
   "text.autoconfig.m-tweaks.option.tradingGoatHorn.@Tooltip[1]": "Please note, wandering traders will still spawn naturally",

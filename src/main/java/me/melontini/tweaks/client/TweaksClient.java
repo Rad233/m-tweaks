@@ -4,14 +4,17 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.networks.ClientSideNetworking;
+import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FurnaceBlock;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.math.Direction;
@@ -40,5 +43,9 @@ public class TweaksClient implements ClientModInitializer {
             EntityRendererRegistry.register(EntityTypeRegistry.NOTEBLOCK_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
             EntityRendererRegistry.register(EntityTypeRegistry.JUKEBOX_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
+
+
+        if (Tweaks.CONFIG.unknown)
+            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.ROSE_OF_THE_VALLEY);
     }
 }

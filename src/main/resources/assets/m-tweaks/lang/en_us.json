@@ -1,6 +1,9 @@
 {
   "tooltip.m-tweaks.bow.tight": "*Tightened, usages left: %s",
   "tooltip.m-tweaks.spawner_minecart.filled": "*Entity inside: %s",
+  "tooltip.m-tweaks.rose_of_the_valley": "Its smell reminds you of some valley",
+
+  "block.m-tweaks.rose_of_the_valley": "Rose of the Valley",
 
   "item.m-tweaks.spawner_minecart": "Minecart with Spawner",
   "item.m-tweaks.anvil_minecart": "Minecart with Anvil",
@@ -139,6 +142,10 @@
   "text.autoconfig.m-tweaks.category.misc": "Misc",
   "text.autoconfig.m-tweaks.option.minorInconvenience": "Minor Inconvenience",
   "text.autoconfig.m-tweaks.option.minorInconvenience.@Tooltip": "Makes the player explode after taking any damage",
+  "text.autoconfig.m-tweaks.option.compatMode": "Compat Mode",
+  "text.autoconfig.m-tweaks.option.compatMode.@Tooltip[0]": "Doesn't load mixins if their related option is disabled, improving mod compatibility.",
+  "text.autoconfig.m-tweaks.option.compatMode.@Tooltip[1]": "The only downside is that you'd need to restart the game after enabling/disabling any option.",
   "text.autoconfig.m-tweaks.option.debugMessages": "Enable debug messages?",
-  "text.autoconfig.m-tweaks.option.debugMessages.@Tooltip": "When on, your log will get spammed into the oblivion, you've been warned"
+  "text.autoconfig.m-tweaks.option.debugMessages.@Tooltip": "When on, your log will get spammed into the oblivion, you've been warned",
+  "text.autoconfig.m-tweaks.option.unknown": "???"
 }

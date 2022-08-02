@@ -1,5 +1,7 @@
 accessWidener  v2	named
 # Fields
+mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
+accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
 accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F

@@ -2,6 +2,7 @@ package me.melontini.tweaks;
 
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
+import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
@@ -34,6 +35,7 @@ public class Tweaks implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        BlockRegistry.register();
         ItemRegistry.register();
         EntityTypeRegistry.register();
         ServerSideNetworking.register();

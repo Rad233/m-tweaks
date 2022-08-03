@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Item.class)
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "onClicked", cancellable = true)
-    private void onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {
+    private void mTweaks$onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {
         if (Tweaks.CONFIG.unknown) if (clickType == ClickType.RIGHT && stack.isOf(Items.LILY_OF_THE_VALLEY) && otherStack.isOf(Items.DIAMOND)) {
             //I mean .....yeah
             stack.item = ItemRegistry.ROSE_OF_THE_VALLEY;

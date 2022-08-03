@@ -41,7 +41,7 @@ jobs:
             modmenu | suggests | *
             
           game-versions: |
-            1.19
+            1.19.1
           
           loaders: |
             fabric

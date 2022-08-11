@@ -11,12 +11,12 @@ import java.util.List;
 
 public class PlayerUtil {
     public static List<PlayerEntity> findPlayersInRange(World world, BlockPos pos, int range) {
-        return world.getPlayers(TargetPredicate.createNonAttackable().setBaseMaxDistance(range), null,
+        return world.getPlayers(TargetPredicate.createAttackable().setBaseMaxDistance(range), null,
                 new Box(pos).expand(range));
     }
 
     public static List<PlayerEntity> findNonCreativePlayersInRange(World world, BlockPos pos, int range) {
-        List<PlayerEntity> players = world.getPlayers(TargetPredicate.createNonAttackable().setBaseMaxDistance(range), null,
+        List<PlayerEntity> players = world.getPlayers(TargetPredicate.createAttackable().setBaseMaxDistance(range), null,
                 new Box(pos).expand(range));
         List<PlayerEntity> nonCreative = new ArrayList<>();
         for (PlayerEntity player : players) {

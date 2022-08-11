@@ -13,6 +13,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,5 +55,31 @@ public class WorldUtil {
 
         world.setBlockState(pos, state.getFluidState().getBlockState(), Block.NOTIFY_ALL);
         world.spawnEntity(fallingBlock);
+    }
+
+    static final List<Direction> dirAroundMap = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+    public static boolean isClear(World world, BlockPos pos) {
+        for (Direction dir : dirAroundMap) {
+            if (!world.getBlockState(pos.offset(dir)).isAir()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static BlockPos pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
+        int i = 0;
+        while (true) {
+            ++i;
+            if (i > (range * range * range) * 0.75) {
+                return null;
+            }
+            var pos = new BlockPos(blockPos.getX() + random.nextBetween(-range, range), blockPos.getY() + random.nextBetween(-range, range), blockPos.getZ() + random.nextBetween(-range, range));
+            //LogUtil.info(pos);
+            if (world.getBlockState(pos.up()).isAir() && world.getBlockState(pos).isAir() && isClear(world, pos) && isClear(world, pos.up())) {
+                //LogUtil.info("SS: {}", pos);
+                return pos;
+            }
+        }
     }
 }

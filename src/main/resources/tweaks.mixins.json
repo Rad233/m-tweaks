@@ -24,7 +24,7 @@
     "items.wandering_trader.GoatHornMixin",
     "misc.minor_inconvenience.PlayerEntityMixin",
     "misc.unknown.rose_of_the_valley.ItemMixin",
-    "misc.unknown.wakeup.ServerPlayerEntityMixin",
+    "misc.unknown.wakeup.PlayerEntityMixin",
     "world.crop_temperature.AbstractPlantStemBlockMixin",
     "world.crop_temperature.BambooBlockMixin",
     "world.crop_temperature.CactusBlockMixin",
@@ -40,7 +40,8 @@
   ],
   "client": [
     "items.mending_fix.AnvilScreenMixin",
-    "misc.unknown.nice_level.LevelLoadingScreenMixin"
+    "misc.unknown.nice_level.LevelLoadingScreenMixin",
+    "misc.unknown.useless_info.DebugHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1

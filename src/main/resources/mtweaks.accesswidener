@@ -4,6 +4,7 @@ mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
+accessible field net/minecraft/entity/vehicle/BoatEntity ticksUnderwater F
 accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
 accessible field net/minecraft/block/entity/ChestBlockEntity inventory Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/block/entity/HopperBlockEntity inventory Lnet/minecraft/util/collection/DefaultedList;

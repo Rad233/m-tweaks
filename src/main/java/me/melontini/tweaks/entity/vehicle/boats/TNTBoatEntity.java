@@ -10,10 +10,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -23,6 +31,8 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class TNTBoatEntity extends BoatEntityWithBlock {
     public int fuseTicks = -1;
+
+    private boolean fused = false;
 
     public TNTBoatEntity(EntityType<? extends BoatEntity> entityType, World world) {
         super(entityType, world);
@@ -40,20 +50,19 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     public void tick() {
         if (this.fuseTicks > 0) {
             --this.fuseTicks;
-            this.world.addParticle(ParticleTypes.SMOKE, this.getX(), this.getY() + 0.5, this.getZ(), 0.0, 0.0, 0.0);
+            Vec3d vec3d = new Vec3d(-0.55, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+            world.addParticle(ParticleTypes.SMOKE, this.getX() + vec3d.x, this.getY() + 0.8, this.getZ() + vec3d.z, -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
         } else if (this.fuseTicks == 0) {
-            this.explode(this.getVelocity().horizontalLengthSquared());
+            this.explode();
         }
 
         if (this.horizontalCollision) {
-            double d = this.getVelocity().horizontalLengthSquared();
-            if ((this.getFirstPassenger() instanceof PlayerEntity)) {
+            if ((this.getFirstPassenger() instanceof PlayerEntity) && !fused) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeUuid(this.getUuid());
-                buf.writeDouble(d);
                 ClientPlayNetworking.send(new Identifier(MODID, "boat_explosion_server"), buf);
             } else {
-                this.explode(d);
+                this.explode();
             }
         }
         super.tick();
@@ -64,12 +73,16 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
         Entity entity = source.getSource();
 
         if (entity instanceof PersistentProjectileEntity persistentProjectileEntity && persistentProjectileEntity.isOnFire()) {
-            this.explode(persistentProjectileEntity.getVelocity().lengthSquared());
+            this.setFuse();
             return false;
         }
         if (source.isFire()) {
-            double d = this.getVelocity().horizontalLengthSquared();
-            this.explode(d);
+            this.setFuse();
+            return false;
+        }
+
+        if (source.isExplosive()) {
+            this.setFuse();
             return false;
         }
 
@@ -83,14 +96,27 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
             boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
-                this.explode(0.09);
-                return true;
+                this.explode();
             }
-
-            return true;
-        } else {
-            return true;
         }
+        return false;
+    }
+
+    @Override
+    public ActionResult interact(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+        if (hand == Hand.MAIN_HAND && (stack.isOf(Items.FLINT_AND_STEEL) || stack.isOf(Items.FIRE_CHARGE))) {
+            this.setFuse();
+            if (!player.isCreative()) {
+                if (stack.isOf(Items.FLINT_AND_STEEL)) {
+                    stack.damage(1, player, playerx -> playerx.sendToolBreakStatus(hand));
+                } else {
+                    stack.decrement(1);
+                }
+            }
+            return ActionResult.SUCCESS;
+        }
+        return super.interact(player, hand);
     }
 
     @Override
@@ -113,15 +139,20 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
         nbt.putInt("MT_TNTFuse", this.fuseTicks);
     }
 
-    public void explode(double velocity) {
-        if (!this.world.isClient) {
-            double d = Math.sqrt(velocity);
-            if (d > 5.0) {
-                d = 5.0;
+    public void setFuse() {
+        if (!fused) {
+            this.fused = true;
+            this.fuseTicks = 50 + Random.create().nextInt(20);
+            if (!world.isClient) {
+                world.playSoundFromEntity(null, this, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.HOSTILE, 1F, 1F);
             }
+        }
+    }
 
+    public void explode() {
+        if (!this.world.isClient) {
             this.discard();
-            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), (float) (4.0 + this.random.nextDouble() * 1.5 * d), Explosion.DestructionType.BREAK);
+            this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), 4.0F, Explosion.DestructionType.BREAK);
         }
     }
 }

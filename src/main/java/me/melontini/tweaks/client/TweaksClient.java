@@ -13,37 +13,18 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FurnaceBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.math.Direction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Environment(EnvType.CLIENT)
 public class TweaksClient implements ClientModInitializer {
 
-    public static List<String> USEFUL_TEXTS = new ArrayList<>();
+    public static String TEXT;
     @Override
     public void onInitializeClient() {
-        USEFUL_TEXTS.addAll(List.of(
-                "Hi",
-                "This is Like Splashes, but Worse!",
-                "Cheating Much?",
-                "I Have ALL the Info! hehe",
-                "Fabric",
-                "Luv U!",
-                "Maps a for Losers",
-                "Free Ad Space!",
-                MinecraftClient.getInstance().getSession().getUsername() + " is You!",
-                "More Than One Message!",
-                "Reminder",
-                "???"
-        ));
-
         ClientSideNetworking.register();
 
         if (Tweaks.CONFIG.usefulFletching) HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);

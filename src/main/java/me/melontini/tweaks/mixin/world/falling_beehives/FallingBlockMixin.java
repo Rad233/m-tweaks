@@ -55,14 +55,18 @@ public abstract class FallingBlockMixin extends Entity {
                         List<ItemStack> stacks = WorldUtil.prepareLoot(world, new Identifier(MODID, "bee_nest/bee_nest_broken"));
 
                         List<PlayerEntity> players = PlayerUtil.findNonCreativePlayersInRange(world, this.getBlockPos(), 16);
-                        NbtList nbeetlist = nbt.getList("Bees", 10);
+                        final NbtList nbeetlist = nbt.getList("Bees", 10);
                         List<BeeEntity> beeEntities = world.getNonSpectatingEntities(BeeEntity.class, new Box(getBlockPos()).expand(50));
 
                         if (!players.isEmpty()) {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
                             PlayerEntity player = MiscUtil.pickRandomEntryFromList(players);
                             for (int i = 0; i < nbeetlist.size(); ++i) {
+                                NbtCompound nbtCompound = nbeetlist.getCompound(i);
+                                BeehiveBlockEntity.Bee fakeBee = new BeehiveBlockEntity.Bee(nbtCompound.getCompound("EntityData"), nbtCompound.getInt("TicksInHive"), nbtCompound.getInt("MinOccupationTicks"));
+                                NbtCompound nbt2 = fakeBee.entityData.copy();
                                 BeeEntity bee = new BeeEntity(EntityType.BEE, world);
+                                bee.readNbt(nbt2);
                                 bee.setPosition(getPos());
                                 bee.setTarget(player);
                                 world.spawnEntity(bee);
@@ -76,7 +80,11 @@ public abstract class FallingBlockMixin extends Entity {
                         } else {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
                             for (int i = 0; i < nbeetlist.size(); ++i) {
+                                NbtCompound nbtCompound = nbeetlist.getCompound(i);
+                                BeehiveBlockEntity.Bee fakeBee = new BeehiveBlockEntity.Bee(nbtCompound.getCompound("EntityData"), nbtCompound.getInt("TicksInHive"), nbtCompound.getInt("MinOccupationTicks"));
+                                NbtCompound nbt2 = fakeBee.entityData.copy();
                                 BeeEntity bee = new BeeEntity(EntityType.BEE, world);
+                                bee.readNbt(nbt2);
                                 bee.setPosition(getPos());
                                 bee.setCannotEnterHiveTicks(400);
                                 world.spawnEntity(bee);

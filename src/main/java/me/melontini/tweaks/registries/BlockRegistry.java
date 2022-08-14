@@ -3,6 +3,7 @@ package me.melontini.tweaks.registries;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
+import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
@@ -34,5 +35,6 @@ public class BlockRegistry {
             INCUBATOR_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK).build();
             Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, "incubator"), INCUBATOR_BLOCK_ENTITY);
         }
+        LogUtil.info("BlockRegistry init complete!");
     }
 }

@@ -14,6 +14,7 @@ import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -25,10 +26,12 @@ import static me.melontini.tweaks.Tweaks.MODID;
 public class ItemRegistry {
 
     public static RoseOfTheValley ROSE_OF_THE_VALLEY;
-    public static  Item SPAWNER_MINECART;
-    public static  Item ANVIL_MINECART;
-    public static  Item NOTE_BLOCK_MINECART;
-    public static Item JUKEBOX_MINECART;
+    public static  SpawnerMinecartItem SPAWNER_MINECART;
+    public static  AnvilMinecartItem ANVIL_MINECART;
+    public static  NoteBlockMinecartItem NOTE_BLOCK_MINECART;
+    public static JukeBoxMinecartItem JUKEBOX_MINECART;
+    public static Item INCUBATOR;
+
     public static void register() {
         SPAWNER_MINECART = new SpawnerMinecartItem(AbstractMinecartEntity.Type.SPAWNER, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
 
@@ -64,6 +67,12 @@ public class ItemRegistry {
             ROSE_OF_THE_VALLEY = new RoseOfTheValley(BlockRegistry.ROSE_OF_THE_VALLEY, new FabricItemSettings().rarity(Rarity.UNCOMMON));
             Registry.register(Registry.ITEM, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
         }
+
+        if (Tweaks.CONFIG.enableIncubator) {
+            INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "incubator"), INCUBATOR);
+        }
+
         LogUtil.info("ItemRegistry init complete!");
     }
 }

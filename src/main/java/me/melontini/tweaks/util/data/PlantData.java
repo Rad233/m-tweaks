@@ -1,4 +1,4 @@
-package me.melontini.tweaks.util;
+package me.melontini.tweaks.util.data;
 
 public class PlantData {
     public String identifier;

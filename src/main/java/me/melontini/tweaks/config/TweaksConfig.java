@@ -28,6 +28,17 @@ public class TweaksConfig implements ConfigData {
     public boolean quickFire = false;
 
     @ConfigEntry.Category("blocks")
+    @Comment("Enables a handful machine which will hatch eggs for you!")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean enableIncubator = true;
+
+    @ConfigEntry.Category("blocks")
+    @Comment("Makes Incubator hatch times a bit more random")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean incubatorRandomness = false;
+
+    @ConfigEntry.Category("blocks")
     @Comment("Makes fletching table a little more useful by allowing you to tighten bow string!")
     @ConfigEntry.Gui.Tooltip(count = 2)
     @ConfigEntry.Gui.RequiresRestart

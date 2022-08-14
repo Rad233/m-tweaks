@@ -24,6 +24,8 @@ import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,6 +36,29 @@ public class ResourceConditionRegistry {
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void register() {
+        ResourceConditions.register(new Identifier(MODID, "config_option"), object -> {
+            JsonArray array = JsonHelper.getArray(object, "values");
+
+            for (JsonElement element : array) {
+                if (element.isJsonPrimitive()) {
+                    //wow reflection
+                    try {
+                        String elementString = element.getAsString();
+                        List<String> classes = Arrays.stream(elementString.split("\\.")).toList();
+                        if (classes.size() > 1) {
+                            return Tweaks.CONFIG.getClass().getField(classes.get(0)).get(Tweaks.CONFIG).getClass().getField(classes.get(1)).getBoolean(Tweaks.CONFIG.getClass().getField(classes.get(0)).get(Tweaks.CONFIG));
+                        } else
+                            return Tweaks.CONFIG.getClass().getField(elementString).getBoolean(Tweaks.CONFIG);
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    throw new JsonParseException("Invalid config option: " + element);
+                }
+            }
+
+            return true;
+        });
         ResourceConditions.register(new Identifier(MODID, "items_registered"), object -> {
             JsonArray array = JsonHelper.getArray(object, "values");
 
@@ -47,7 +72,6 @@ public class ResourceConditionRegistry {
 
             return true;
         });
-        LogUtil.info("ResourceConditionRegistry init complete");
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
@@ -115,5 +139,6 @@ public class ResourceConditionRegistry {
                 }
             }
         });
+        LogUtil.info("ResourceConditionRegistry init complete");
     }
 }

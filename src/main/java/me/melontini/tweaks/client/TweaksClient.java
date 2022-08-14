@@ -51,7 +51,7 @@ public class TweaksClient implements ClientModInitializer {
         if (Tweaks.CONFIG.unknown)
             BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.ROSE_OF_THE_VALLEY);
 
-        if (Tweaks.CONFIG.enableIncubator) {
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
             BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockRegistry.INCUBATOR_BLOCK);
             BlockEntityRendererRegistry.register(BlockRegistry.INCUBATOR_BLOCK_ENTITY, IncubatorBlockRenderer::new);
         }

@@ -28,15 +28,28 @@ public class TweaksConfig implements ConfigData {
     public boolean quickFire = false;
 
     @ConfigEntry.Category("blocks")
-    @Comment("Enables a handful machine which will hatch eggs for you!")
+    @Comment("Various Incubator Settings :)")
     @ConfigEntry.Gui.Tooltip(count = 2)
-    @ConfigEntry.Gui.RequiresRestart
-    public boolean enableIncubator = true;
+    @ConfigEntry.Gui.CollapsibleObject
+    public IncubatorSettings incubatorSettings = new IncubatorSettings();
 
-    @ConfigEntry.Category("blocks")
-    @Comment("Makes Incubator hatch times a bit more random")
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean incubatorRandomness = false;
+    public static class IncubatorSettings {
+        @ConfigEntry.Category("blocks")
+        @Comment("Enables a handful machine which will hatch eggs for you! (data-driven)")
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean enableIncubator = true;
+
+        @ConfigEntry.Category("blocks")
+        @Comment("Makes Incubator hatch times a bit more random")
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean incubatorRandomness = false;
+
+        @ConfigEntry.Category("blocks")
+        @Comment("Enables m-tweaks certified incubator recipe. Don't forget to run /reload")
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean incubatorRecipe = false; //Used in JSON
+    }
 
     @ConfigEntry.Category("blocks")
     @Comment("Makes fletching table a little more useful by allowing you to tighten bow string!")

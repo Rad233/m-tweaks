@@ -1,5 +1,7 @@
 accessWidener  v2	named
+accessible class net/minecraft/block/entity/BeehiveBlockEntity$Bee
 # Fields
+accessible field net/minecraft/block/entity/BeehiveBlockEntity$Bee entityData Lnet/minecraft/nbt/NbtCompound;
 mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
@@ -15,6 +17,8 @@ accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/
 accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
+accessible method net/minecraft/block/entity/BeehiveBlockEntity$Bee <init> (Lnet/minecraft/nbt/NbtCompound;II)V
+accessible method net/minecraft/block/entity/BeehiveBlockEntity removeIrrelevantNbtKeys (Lnet/minecraft/nbt/NbtCompound;)V
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
 accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;

@@ -25,7 +25,7 @@ public class WorldUtil {
     public static CustomTraderManager getTraderManager(ServerWorld world) {
         return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
             var manager = new CustomTraderManager();
-            manager.fromTag(nbtCompound);
+            manager.readNbt(nbtCompound);
             return manager;
         }, CustomTraderManager::new, "mt_trader_statemanager");
     }

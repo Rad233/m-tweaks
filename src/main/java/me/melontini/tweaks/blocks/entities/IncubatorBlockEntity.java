@@ -35,6 +35,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     public ItemStack egg = ItemStack.EMPTY;
     public int processingTime = -1;
+    private final Random jRandom = new Random();
 
     public IncubatorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockRegistry.INCUBATOR_BLOCK_ENTITY, pos, state);
@@ -52,7 +53,6 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                     world.getBlockState(pos.down().down()).getBlock() instanceof CampfireBlock) {
                 if (!world.isClient) this.processingTime--;
                 if (world.random.nextInt(4) == 0 && world.isClient) {
-                    Random jRandom = new Random();
                     double i = (jRandom.nextDouble(0.6) - 0.3);
                     double j = (jRandom.nextDouble(0.6) - 0.3);
                     world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
@@ -71,7 +71,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                         stack.decrement(1);
                         stack1.setCount(1);
                         this.egg = stack1;
-                        this.processingTime = Tweaks.CONFIG.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
+                        this.processingTime = Tweaks.CONFIG.incubatorSettings.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
                         world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
                         markDirty();
                     }
@@ -131,6 +131,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
         if (slot.isEmpty()) {
             this.inventory.set(0, stack1);
             stack.setCount(0);
+            markDirty();
             return true;
         } else if (slot.getItem() == stack.getItem()) {
             int a = slot.getCount();

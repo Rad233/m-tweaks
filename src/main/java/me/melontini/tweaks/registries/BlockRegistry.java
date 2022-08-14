@@ -28,7 +28,7 @@ public class BlockRegistry {
             Registry.register(Registry.BLOCK, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
         }
 
-        if (Tweaks.CONFIG.enableIncubator) {
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
             INCUBATOR_BLOCK = new IncubatorBlock(FabricBlockSettings.of(Material.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD));
             Registry.register(Registry.BLOCK, new Identifier(MODID, "incubator"), INCUBATOR_BLOCK);
             INCUBATOR_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK).build();

@@ -68,8 +68,8 @@ public class ItemRegistry {
             Registry.register(Registry.ITEM, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
         }
 
-        if (Tweaks.CONFIG.enableIncubator) {
-            INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE));
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
+            INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
             Registry.register(Registry.ITEM, new Identifier(MODID, "incubator"), INCUBATOR);
         }
 

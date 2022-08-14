@@ -2,6 +2,7 @@ package me.melontini.tweaks.client;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
+import me.melontini.tweaks.client.render.block.IncubatorBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -10,6 +11,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FurnaceBlock;
@@ -48,5 +50,10 @@ public class TweaksClient implements ClientModInitializer {
 
         if (Tweaks.CONFIG.unknown)
             BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.ROSE_OF_THE_VALLEY);
+
+        if (Tweaks.CONFIG.enableIncubator) {
+            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockRegistry.INCUBATOR_BLOCK);
+            BlockEntityRendererRegistry.register(BlockRegistry.INCUBATOR_BLOCK_ENTITY, IncubatorBlockRenderer::new);
+        }
     }
 }

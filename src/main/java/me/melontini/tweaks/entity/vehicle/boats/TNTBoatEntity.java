@@ -32,8 +32,6 @@ import static me.melontini.tweaks.Tweaks.MODID;
 public class TNTBoatEntity extends BoatEntityWithBlock {
     public int fuseTicks = -1;
 
-    private boolean fused = false;
-
     public TNTBoatEntity(EntityType<? extends BoatEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -57,7 +55,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
         }
 
         if (this.horizontalCollision) {
-            if ((this.getFirstPassenger() instanceof PlayerEntity) && !fused) {
+            if ((this.getFirstPassenger() instanceof PlayerEntity)) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeUuid(this.getUuid());
                 ClientPlayNetworking.send(new Identifier(MODID, "boat_explosion_server"), buf);
@@ -136,12 +134,11 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putInt("MT_TNTFuse", this.fuseTicks);
+        nbt.putInt("MT-TNTFuse", this.fuseTicks);
     }
 
     public void setFuse() {
-        if (!fused) {
-            this.fused = true;
+        if (this.fuseTicks == -1) {
             this.fuseTicks = 50 + Random.create().nextInt(20);
             if (!world.isClient) {
                 world.playSoundFromEntity(null, this, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.HOSTILE, 1F, 1F);

@@ -8,4 +8,8 @@ public class MiscUtil {
         int random = new Random().nextInt(list.size());
         return list.get(random);
     }
+
+    public static int nextBetween(int min, int max, Random random) {
+        return random.nextInt(max - min + 1) + min;
+    }
 }

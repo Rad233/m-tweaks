@@ -65,7 +65,7 @@ public class WorldUtil {
             if (i > (range * range * range) * 0.75) {
                 return null;
             }
-            var pos = new BlockPos(blockPos.getX() + random.nextBetween(-range, range), blockPos.getY() + random.nextBetween(-range, range), blockPos.getZ() + random.nextBetween(-range, range));
+            var pos = new BlockPos(blockPos.getX() + MiscUtil.nextBetween(-range, range, random), blockPos.getY() + MiscUtil.nextBetween(-range, range, random), blockPos.getZ() + MiscUtil.nextBetween(-range, range, random));
             //LogUtil.info(pos);
             if (world.getBlockState(pos.up()).isAir() && world.getBlockState(pos).isAir() && isClear(world, pos) && isClear(world, pos.up())) {
                 //LogUtil.info("SS: {}", pos);

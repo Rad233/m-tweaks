@@ -135,6 +135,8 @@
   "text.autoconfig.m-tweaks.option.newBoats.isTNTBoatOn.@Tooltip": "Very unstable, explodes on any collision",
   "text.autoconfig.m-tweaks.option.newBoats.isJukeboxBoatOn": "Boat with Jukebox",
   "text.autoconfig.m-tweaks.option.newBoats.isJukeboxBoatOn.@Tooltip": "Never get bored whilst sailing across the ocean ever again!",
+  "text.autoconfig.m-tweaks.option.newBoats.isChestBoatOn": "Boat with Chest",
+  "text.autoconfig.m-tweaks.option.newBoats.isChestBoatOn.@Tooltip": "The long awaited chest boat is now in the game!",
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn": "Boat with Hopper",
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
 

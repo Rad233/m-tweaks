@@ -10,9 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +34,13 @@ public class ClientSideNetworking {
                     if (stack.getItem() instanceof MusicDiscItem disc) {
 
                         MutableText discName = disc.getDescription();
-                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world, Random.create());
+                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world);
                         soundInstanceMap.put(id, instance);
                         client.getSoundManager().play(instance);
 
                         if (discName != null)
                             if (client.player != null) if (entity != null) if (entity.distanceTo(client.player) < 76) {
-                                client.player.sendMessage(Text.translatable("record.nowPlaying", discName), true);
+                                client.player.sendMessage(new TranslatableText("record.nowPlaying", discName), true);
                             }
                     }
                 });

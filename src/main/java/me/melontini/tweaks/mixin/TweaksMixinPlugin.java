@@ -32,7 +32,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
 
         OPTION_MAP.put("items.cart_copy", CONFIG.minecartBlockPicking);
         OPTION_MAP.put("items.mending_fix", CONFIG.balancedMending);
-        OPTION_MAP.put("items.wandering_trader", CONFIG.tradingGoatHorn);
+        //OPTION_MAP.put("items.wandering_trader", CONFIG.tradingGoatHorn);
 
         OPTION_MAP.put("world.crop_temperature", CONFIG.temperatureBasedCropGrowthSpeed);
         OPTION_MAP.put("world.epic_fire", CONFIG.quickFire);

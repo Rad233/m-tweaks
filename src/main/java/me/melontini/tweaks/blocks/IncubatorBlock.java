@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -61,9 +62,9 @@ public class IncubatorBlock extends BlockWithEntity {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(Text.translatable("tooltip.m-tweaks.incubator[0]"));
+        tooltip.add(new TranslatableText("tooltip.m-tweaks.incubator[0]"));
         if (Tweaks.CONFIG.unknown)
-            tooltip.add(Text.translatable("tooltip.m-tweaks.incubator[1]").formatted(Formatting.GRAY, Formatting.ITALIC));
+            tooltip.add(new TranslatableText("tooltip.m-tweaks.incubator[1]").formatted(Formatting.GRAY, Formatting.ITALIC));
     }
 
     @Override

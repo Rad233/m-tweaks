@@ -1,23 +1,26 @@
 {
-	"fabric:load_conditions": [
-		{
-			"condition": "m-tweaks:items_registered",
-			"values": [
-				"m-tweaks:jungle_boat_with_furnace"
-			]
-		}
-	],
-	"type": "minecraft:crafting_shapeless",
-	"group": "furnace_boat",
-	"ingredients": [
-		{
-			"item": "minecraft:furnace"
-		},
-		{
-			"item": "minecraft:jungle_boat"
-		}
-	],
-	"result": {
-		"item": "m-tweaks:jungle_boat_with_furnace"
-	}
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:jungle_boat_with_furnace"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:furnace"
+    },
+    "B": {
+      "item": "minecraft:jungle_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:jungle_boat_with_furnace"
+  }
 }

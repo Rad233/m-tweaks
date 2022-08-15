@@ -1,23 +1,26 @@
 {
-	"fabric:load_conditions": [
-		{
-			"condition": "m-tweaks:items_registered",
-			"values": [
-				"m-tweaks:oak_boat_with_tnt"
-			]
-		}
-	],
-	"type": "minecraft:crafting_shapeless",
-	"group": "tnt_boat",
-	"ingredients": [
-		{
-			"item": "minecraft:tnt"
-		},
-		{
-			"item": "minecraft:oak_boat"
-		}
-	],
-	"result": {
-		"item": "m-tweaks:oak_boat_with_tnt"
-	}
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:oak_boat_with_tnt"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:tnt"
+    },
+    "B": {
+      "item": "minecraft:oak_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:oak_boat_with_tnt"
+  }
 }

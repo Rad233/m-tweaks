@@ -1,23 +1,26 @@
 {
-	"fabric:load_conditions": [
-		{
-			"condition": "m-tweaks:items_registered",
-			"values": [
-				"m-tweaks:oak_boat_with_hopper"
-			]
-		}
-	],
-	"type": "minecraft:crafting_shapeless",
-	"group": "hopper_boat",
-	"ingredients": [
-		{
-			"item": "minecraft:hopper"
-		},
-		{
-			"item": "minecraft:oak_boat"
-		}
-	],
-	"result": {
-		"item": "m-tweaks:oak_boat_with_hopper"
-	}
+  "fabric:load_conditions": [
+    {
+      "condition": "m-tweaks:items_registered",
+      "values": [
+        "m-tweaks:oak_boat_with_hopper"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:hopper"
+    },
+    "B": {
+      "item": "minecraft:oak_boat"
+    }
+  },
+  "result": {
+    "item": "m-tweaks:oak_boat_with_hopper"
+  }
 }

@@ -7,7 +7,6 @@ import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Final;
@@ -16,6 +15,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Random;
 
 @Mixin(SweetBerryBushBlock.class)
 public class SweetBerryBushMixin {
@@ -32,13 +33,13 @@ public class SweetBerryBushMixin {
                     if (i < 3 && random.nextInt(5) == 0 && world.getBaseLightLevel(pos.up(), 0) >= 9) {
                         BlockState blockState = state.with(AGE, i + 1);
                         world.setBlockState(pos, blockState, Block.NOTIFY_LISTENERS);
-                        world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Emitter.of(blockState));
+                        world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos);
                     }
                 } else if ((temp > data.max && temp <= data.aMax) && (temp < data.min && temp >= data.aMin)) {
                     if (i < 3 && random.nextInt(10) == 0 && world.getBaseLightLevel(pos.up(), 0) >= 9) {
                         BlockState blockState = state.with(AGE, i + 1);
                         world.setBlockState(pos, blockState, Block.NOTIFY_LISTENERS);
-                        world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Emitter.of(blockState));
+                        world.emitGameEvent(GameEvent.BLOCK_CHANGE, pos);
                     }
                 }
                 ci.cancel();

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "m-tweaks:item/boats/mangrove_boat_with_jukebox"
+    "layer0": "m-tweaks:item/boats/spruce_boat_with_chest"
   }
 }

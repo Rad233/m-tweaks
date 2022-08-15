@@ -21,11 +21,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
+
+import java.util.Random;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -93,7 +94,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             this.setDamageWobbleTicks(10);
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
             this.scheduleVelocityUpdate();
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
+            this.emitGameEvent(GameEvent.ENTITY_DAMAGED, source.getAttacker());
             boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
             if (bl || this.getDamageWobbleStrength() > 40.0F) {
                 this.explode();
@@ -142,7 +143,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     public void setFuse() {
         if (!fused) {
             this.fused = true;
-            this.fuseTicks = 50 + Random.create().nextInt(20);
+            this.fuseTicks = 50 + new Random().nextInt(20);
             if (!world.isClient) {
                 world.playSoundFromEntity(null, this, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.HOSTILE, 1F, 1F);
             }

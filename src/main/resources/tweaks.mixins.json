@@ -21,7 +21,6 @@
     "items.mending_fix.AnvilScreenHandlerMixin",
     "items.mending_fix.ExperienceOrbMixin",
     "items.mending_fix.ItemStackMixin",
-    "items.wandering_trader.GoatHornMixin",
     "misc.minor_inconvenience.PlayerEntityMixin",
     "misc.unknown.rose_of_the_valley.ItemMixin",
     "misc.unknown.wakeup.PlayerEntityMixin",

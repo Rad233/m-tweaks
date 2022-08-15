@@ -3,7 +3,7 @@
     {
       "condition": "m-tweaks:items_registered",
       "values": [
-        "m-tweaks:mangrove_boat_with_jukebox"
+        "m-tweaks:dark_oak_boat_with_chest"
       ]
     }
   ],
@@ -15,7 +15,7 @@
         "items": [
           {
             "items": [
-              "minecraft:mangrove_boat"
+              "minecraft:dark_oak_boat"
             ]
           }
         ]
@@ -24,7 +24,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "m-tweaks:boats/mangrove_boat_with_jukebox"
+        "recipe": "m-tweaks:boats/dark_oak_boat_with_chest"
       }
     }
   },
@@ -36,7 +36,7 @@
   ],
   "rewards": {
     "recipes": [
-      "m-tweaks:boats/mangrove_boat_with_jukebox"
+      "m-tweaks:boats/dark_oak_boat_with_chest"
     ]
   }
 }

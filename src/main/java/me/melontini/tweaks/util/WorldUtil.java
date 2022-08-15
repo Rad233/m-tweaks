@@ -14,22 +14,13 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Random;
 
 public class WorldUtil {
-
-    public static CustomTraderManager getTraderManager(ServerWorld world) {
-        return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
-            var manager = new CustomTraderManager();
-            manager.readNbt(nbtCompound);
-            return manager;
-        }, CustomTraderManager::new, "mt_trader_statemanager");
-    }
-
     public static List<ItemStack> prepareLoot(World world, Identifier lootId) {
         return ((ServerWorld) world).getServer()
                 .getLootManager()

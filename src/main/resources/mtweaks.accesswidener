@@ -21,7 +21,6 @@ accessible method net/minecraft/block/entity/BeehiveBlockEntity$Bee <init> (Lnet
 accessible method net/minecraft/block/entity/BeehiveBlockEntity removeIrrelevantNbtKeys (Lnet/minecraft/nbt/NbtCompound;)V
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
-accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/CropBlock getAvailableMoisture (Lnet/minecraft/block/Block;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)F
 accessible method net/minecraft/client/world/ClientWorld getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;

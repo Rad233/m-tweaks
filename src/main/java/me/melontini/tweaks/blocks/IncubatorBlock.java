@@ -3,7 +3,6 @@ package me.melontini.tweaks.blocks;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
 import me.melontini.tweaks.registries.BlockRegistry;
-import me.melontini.tweaks.util.ItemStackUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -78,7 +77,6 @@ public class IncubatorBlock extends BlockWithEntity {
             if (blockEntity instanceof IncubatorBlockEntity incubatorBlockEntity) {
                 if (!world.isClient) {
                     ItemScatterer.spawn(world, pos, incubatorBlockEntity);
-                    ItemStackUtil.spawnItem(pos, incubatorBlockEntity.egg, world);
                 }
 
                 world.updateComparators(pos, this);

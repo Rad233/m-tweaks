@@ -23,32 +23,32 @@ public class TweaksConfig implements ConfigData {
     public boolean temperatureBasedCropGrowthSpeed = false;
 
     @ConfigEntry.Category("world")
-    @Comment("Makes fires spread a lot faster and wider")
+    @Comment("Makes fire spread a lot faster and wider")
     @ConfigEntry.Gui.Tooltip
     public boolean quickFire = false;
 
     @ConfigEntry.Category("blocks")
     @Comment("Various Incubator Settings :)")
-    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.Tooltip(count = 3)
     @ConfigEntry.Gui.CollapsibleObject
     public IncubatorSettings incubatorSettings = new IncubatorSettings();
 
     public static class IncubatorSettings {
         @ConfigEntry.Category("blocks")
         @Comment("Enables a handful machine which will hatch eggs for you! (data-driven)")
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean enableIncubator = true;
 
         @ConfigEntry.Category("blocks")
         @Comment("Makes Incubator hatch times a bit more random")
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean incubatorRandomness = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean incubatorRandomness = true;
 
         @ConfigEntry.Category("blocks")
-        @Comment("Enables m-tweaks certified incubator recipe. Don't forget to run /reload")
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean incubatorRecipe = false; //Used in JSON
+        @Comment("Enables m-tweaks certified incubator recipe. Don't forget to run /reload!")
+        @ConfigEntry.Gui.Tooltip
+        public boolean incubatorRecipe = true; //Used in JSON
     }
 
     @ConfigEntry.Category("blocks")
@@ -182,7 +182,7 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("items")
     @Comment(" . ")
     @ConfigEntry.Gui.Tooltip(count = 4)
-    public boolean balancedMending = true;
+    public boolean balancedMending = false;
 
     @ConfigEntry.Category("items")
     @Comment("Every 2 days you can blow the \"sing\" horn to summon a wandering trader.")

@@ -236,6 +236,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return true;
+        assert world != null;
+        return dir != world.getBlockState(this.pos).get(IncubatorBlock.FACING);
     }
 }

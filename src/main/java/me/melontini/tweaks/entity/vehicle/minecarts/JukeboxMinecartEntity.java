@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
@@ -69,7 +70,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
             this.setDamageWobbleTicks(10);
             this.scheduleVelocityUpdate();
             this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0F);
-            this.emitGameEvent(GameEvent.ENTITY_DAMAGED, source.getAttacker());
+            this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
             boolean isCreativePlayer = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
             if (isCreativePlayer || this.getDamageWobbleStrength() > 40.0F) {
                 this.removeAllPassengers();
@@ -89,7 +90,6 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
     public void dropItems(DamageSource damageSource) {
         super.dropItems(damageSource);
         if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-            this.dropItem(Blocks.JUKEBOX);
             this.dropItem(record.getItem());
         }
     }
@@ -151,6 +151,11 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
         super.writeCustomDataToNbt(nbt);
         if (!this.record.isEmpty())
             nbt.put("Items", this.record.writeNbt(new NbtCompound()));
+    }
+
+    @Override
+    public Item getItem() {
+        return ItemRegistry.JUKEBOX_MINECART;
     }
 
     @Override

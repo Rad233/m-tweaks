@@ -1,7 +1,11 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.items.boats.*;
+import me.melontini.tweaks.items.RoseOfTheValley;
+import me.melontini.tweaks.items.boats.FurnaceBoatItem;
+import me.melontini.tweaks.items.boats.HopperBoatItem;
+import me.melontini.tweaks.items.boats.JukeboxBoatItem;
+import me.melontini.tweaks.items.boats.TNTBoatItem;
 import me.melontini.tweaks.items.minecarts.AnvilMinecartItem;
 import me.melontini.tweaks.items.minecarts.JukeBoxMinecartItem;
 import me.melontini.tweaks.items.minecarts.NoteBlockMinecartItem;
@@ -10,18 +14,24 @@ import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ItemRegistry {
-    public static  Item SPAWNER_MINECART;
-    public static  Item ANVIL_MINECART;
-    public static  Item NOTE_BLOCK_MINECART;
-    public static Item JUKEBOX_MINECART;
+
+    public static RoseOfTheValley ROSE_OF_THE_VALLEY;
+    public static  SpawnerMinecartItem SPAWNER_MINECART;
+    public static  AnvilMinecartItem ANVIL_MINECART;
+    public static  NoteBlockMinecartItem NOTE_BLOCK_MINECART;
+    public static JukeBoxMinecartItem JUKEBOX_MINECART;
+    public static Item INCUBATOR;
+
     public static void register() {
         SPAWNER_MINECART = new SpawnerMinecartItem(AbstractMinecartEntity.Type.SPAWNER, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
 
@@ -52,9 +62,17 @@ public class ItemRegistry {
         if (Tweaks.CONFIG.newBoats.isHopperBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
-        if (Tweaks.CONFIG.newBoats.isChestBoatOn) for (BoatEntity.Type value : BoatEntity.Type.values()) {
-            Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_chest"), new ChestBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+
+        if (Tweaks.CONFIG.unknown) {
+            ROSE_OF_THE_VALLEY = new RoseOfTheValley(BlockRegistry.ROSE_OF_THE_VALLEY, new FabricItemSettings().rarity(Rarity.UNCOMMON));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
         }
+
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
+            INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "incubator"), INCUBATOR);
+        }
+
         LogUtil.info("ItemRegistry init complete!");
     }
 }

@@ -3,7 +3,6 @@ package me.melontini.tweaks.entity.vehicle.minecarts;
 import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
-import me.melontini.tweaks.util.ItemStackUtil;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,8 +12,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -26,7 +25,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
@@ -88,18 +86,6 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
         }
         super.tick();
     }
-    @Override
-    public void dropItems(DamageSource damageSource) {
-        super.dropItems(damageSource);
-        if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-            //TODO transfer note property to the block
-            ItemStack noteBlock = new ItemStack(Items.NOTE_BLOCK);
-            NbtCompound nbt = new NbtCompound();
-            nbt.putInt("Note", this.note);
-            noteBlock.setNbt(nbt);
-            ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), noteBlock, this.world, 0.5);
-        }
-    }
 
     @Override
     public Type getMinecartType() {
@@ -118,6 +104,11 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("Note", this.note);
         nbt.putBoolean("Powered", this.isPowered);
+    }
+
+    @Override
+    public Item getItem() {
+        return ItemRegistry.NOTE_BLOCK_MINECART;
     }
 
     @Override

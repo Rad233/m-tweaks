@@ -11,14 +11,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class AnvilMinecartEntity extends AbstractMinecartEntity {
@@ -55,11 +54,9 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
         return false;
     }
 
-    public void dropItems(DamageSource damageSource) {
-        super.dropItems(damageSource);
-        if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-            this.dropItem(Items.ANVIL);
-        }
+    @Override
+    public Item getItem() {
+        return ItemRegistry.ANVIL_MINECART;
     }
 
     @Override

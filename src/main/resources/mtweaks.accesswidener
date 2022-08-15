@@ -1,11 +1,13 @@
 accessWidener  v2	named
+accessible class net/minecraft/block/entity/BeehiveBlockEntity$Bee
 # Fields
-accessible field net/minecraft/entity/projectile/PersistentProjectileEntity inBlockState Lnet/minecraft/block/BlockState;
-accessible field net/minecraft/entity/vehicle/SpawnerMinecartEntity logic Lnet/minecraft/world/MobSpawnerLogic;
+accessible field net/minecraft/block/entity/BeehiveBlockEntity$Bee entityData Lnet/minecraft/nbt/NbtCompound;
+mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
+accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
+accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
+accessible field net/minecraft/entity/vehicle/BoatEntity ticksUnderwater F
 accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
-accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory;
-accessible field net/minecraft/block/entity/MobSpawnerBlockEntity logic Lnet/minecraft/world/MobSpawnerLogic;
 accessible field net/minecraft/block/entity/ChestBlockEntity inventory Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/block/entity/HopperBlockEntity inventory Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime I
@@ -15,17 +17,14 @@ accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/
 accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
-accessible method net/minecraft/block/FireBlock getSpreadChance (Lnet/minecraft/block/BlockState;)I
-accessible method net/minecraft/block/FireBlock trySpreadingFire (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;ILjava/util/Random;I)V
-accessible method net/minecraft/block/FireBlock getStateWithAge (Lnet/minecraft/world/WorldAccess;Lnet/minecraft/util/math/BlockPos;I)Lnet/minecraft/block/BlockState;
-accessible method net/minecraft/block/BambooBlock countBambooBelow (Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)I
-accessible method net/minecraft/block/BambooBlock updateLeaves (Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;I)V
-accessible method net/minecraft/block/CropBlock getAge (Lnet/minecraft/block/BlockState;)I
+accessible method net/minecraft/block/entity/BeehiveBlockEntity$Bee <init> (Lnet/minecraft/nbt/NbtCompound;II)V
+accessible method net/minecraft/block/entity/BeehiveBlockEntity removeIrrelevantNbtKeys (Lnet/minecraft/nbt/NbtCompound;)V
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
+accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
+accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/CropBlock getAvailableMoisture (Lnet/minecraft/block/Block;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)F
 accessible method net/minecraft/client/world/ClientWorld getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
 accessible method net/minecraft/entity/projectile/ProjectileEntity <init> (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
-accessible method net/minecraft/block/entity/BeehiveBlockEntity tryReleaseBee (Lnet/minecraft/block/BlockState;Lnet/minecraft/block/entity/BeehiveBlockEntity$BeeState;)Ljava/util/List;
-accessible method net/minecraft/entity/projectile/PersistentProjectileEntity clearPiercingStatus ()V
 accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
 accessible method net/minecraft/entity/FallingBlockEntity readCustomDataFromNbt (Lnet/minecraft/nbt/NbtCompound;)V

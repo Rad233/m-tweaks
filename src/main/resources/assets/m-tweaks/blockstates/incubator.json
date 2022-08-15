@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "m-tweaks:block/incubator"
+    },
+    "facing=north": {
+      "model": "m-tweaks:block/incubator",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "m-tweaks:block/incubator",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "m-tweaks:block/incubator",
+      "y": 180
+    }
+  }
+}

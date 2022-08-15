@@ -1,0 +1,23 @@
+{
+	"fabric:load_conditions": [
+		{
+			"condition": "m-tweaks:items_registered",
+			"values": [
+				"m-tweaks:mangrove_boat_with_hopper"
+			]
+		}
+	],
+	"type": "minecraft:crafting_shapeless",
+	"group": "hopper_boat",
+	"ingredients": [
+		{
+			"item": "minecraft:hopper"
+		},
+		{
+			"item": "minecraft:mangrove_boat"
+		}
+	],
+	"result": {
+		"item": "m-tweaks:mangrove_boat_with_hopper"
+	}
+}

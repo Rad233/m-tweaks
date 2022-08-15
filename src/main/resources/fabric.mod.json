@@ -3,7 +3,7 @@
   "id": "m-tweaks",
   "version": "${version}",
   "name": "m-tweaks",
-  "description": "",
+  "description": "Random \"Tweaks & Features\" mod where almost everything is added because \"What if (thing) in minecraft lol\"",
   "authors": [
     "melontini"
   ],
@@ -33,7 +33,7 @@
     "fabricloader": "*",
     "fabric": "*",
     "cloth-config": "*",
-    "minecraft": "1.18.2"
+    "minecraft": ">=1.19"
   },
   "suggests": {
     "modmenu": "*"

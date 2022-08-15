@@ -18,16 +18,44 @@ public class TweaksConfig implements ConfigData {
     public boolean canBeeNestsFall = true;
 
     @ConfigEntry.Category("world")
-    @Comment("With this rule on, crops will grow slower in colder biomes, and not grow at all in freezing biomes")
+    @Comment("With this rule on, crops will have to planted in biomes they like, otherwise they won't grow. This rule is data-driven! checkout [link] for more info")
     @ConfigEntry.Gui.Tooltip
-    //TODO chorus
-    //TODO this should probably be tag based, so crops only grow slower in temperatures they don't like
-    public boolean cropsGrowSlowerInCold = false;
+    public boolean temperatureBasedCropGrowthSpeed = false;
 
     @ConfigEntry.Category("world")
-    @Comment("Makes fires spread a lot faster and wider")
+    @Comment("Makes fire spread a lot faster and wider")
     @ConfigEntry.Gui.Tooltip
     public boolean quickFire = false;
+
+    @ConfigEntry.Category("blocks")
+    @Comment("Various Incubator Settings :)")
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    @ConfigEntry.Gui.CollapsibleObject
+    public IncubatorSettings incubatorSettings = new IncubatorSettings();
+
+    public static class IncubatorSettings {
+        @ConfigEntry.Category("blocks")
+        @Comment("Enables a handful machine which will hatch eggs for you! (data-driven)")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean enableIncubator = true;
+
+        @ConfigEntry.Category("blocks")
+        @Comment("Makes Incubator hatch times a bit more random")
+        @ConfigEntry.Gui.Tooltip
+        public boolean incubatorRandomness = true;
+
+        @ConfigEntry.Category("blocks")
+        @Comment("Enables m-tweaks certified incubator recipe. Don't forget to run /reload!")
+        @ConfigEntry.Gui.Tooltip
+        public boolean incubatorRecipe = true; //Used in JSON
+    }
+
+    @ConfigEntry.Category("blocks")
+    @Comment("Makes fletching table a little more useful by allowing you to tighten bow string!")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean usefulFletching = true;
 
     @ConfigEntry.Category("blocks")
     @Comment("Makes beds explode in every dimension. conflicts with Safe Beds!")
@@ -76,6 +104,16 @@ public class TweaksConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public List<Integer> campfireEffectsAmplifierList = Arrays.asList(0);
     }
+
+    @ConfigEntry.Category("entities")
+    @Comment("When a bee pollinates a flower, the flower has a chance to spread, similar to grass. This won't happen every pollination, since there's a 3-6 minute cooldown.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean beeFlowerDuplication = true;
+
+    @ConfigEntry.Category("entities")
+    @Comment("Enables bee flower duplication for tall flowers, also disables bonemealing tall flowers.")
+    @ConfigEntry.Gui.Tooltip
+    public boolean beeTallFlowerDuplication = true;
 
     @ConfigEntry.Category("entities")
     @Comment("Makes villagers follow if you have an emerald block in hand")
@@ -138,13 +176,18 @@ public class TweaksConfig implements ConfigData {
         @ConfigEntry.Category("entities")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
-        public boolean isChestBoatOn = true;
-
-        @ConfigEntry.Category("entities")
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.RequiresRestart
         public boolean isHopperBoatOn = true;
     }
+
+    @ConfigEntry.Category("items")
+    @Comment(" . ")
+    @ConfigEntry.Gui.Tooltip(count = 4)
+    public boolean balancedMending = false;
+
+    @ConfigEntry.Category("items")
+    @Comment("Every 2 days you can blow the \"sing\" horn to summon a wandering trader.")
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    public boolean tradingGoatHorn = true;
 
     @ConfigEntry.Category("items")
     @Comment("Allows players to \"pick\" blocks via minecarts")
@@ -158,7 +201,22 @@ public class TweaksConfig implements ConfigData {
     public boolean minecartSpawnerPicking = true;
 
     @ConfigEntry.Category("misc")
+    @Comment("makes the player explode after taking any damage")
+    @ConfigEntry.Gui.Tooltip
+    public boolean minorInconvenience = false;
+
+    @ConfigEntry.Category("misc")
+    @Comment("Doesn't load mixins if their related option is disabled, improving mod compatibility. The only downside is that you'd need to restart the game after enabling/disabling any option.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean compatMode = false;
+    @ConfigEntry.Category("misc")
     @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip
     public boolean debugMessages = false;
+
+    @ConfigEntry.Category("misc")
+    @Comment("???")
+    @ConfigEntry.Gui.RequiresRestart
+    public boolean unknown = false;
 }

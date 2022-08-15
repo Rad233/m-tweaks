@@ -35,8 +35,8 @@ public class IncubatorBlockRenderer implements BlockEntityRenderer<IncubatorBloc
                 case SOUTH -> matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(0));
             }
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-45));
-            if (entity.processingTime > -1 && !entity.egg.isEmpty()) {
-                MinecraftClient.getInstance().getItemRenderer().renderItem(entity.egg, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
+            if (entity.processingTime > -1 && !entity.inventory.get(0).isEmpty()) {
+                MinecraftClient.getInstance().getItemRenderer().renderItem(entity.inventory.get(0), ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
             }
         }
         matrices.pop();

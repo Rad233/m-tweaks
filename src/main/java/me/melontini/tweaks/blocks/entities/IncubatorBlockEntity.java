@@ -32,10 +32,9 @@ import java.util.Random;
 //make sure to close your eyes before looking here.
 public class IncubatorBlockEntity extends BlockEntity implements SidedInventory {
 
-    public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-    public ItemStack egg = ItemStack.EMPTY;
-    public int processingTime = -1;
     private final Random jRandom = new Random();
+    public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+    public int processingTime = -1;
 
     public IncubatorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockRegistry.INCUBATOR_BLOCK_ENTITY, pos, state);
@@ -61,26 +60,24 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
         }
         assert world != null;
         if (!world.isClient()) {
+            ItemStack stack = this.inventory.get(0);
             var state = world.getBlockState(this.pos);
-            if (this.egg.isEmpty()) {
-                ItemStack stack = this.inventory.get(0);
-                if (!stack.isEmpty()) {
-                    ItemStack stack1 = stack.copy();
-                    var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack1.getItem()));
-                    if (data != null) {
-                        stack.decrement(1);
-                        stack1.setCount(1);
-                        this.egg = stack1;
-                        this.processingTime = Tweaks.CONFIG.incubatorSettings.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
-                        world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
-                        markDirty();
-                    }
+            if (!stack.isEmpty() && this.processingTime == -1) {
+                var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
+                if (data != null) {
+                    this.processingTime = Tweaks.CONFIG.incubatorSettings.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
+                    world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                    markDirty();
                 }
+            } else if (stack.isEmpty() && this.processingTime != -1) {
+                this.processingTime = -1;
+                world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                markDirty();
             }
 
             if (this.processingTime == 0) {
-                if (Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(this.egg.getItem()))) {
-                    var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(this.egg.getItem()));
+                if (Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(stack.getItem()))) {
+                    var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
                     Entity entity = Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)).create(world);
                     var entityPos = pos.offset(state.get(IncubatorBlock.FACING));
                     assert entity != null;
@@ -88,8 +85,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                     if (entity instanceof PassiveEntity) {
                         ((PassiveEntity) entity).setBaby(true);
                     }
+                    stack.decrement(1);
                     world.spawnEntity(entity);
-                    this.egg = ItemStack.EMPTY;
                     this.processingTime = -1;
                     world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
                     markDirty();
@@ -157,10 +154,6 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         this.processingTime = nbt.getInt("ProcessingTime");
-
-        if (nbt.contains("EggItem", 10)) {
-            this.egg = (ItemStack.fromNbt(nbt.getCompound("EggItem")));
-        }
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
         Inventories.readNbt(nbt, this.inventory);
     }
@@ -169,9 +162,6 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt("ProcessingTime", this.processingTime);
-
-        if (!this.egg.isEmpty())
-            nbt.put("EggItem", this.egg.writeNbt(new NbtCompound()));
         Inventories.writeNbt(nbt, this.inventory);
     }
 

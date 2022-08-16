@@ -14,8 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class TweaksMixinPlugin implements IMixinConfigPlugin {
-    private TweaksConfig CONFIG;
     Map<String, Boolean> OPTION_MAP = new HashMap<>();
+    private TweaksConfig CONFIG;
+
     @Override
     public void onLoad(String mixinPackage) {
         AutoConfig.register(TweaksConfig.class, JanksonConfigSerializer::new);

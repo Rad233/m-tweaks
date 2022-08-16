@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.AbstractPlantPartBlock;
 import net.minecraft.block.AbstractPlantStemBlock;
 import net.minecraft.block.BlockState;
@@ -35,9 +36,9 @@ public abstract class AbstractPlantStemBlockMixin extends AbstractPlantPartBlock
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
     private void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((AbstractPlantStemBlock) (Object) this));
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((AbstractPlantStemBlock) (Object) this));
             if (data != null) {
+                float temp = world.getBiome(pos).value().getTemperature();
                 if (temp >= data.min && temp <= data.max) {
                     if (state.get(AGE) < 25 && random.nextDouble() < this.growthChance) {
                         BlockPos blockPos = pos.offset(this.growthDirection);

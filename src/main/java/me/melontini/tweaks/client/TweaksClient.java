@@ -28,9 +28,24 @@ public class TweaksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientSideNetworking.register();
+        registerEntityRenderers();
+        registerBlockRenderers();
 
-        if (Tweaks.CONFIG.usefulFletching) HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
+        if (Tweaks.CONFIG.usefulFletching)
+            HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
+    }
 
+    public void registerBlockRenderers() {
+        if (Tweaks.CONFIG.unknown)
+            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.ROSE_OF_THE_VALLEY);
+
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
+            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockRegistry.INCUBATOR_BLOCK);
+            BlockEntityRendererRegistry.register(BlockRegistry.INCUBATOR_BLOCK_ENTITY, IncubatorBlockRenderer::new);
+        }
+    }
+
+    public void registerEntityRenderers() {
         if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn)
             EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_FURNACE, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, Direction.NORTH))));
         if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn)
@@ -46,14 +61,5 @@ public class TweaksClient implements ClientModInitializer {
             EntityRendererRegistry.register(EntityTypeRegistry.NOTEBLOCK_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
             EntityRendererRegistry.register(EntityTypeRegistry.JUKEBOX_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
-
-
-        if (Tweaks.CONFIG.unknown)
-            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), BlockRegistry.ROSE_OF_THE_VALLEY);
-
-        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
-            BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), BlockRegistry.INCUBATOR_BLOCK);
-            BlockEntityRendererRegistry.register(BlockRegistry.INCUBATOR_BLOCK_ENTITY, IncubatorBlockRenderer::new);
-        }
     }
 }

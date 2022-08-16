@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -21,9 +22,9 @@ public abstract class SaplingBlockMixin {
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         SaplingBlock block = (SaplingBlock) (Object) this;
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(block));
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(block));
             if (data != null) {
+                float temp = world.getBiome(pos).value().getTemperature();
                 if (temp >= data.min && temp <= data.max) {
                     if (world.getLightLevel(pos.up()) >= 9 && random.nextInt(7) == 0) {
                         this.generate(world, pos, state, random);

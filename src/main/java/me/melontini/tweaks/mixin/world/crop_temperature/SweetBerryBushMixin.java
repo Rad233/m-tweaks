@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SweetBerryBushBlock;
@@ -24,10 +25,10 @@ public class SweetBerryBushMixin {
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
     private void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((SweetBerryBushBlock) (Object) this));
-            int i = state.get(AGE);
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((SweetBerryBushBlock) (Object) this));
             if (data != null) {
+                float temp = world.getBiome(pos).value().getTemperature();
+                int i = state.get(AGE);
                 if (temp >= data.min && temp <= data.max) {
                     if (i < 3 && random.nextInt(5) == 0 && world.getBaseLightLevel(pos.up(), 0) >= 9) {
                         BlockState blockState = state.with(AGE, i + 1);

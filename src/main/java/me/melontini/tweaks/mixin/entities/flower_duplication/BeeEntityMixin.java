@@ -2,10 +2,7 @@ package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.TallFlowerBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.BeeEntity;
@@ -38,7 +35,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
-            var pollinateGoal = this.pollinateGoal;
+            BeeEntity.PollinateGoal pollinateGoal = this.pollinateGoal;
             if (plantingCoolDown > 0) {
                 --plantingCoolDown;
             }
@@ -65,16 +62,16 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     @Unique
     private void growFlower() {
         if (this.flowerPos != null) {
-            var flowerState = world.getBlockState(flowerPos);
+            BlockState flowerState = world.getBlockState(flowerPos);
             if (flowerState.getBlock() instanceof FlowerBlock flowerBlock) {
-                plantingCoolDown = (int) Math.floor(Math.random() * (6490 - 3600) + 3600);
+                plantingCoolDown = world.random.nextBetween(3600, 6490);
                 for (int i = -2; i <= 2; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -2; c <= 2; c++) {
-                            var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            var state = world.getBlockState(pos);
+                            BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
+                            BlockState state = world.getBlockState(pos);
                             if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                                if (world.getRandom().nextInt(12) == 0) {
+                                if (world.random.nextInt(12) == 0) {
                                     world.setBlockState(pos, flowerState);
                                 }
                             }
@@ -82,14 +79,14 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     }
                 }
             } else if (flowerState.getBlock() instanceof TallFlowerBlock flowerBlock && Tweaks.CONFIG.beeTallFlowerDuplication) {
-                plantingCoolDown = (int) Math.floor(Math.random() * (8000 - 3600) + 3600);
+                plantingCoolDown = world.random.nextBetween(3600, 8000);
                 for (int i = -1; i <= 1; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -1; c <= 1; c++) {
-                            var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            var state = world.getBlockState(pos);
+                            BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
+                            BlockState state = world.getBlockState(pos);
                             if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                                if (world.getRandom().nextInt(6) == 0) {
+                                if (world.random.nextInt(6) == 0) {
                                     TallFlowerBlock.placeAt(world, flowerState, pos, Block.NOTIFY_LISTENERS);
                                 }
                             }

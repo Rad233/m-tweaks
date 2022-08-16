@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CactusBlock;
@@ -25,12 +26,10 @@ public abstract class CactusBlockMixin extends Block {
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         int age = state.get(AGE);
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((CactusBlock) (Object) this));
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((CactusBlock) (Object) this));
             if (data != null) {
-                //LogUtil.info(data.identifier);
+                float temp = world.getBiome(pos).value().getTemperature();
                 if (temp >= data.min && temp <= data.max) {
-                    //LogUtil.info("normal {} ", temp);
                     if (age == 15) {
                         world.setBlockState(pos.up(), this.getDefaultState());
                         world.setBlockState(pos, state.with(AGE, 0), Block.NO_REDRAW);
@@ -38,7 +37,6 @@ public abstract class CactusBlockMixin extends Block {
                         world.setBlockState(pos, state.with(AGE, age + 1), Block.NO_REDRAW);
                     }
                 } else if ((temp > data.max && temp <= data.aMax) || (temp < data.min && temp >= data.aMin)) {
-                    //LogUtil.info("hot {} ", temp);
                     if (world.getRandom().nextInt(3) == 0) {
                         if (age == 15) {
                             world.setBlockState(pos.up(), this.getDefaultState());

@@ -3,6 +3,7 @@ package me.melontini.tweaks.blocks.entities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.registries.BlockRegistry;
+import me.melontini.tweaks.util.data.EggProcessingData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
@@ -61,9 +62,9 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
         assert world != null;
         if (!world.isClient()) {
             ItemStack stack = this.inventory.get(0);
-            var state = world.getBlockState(this.pos);
+            BlockState state = world.getBlockState(this.pos);
             if (!stack.isEmpty() && this.processingTime == -1) {
-                var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
+                EggProcessingData data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
                 if (data != null) {
                     this.processingTime = Tweaks.CONFIG.incubatorSettings.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
                     world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
@@ -77,9 +78,9 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
 
             if (this.processingTime == 0) {
                 if (Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(stack.getItem()))) {
-                    var data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
+                    EggProcessingData data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
                     Entity entity = Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)).create(world);
-                    var entityPos = pos.offset(state.get(IncubatorBlock.FACING));
+                    BlockPos entityPos = pos.offset(state.get(IncubatorBlock.FACING));
                     assert entity != null;
                     entity.setPos(entityPos.getX() + 0.5, entityPos.getY() + 0.5, entityPos.getZ() + 0.5);
                     if (entity instanceof PassiveEntity) {

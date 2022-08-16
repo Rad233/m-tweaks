@@ -21,12 +21,11 @@ import java.util.Optional;
 
 public class CustomTraderManager extends PersistentState {
 
-    private final Random random;
+    private final Random random = Random.create();
     public int cooldown;
 
     //I'm so good at making bad decisions
     public CustomTraderManager() {
-        this.random = Random.create();
     }
 
     public void readNbt(NbtCompound nbt) {
@@ -43,7 +42,6 @@ public class CustomTraderManager extends PersistentState {
         if (this.cooldown > 0) {
             --this.cooldown;
         }
-        //LogUtil.info(cooldown);
     }
 
     public void trySpawn(ServerWorld world, ServerWorldProperties properties, PlayerEntity player) {

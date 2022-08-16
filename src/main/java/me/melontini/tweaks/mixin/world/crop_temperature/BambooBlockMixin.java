@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.BambooBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -35,9 +36,9 @@ public abstract class BambooBlockMixin extends Block implements Fertilizable {
         BambooBlock block = (BambooBlock) (Object) this;
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
             if (state.get(STAGE) == 0) {
-                float temp = world.getBiome(pos).value().getTemperature();
-                var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(block));
+                PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(block));
                 if (data != null) {
+                    float temp = world.getBiome(pos).value().getTemperature();
                     if (temp >= data.min && temp <= data.max) {
                         if (world.getRandom().nextInt(3) == 0 && world.isAir(pos.up()) && world.getBaseLightLevel(pos.up(), 0) >= 9) {
                             int bambooCount = this.countBambooBelow(world, pos) + 1;

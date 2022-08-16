@@ -9,6 +9,7 @@ import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.Instrument;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
@@ -36,10 +37,9 @@ public class GoatHornMixin {
             if (nbtCompound.getString("instrument") != null) {
                 LogUtil.info("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
-                    Tweaks.PLANT_DATA.forEach((identifier, plantData) -> LogUtil.info("identifier: {}, min: {}, max: {}", identifier, plantData.min, plantData.max));
                     LogUtil.info("Trader spawn cooldown: {}", WorldUtil.getTraderManager((ServerWorld) world).cooldown);
 
-                    var server = world.getServer();
+                    MinecraftServer server = world.getServer();
                     if (server != null) {
                         if (world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING))
                             WorldUtil.getTraderManager((ServerWorld) world).trySpawn((ServerWorld) world, server.getSaveProperties().getMainWorldProperties(), user);

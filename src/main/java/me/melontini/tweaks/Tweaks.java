@@ -61,7 +61,7 @@ public class Tweaks implements ModInitializer {
                 if (world != null) {
                     var manager = world.getPersistentStateManager();
                     if (manager.loadedStates.containsKey("mt_trader_statemanager"))
-                        WorldUtil.getTraderManager(world).setDirty(true);
+                        WorldUtil.getTraderManager(world).markDirty();
                 }
             }
         });

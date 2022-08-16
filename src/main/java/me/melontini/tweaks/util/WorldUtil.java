@@ -24,7 +24,7 @@ public class WorldUtil {
 
     public static CustomTraderManager getTraderManager(ServerWorld world) {
         return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
-            var manager = new CustomTraderManager();
+            CustomTraderManager manager = new CustomTraderManager();
             manager.readNbt(nbtCompound);
             return manager;
         }, CustomTraderManager::new, "mt_trader_statemanager");
@@ -57,9 +57,9 @@ public class WorldUtil {
         world.spawnEntity(fallingBlock);
     }
 
-    static final List<Direction> dirAroundMap = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+    private static final List<Direction> AROUND_BLOCK_DIRECTIONS = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
     public static boolean isClear(World world, BlockPos pos) {
-        for (Direction dir : dirAroundMap) {
+        for (Direction dir : AROUND_BLOCK_DIRECTIONS) {
             if (!world.getBlockState(pos.offset(dir)).isAir()) {
                 return false;
             }
@@ -69,9 +69,10 @@ public class WorldUtil {
 
     public static BlockPos pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
         int i = 0;
+        double j = (range * range * range) * 0.75;
         while (true) {
             ++i;
-            if (i > (range * range * range) * 0.75) {
+            if (i > j) {
                 return null;
             }
             var pos = new BlockPos(blockPos.getX() + random.nextBetween(-range, range), blockPos.getY() + random.nextBetween(-range, range), blockPos.getZ() + random.nextBetween(-range, range));

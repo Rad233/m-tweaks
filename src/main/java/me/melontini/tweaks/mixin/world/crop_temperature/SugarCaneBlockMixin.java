@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SugarCaneBlock;
@@ -25,9 +26,9 @@ public abstract class SugarCaneBlockMixin extends Block {
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         int age = state.get(AGE);
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((SugarCaneBlock) (Object) this));
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((SugarCaneBlock) (Object) this));
             if (data != null) {
+                float temp = world.getBiome(pos).value().getTemperature();
                 if (temp >= data.min && temp <= data.max) {
                     if (age == 15) {
                         world.setBlockState(pos.up(), this.getDefaultState());

@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -41,19 +41,16 @@ public abstract class CropBlockMixin extends PlantBlock implements Fertilizable 
     public void mTweaks$randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         CropBlock cropBlock = (CropBlock) (Object) this;
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            //No accessors?
-            int age = this.getAge(state);
-            float f = CropBlock.getAvailableMoisture(this, world, pos);
-            float temp = world.getBiome(pos).value().getTemperature();
-            var data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(cropBlock));
+            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId(cropBlock));
             if (data != null) {
+                int age = this.getAge(state);
+                float f = CropBlock.getAvailableMoisture(this, world, pos);
+                float temp = world.getBiome(pos).value().getTemperature();
                 if (temp >= data.min && temp <= data.max) {
-                    LogUtil.info("normal {} ", temp);
                     if (random.nextInt((int) ((25.0F / f) + 1)) == 0) {
                         world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                     }
                 } else if ((temp > data.max && temp <= data.aMax) || (temp < data.min && temp >= data.aMin)) {
-                    LogUtil.info("not normal {} ", temp);
                     if (random.nextInt((int) ((25.0F / f) + 5)) == 0) {
                         world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                     }

@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,13 +29,15 @@ public abstract class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (Tweaks.CONFIG.unknown) {
             if (!player.world.isClient) if (Random.create().nextInt(100000) == 0) {
-                var pos = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, Random.create());
+                BlockPos pos = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, Random.create());
                 if (pos != null) {
-                    var stand = new ArmorStandEntity(player.world, pos.getX(), pos.getY(), pos.getZ());
-                    var stack = new ItemStack(Items.PLAYER_HEAD);
-                    var nbt = new NbtCompound();
+                    ArmorStandEntity stand = new ArmorStandEntity(player.world, pos.getX(), pos.getY(), pos.getZ());
+                    ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
+
+                    NbtCompound nbt = new NbtCompound();
                     nbt.putString("SkullOwner", player.getDisplayName().getString());
                     stack.setNbt(nbt);
+
                     stand.equipStack(EquipmentSlot.HEAD, stack);
                     player.world.spawnEntity(stand);
                     playSound(SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.AMBIENT, 4, 1);

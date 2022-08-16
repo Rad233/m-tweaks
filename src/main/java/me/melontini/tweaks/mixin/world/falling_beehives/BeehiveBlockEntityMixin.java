@@ -18,7 +18,7 @@ import static me.melontini.tweaks.util.WorldUtil.trySpawnFallingBeeNest;
 
 @Mixin(value = BeehiveBlockEntity.class)
 public abstract class BeehiveBlockEntityMixin extends BlockEntity {
-    private static boolean mTweaks$FromFallen;
+    private boolean mTweaks$FromFallen;
 
     public BeehiveBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -63,11 +63,11 @@ public abstract class BeehiveBlockEntityMixin extends BlockEntity {
 
     @Inject(at = @At("TAIL"), method = "readNbt")
     private void mTweaks$readNbt(@NotNull NbtCompound nbt, CallbackInfo ci) {
-        mTweaks$FromFallen = nbt.getBoolean("MT-FromFallenBlock");
+        this.mTweaks$FromFallen = nbt.getBoolean("MT-FromFallenBlock");
     }
 
     @Inject(at = @At("TAIL"), method = "writeNbt")
     private void mTweaks$writeNbt(@NotNull NbtCompound nbt, CallbackInfo ci) {
-        nbt.putBoolean("MT-FromFallenBlock", mTweaks$FromFallen);
+        nbt.putBoolean("MT-FromFallenBlock", this.mTweaks$FromFallen);
     }
 }

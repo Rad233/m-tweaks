@@ -3,6 +3,7 @@ package me.melontini.tweaks.entity.vehicle.boats;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.RideableInventory;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 //Ctrl + c, Ctrl + v
-public abstract class StorageBoatEntity extends BoatEntityWithBlock implements Inventory, NamedScreenHandlerFactory {
+public abstract class StorageBoatEntity extends BoatEntityWithBlock implements RideableInventory, Inventory, NamedScreenHandlerFactory {
     public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(36, ItemStack.EMPTY);
     @Nullable
     public Identifier lootTableId;
@@ -108,15 +109,17 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
 
     @Override
     public ActionResult interact(PlayerEntity player, Hand hand) {
-        if (player.isSneaking() || !this.getPassengerList().isEmpty()) {
+        if (!player.shouldCancelInteraction() && this.getPassengerList().isEmpty()) {
+            super.interact(player, hand);
+        } else {
             player.openHandledScreen(this);
-        } else super.interact(player, hand);
-
-        if (!player.world.isClient) {
-            this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
-            PiglinBrain.onGuardedBlockInteracted(player, true);
-            return ActionResult.CONSUME;
-        } else return ActionResult.SUCCESS;
+            if (!player.world.isClient) {
+                this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
+                PiglinBrain.onGuardedBlockInteracted(player, true);
+                return ActionResult.CONSUME;
+            }
+        }
+        return ActionResult.SUCCESS;
     }
 
     @Override
@@ -202,6 +205,15 @@ public abstract class StorageBoatEntity extends BoatEntityWithBlock implements I
             lootTable.supplyInventory(this, builder.build(LootContextTypes.CHEST));
         }
 
+    }
+
+    @Override
+    public void openInventory(PlayerEntity player) {
+        player.openHandledScreen(this);
+        if (!player.world.isClient) {
+            this.emitGameEvent(GameEvent.CONTAINER_OPEN, player);
+            PiglinBrain.onGuardedBlockInteracted(player, true);
+        }
     }
 
     public abstract ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory);

@@ -10,8 +10,7 @@ public class PotionUtil {
         if (Registry.STATUS_EFFECT.get(id) != null) {
             return Registry.STATUS_EFFECT.get(id);
         } else {
-            LogUtil.error("Invalid Status effect Identifier provided! {} ", id);
-            return null;
+            throw new NullPointerException("[m-tweaks] Couldn't get StatusEffect from identifier: " + id);
         }
     }
 }

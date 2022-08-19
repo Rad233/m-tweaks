@@ -1,6 +1,7 @@
 package me.melontini.tweaks.util;
 
-import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.config.TweaksConfig;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +10,9 @@ public class LogUtil {
     private static final String MODID = "m-tweaks";
     private static final Logger LOGGER = LogManager.getLogger("m-tweaks");
 
-    private static final boolean dev = FabricLoader.getInstance().isDevelopmentEnvironment() || Tweaks.CONFIG.debugMessages;
+    private static final TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
+
+    private static final boolean dev = FabricLoader.getInstance().isDevelopmentEnvironment() || CONFIG.debugMessages;
 
     public static void info(String string) {
         if (dev) LOGGER.info("[" + MODID + "] " + string);

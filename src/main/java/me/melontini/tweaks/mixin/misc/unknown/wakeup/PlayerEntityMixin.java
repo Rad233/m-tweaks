@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
 
@@ -29,8 +31,9 @@ public abstract class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (Tweaks.CONFIG.unknown) {
             if (!player.world.isClient) if (Random.create().nextInt(100000) == 0) {
-                BlockPos pos = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, Random.create());
-                if (pos != null) {
+                Optional<BlockPos> optional = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, Random.create());
+                if (optional.isPresent()) {
+                    BlockPos pos = optional.get();
                     ArmorStandEntity stand = new ArmorStandEntity(player.world, pos.getX(), pos.getY(), pos.getZ());
                     ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
 

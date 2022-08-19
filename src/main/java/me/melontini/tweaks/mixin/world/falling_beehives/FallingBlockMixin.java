@@ -1,7 +1,10 @@
 package me.melontini.tweaks.mixin.world.falling_beehives;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.*;
+import me.melontini.tweaks.util.ItemStackUtil;
+import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.PlayerUtil;
+import me.melontini.tweaks.util.WorldUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeehiveBlockEntity;
@@ -26,6 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -54,13 +58,12 @@ public abstract class FallingBlockMixin extends Entity {
                         nbt.putBoolean("MT-FromFallenBlock", false);
                         List<ItemStack> stacks = WorldUtil.prepareLoot(world, new Identifier(MODID, "bee_nest/bee_nest_broken"));
 
-                        List<PlayerEntity> players = PlayerUtil.findNonCreativePlayersInRange(world, this.getBlockPos(), 16);
+                        Optional<PlayerEntity> optional = PlayerUtil.findClosestNonCreativePlayerInRange(world, this.getBlockPos(), 16);
                         final NbtList nbeetlist = nbt.getList("Bees", 10);
                         List<BeeEntity> beeEntities = world.getNonSpectatingEntities(BeeEntity.class, new Box(getBlockPos()).expand(50));
 
-                        if (!players.isEmpty()) {
+                        if (optional.isPresent()) {
                             world.breakBlock(beehiveBlockEntity.getPos(), false);
-                            PlayerEntity player = MiscUtil.pickRandomEntryFromList(players);
                             for (int i = 0; i < nbeetlist.size(); ++i) {
                                 NbtCompound nbtCompound = nbeetlist.getCompound(i);
                                 BeehiveBlockEntity.Bee fakeBee = new BeehiveBlockEntity.Bee(nbtCompound.getCompound("EntityData"), nbtCompound.getInt("TicksInHive"), nbtCompound.getInt("MinOccupationTicks"));
@@ -68,11 +71,11 @@ public abstract class FallingBlockMixin extends Entity {
                                 BeeEntity bee = new BeeEntity(EntityType.BEE, world);
                                 bee.readNbt(nbt2);
                                 bee.setPosition(getPos());
-                                bee.setTarget(player);
+                                bee.setTarget(optional.get());
                                 world.spawnEntity(bee);
                             }
                             for (BeeEntity bee : beeEntities) {
-                                bee.setTarget(player);
+                                bee.setTarget(optional.get());
                             }
                             for (ItemStack stack : stacks) {
                                 ItemStackUtil.spawnItemWithRandVelocity(this.getPos(), stack, world, 0.5);

@@ -19,10 +19,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WorldUtil {
 
-    public static CustomTraderManager getTraderManager(ServerWorld world) {
+    public static CustomTraderManager getTraderManager(@NotNull ServerWorld world) {
         return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
             CustomTraderManager manager = new CustomTraderManager();
             manager.readNbt(nbtCompound);
@@ -30,7 +31,7 @@ public class WorldUtil {
         }, CustomTraderManager::new, "mt_trader_statemanager");
     }
 
-    public static List<ItemStack> prepareLoot(World world, Identifier lootId) {
+    public static List<ItemStack> prepareLoot(@NotNull World world, Identifier lootId) {
         return ((ServerWorld) world).getServer()
                 .getLootManager()
                 .getTable(lootId)
@@ -67,19 +68,17 @@ public class WorldUtil {
         return true;
     }
 
-    public static BlockPos pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
+    public static Optional<BlockPos> pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
         int i = 0;
         double j = (range * range * range) * 0.75;
         while (true) {
             ++i;
             if (i > j) {
-                return null;
+                return Optional.empty();
             }
             var pos = new BlockPos(blockPos.getX() + random.nextBetween(-range, range), blockPos.getY() + random.nextBetween(-range, range), blockPos.getZ() + random.nextBetween(-range, range));
-            //LogUtil.info(pos);
             if (world.getBlockState(pos.up()).isAir() && world.getBlockState(pos).isAir() && isClear(world, pos) && isClear(world, pos.up())) {
-                //LogUtil.info("SS: {}", pos);
-                return pos;
+                return Optional.of(pos);
             }
         }
     }

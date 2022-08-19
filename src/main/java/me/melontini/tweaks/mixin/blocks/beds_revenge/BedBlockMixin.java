@@ -1,13 +1,13 @@
 package me.melontini.tweaks.mixin.blocks.beds_revenge;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -65,7 +65,7 @@ public abstract class BedBlockMixin extends Block {
             }
             if (Tweaks.CONFIG.safeBeds) {
                 if (!isBedWorking(world)) {
-                    player.sendMessage(Text.translatable("m-tweaks.safebeds.action"), true);
+                    player.sendMessage(TextUtil.createTranslatable("m-tweaks.safebeds.action"), true);
                     cir.setReturnValue(ActionResult.SUCCESS);
                 }
             }

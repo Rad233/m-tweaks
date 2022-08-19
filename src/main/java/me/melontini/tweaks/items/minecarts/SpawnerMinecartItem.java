@@ -1,5 +1,6 @@
 package me.melontini.tweaks.items.minecarts;
 
+import me.melontini.tweaks.util.TextUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -98,7 +99,7 @@ public class SpawnerMinecartItem extends MinecartItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getNbt();
         if (nbt != null) if (nbt.getString("Entity") != null) {
-            tooltip.add(Text.translatable("tooltip.m-tweaks.spawner_minecart.filled", Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()).formatted(Formatting.ITALIC, Formatting.GRAY));
+            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.spawner_minecart.filled", Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()), Formatting.ITALIC, Formatting.GRAY));
         }
     }
 

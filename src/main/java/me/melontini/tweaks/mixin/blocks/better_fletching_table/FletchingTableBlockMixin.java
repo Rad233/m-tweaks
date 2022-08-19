@@ -3,6 +3,7 @@ package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CraftingTableBlock;
@@ -10,7 +11,6 @@ import net.minecraft.block.FletchingTableBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -33,7 +33,7 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);
 
-            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), Text.translatable("gui.m-tweaks.fletching")));
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), TextUtil.createTranslatable(("gui.m-tweaks.fletching"))));
             cir.setReturnValue(ActionResult.SUCCESS);
             LogUtil.info("HELLO");
         }

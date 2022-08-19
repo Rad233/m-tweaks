@@ -15,6 +15,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestTypes;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -28,12 +29,12 @@ public class CustomTraderManager extends PersistentState {
     public CustomTraderManager() {
     }
 
-    public void readNbt(NbtCompound nbt) {
+    public void readNbt(@NotNull NbtCompound nbt) {
         this.cooldown = nbt.getInt("mt-trd-cooldown");
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
+    public NbtCompound writeNbt(@NotNull NbtCompound nbt) {
         nbt.putInt("mt-trd-cooldown", this.cooldown);
         return nbt;
     }
@@ -75,7 +76,7 @@ public class CustomTraderManager extends PersistentState {
         }
     }
 
-    private void spawnLlama(ServerWorld world, WanderingTraderEntity wanderingTrader) {
+    private void spawnLlama(ServerWorld world, @NotNull WanderingTraderEntity wanderingTrader) {
         BlockPos blockPos = this.getNearbySpawnPos(world, wanderingTrader.getBlockPos(), 4);
         if (blockPos != null) {
             TraderLlamaEntity traderLlamaEntity = EntityType.TRADER_LLAMA.spawn(world, null, null, null, blockPos, SpawnReason.EVENT, false, false);

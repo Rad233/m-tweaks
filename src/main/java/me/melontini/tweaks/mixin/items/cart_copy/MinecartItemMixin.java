@@ -346,7 +346,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.put("Items", nbtList);
                     chestMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(chestMinecart);
+                    player.getInventory().offerOrDrop(chestMinecart);
                     chestBlockEntity.inventory.clear();
                     world.breakBlock(pos, false);
                 }
@@ -365,7 +365,7 @@ public abstract class MinecartItemMixin extends Item {
                         nbtCompound.putString("Entity", String.valueOf(getEntityId(mobSpawnerBlockEntity)));
                         spawnerMinecart.setNbt(nbtCompound);
 
-                        player.getInventory().insertStack(spawnerMinecart);
+                        player.getInventory().offerOrDrop(spawnerMinecart);
                         world.breakBlock(pos, false);
                     }
                     cir.setReturnValue(ActionResult.success(world.isClient));
@@ -378,7 +378,7 @@ public abstract class MinecartItemMixin extends Item {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack tntMinecart = new ItemStack(Items.TNT_MINECART, 1);
 
-                    player.getInventory().insertStack(tntMinecart);
+                    player.getInventory().offerOrDrop(tntMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.success(world.isClient));
@@ -397,7 +397,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.putInt("Fuel", fuel);
                     furnaceMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(furnaceMinecart);
+                    player.getInventory().offerOrDrop(furnaceMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.success(world.isClient));
@@ -413,7 +413,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.putInt("Note", noteProp);
                     noteBlockMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(noteBlockMinecart);
+                    player.getInventory().offerOrDrop(noteBlockMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
@@ -434,7 +434,7 @@ public abstract class MinecartItemMixin extends Item {
                         jukeboxMinecart.setNbt(nbt);
                     }
 
-                    player.getInventory().insertStack(jukeboxMinecart);
+                    player.getInventory().offerOrDrop(jukeboxMinecart);
                     jukeboxBlockEntity.clear();
                     world.breakBlock(pos, false);
                 }
@@ -444,7 +444,7 @@ public abstract class MinecartItemMixin extends Item {
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack anvilMinecart = new ItemStack(ItemRegistry.ANVIL_MINECART);
-                    player.getInventory().insertStack(anvilMinecart);
+                    player.getInventory().offerOrDrop(anvilMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
@@ -470,7 +470,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.put("Items", nbtList);
                     hopperMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(hopperMinecart);
+                    player.getInventory().offerOrDrop(hopperMinecart);
                     hopperBlockEntity.inventory.clear();
                     world.breakBlock(pos, false);
                 }

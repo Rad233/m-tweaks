@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
@@ -21,10 +22,10 @@ import java.util.List;
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")
     public void mTweaks$tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
-        if (stack.getItem() instanceof BowItem) if (Tweaks.CONFIG.usefulFletching) {
+        if (Tweaks.CONFIG.usefulFletching) if (stack.getItem() instanceof BowItem) {
             NbtCompound stackNbt = stack.getNbt();
             if (stackNbt != null) if (stackNbt.contains("MT-Tightened")) if (stackNbt.getInt("MT-Tightened") > 0) {
-                tooltip.add(Text.translatable("tooltip.m-tweaks.bow.tight", stackNbt.getInt("MT-Tightened")).formatted(Formatting.GRAY, Formatting.ITALIC));
+                tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.bow.tight", stackNbt.getInt("MT-Tightened")), Formatting.GRAY));
             }
         }
     }

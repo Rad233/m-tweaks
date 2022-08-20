@@ -20,6 +20,6 @@ public class RoseOfTheValley extends BlockItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.rose_of_the_valley"), Formatting.ITALIC, Formatting.GRAY));
+        tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.rose_of_the_valley"), Formatting.GRAY));
     }
 }

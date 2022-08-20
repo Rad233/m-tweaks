@@ -20,7 +20,8 @@ public class ItemMixin {
     private void mTweaks$onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {
         if (Tweaks.CONFIG.unknown) if (clickType == ClickType.RIGHT && stack.isOf(Items.LILY_OF_THE_VALLEY) && otherStack.isOf(Items.DIAMOND)) {
             //I mean .....yeah
-            stack.item = ItemRegistry.ROSE_OF_THE_VALLEY;
+            player.getInventory().offerOrDrop(new ItemStack(ItemRegistry.ROSE_OF_THE_VALLEY));
+            stack.decrement(1);
             otherStack.decrement(1);
             cir.setReturnValue(true);
         }

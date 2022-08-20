@@ -4,7 +4,7 @@
   "tooltip.m-tweaks.rose_of_the_valley": "The smell reminds you of some valley",
   "tooltip.m-tweaks.incubator[0]": "A handy little device, helpful with hatching eggs.",
   "tooltip.m-tweaks.incubator[1]": "Courtesy of \"Bad Software & Hardware LLC\"®",
-  "tooltip.m-tweaks.clock": "Current time: %tH:%tM",
+  "tooltip.m-tweaks.clock": "Current time: %s",
 
   "block.m-tweaks.rose_of_the_valley": "Rose of the Valley",
   "block.m-tweaks.incubator": "Incubator",
@@ -138,6 +138,8 @@
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
 
   "text.autoconfig.m-tweaks.category.items": "Items",
+  "text.autoconfig.m-tweaks.option.clockTooltip": "Clock Tooltip",
+  "text.autoconfig.m-tweaks.option.clockTooltip.@Tooltip": "Shows in-game-time inside clock's tooltip",
   "text.autoconfig.m-tweaks.option.balancedMending": "Balanced Mending",
   "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[0]": "Makes mending a bit less OP by making it remove the \"Too Expensive\" error",
   "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[1]": "instead of repairing items via XP",

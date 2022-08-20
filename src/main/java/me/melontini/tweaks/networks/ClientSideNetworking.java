@@ -3,7 +3,6 @@ package me.melontini.tweaks.networks;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.sound.PersistentMovingSoundInstance;
 import me.melontini.tweaks.util.LogUtil;
-import me.melontini.tweaks.util.TextUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.Entity;
@@ -40,7 +39,7 @@ public class ClientSideNetworking {
 
                         if (discName != null)
                             if (client.player != null) if (entity != null) if (entity.distanceTo(client.player) < 76) {
-                                client.player.sendMessage(TextUtil.createTranslatable("record.nowPlaying", discName), true);
+                                client.inGameHud.setRecordPlayingOverlay(discName);
                             }
                     }
                 });

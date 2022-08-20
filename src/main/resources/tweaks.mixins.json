@@ -18,6 +18,7 @@
     "entities.furnace_minecart.FurnaceMinecartMixin",
     "entities.minecart_adder.AbstractMinecartEntityMixin",
     "items.cart_copy.MinecartItemMixin",
+    "items.clock_tooltip.ItemMixin",
     "items.mending_fix.AnvilScreenHandlerMixin",
     "items.mending_fix.ExperienceOrbMixin",
     "items.mending_fix.ItemStackMixin",

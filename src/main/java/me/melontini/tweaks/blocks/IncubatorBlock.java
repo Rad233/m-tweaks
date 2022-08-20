@@ -63,7 +63,7 @@ public class IncubatorBlock extends BlockWithEntity {
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
         tooltip.add(TextUtil.createTranslatable(("tooltip.m-tweaks.incubator[0]")));
         if (Tweaks.CONFIG.unknown)
-            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.incubator[1]"), Formatting.GRAY, Formatting.ITALIC));
+            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.incubator[1]"), Formatting.GRAY));
     }
 
     @Override

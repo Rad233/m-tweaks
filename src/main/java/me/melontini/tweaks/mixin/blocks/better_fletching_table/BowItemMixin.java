@@ -1,7 +1,6 @@
 package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.LogUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -30,7 +29,6 @@ public abstract class BowItemMixin extends RangedWeaponItem {
         if (Tweaks.CONFIG.usefulFletching) if (stackNbt != null) if (stackNbt.contains("MT-Tightened")) if (stackNbt.getInt("MT-Tightened") > 0) {
             int a = stackNbt.getInt("MT-Tightened");
             persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, f * 3.0F, 0.2F);
-            LogUtil.info(a);
             stackNbt.putInt("MT-Tightened", a - 1);
             stack.setNbt(stackNbt);
         }

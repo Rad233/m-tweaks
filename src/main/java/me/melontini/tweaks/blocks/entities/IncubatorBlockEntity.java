@@ -113,7 +113,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
             return false;
         } else {
             if (!this.inventory.get(0).isEmpty()) {
-                player.getInventory().insertStack(this.inventory.get(0));
+                player.getInventory().offerOrDrop(this.inventory.get(0));
                 this.inventory.set(0, ItemStack.EMPTY);
                 markDirty();
                 return true;

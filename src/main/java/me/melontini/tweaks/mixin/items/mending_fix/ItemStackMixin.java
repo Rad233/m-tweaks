@@ -15,8 +15,8 @@ public abstract class ItemStackMixin {
 
     @Inject(at = @At("RETURN"), method = "getRepairCost", cancellable = true)
     private void mTweaks$getRepairCost(CallbackInfoReturnable<Integer> cir) {
-        if (Tweaks.CONFIG.balancedMending && cir.getReturnValue() >= 40 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
-            cir.setReturnValue(40);
+        if (Tweaks.CONFIG.balancedMending && cir.getReturnValue() >= 52 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
+            cir.setReturnValue(52);
         }
         LogUtil.info(cir.getReturnValue());
     }

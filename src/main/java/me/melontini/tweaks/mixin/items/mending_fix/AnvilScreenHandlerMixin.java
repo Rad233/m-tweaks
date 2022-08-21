@@ -1,16 +1,46 @@
 package me.melontini.tweaks.mixin.items.mending_fix;
 
 import me.melontini.tweaks.Tweaks;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.AnvilScreenHandler;
+import net.minecraft.screen.ForgingScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.Map;
 
 @Mixin(AnvilScreenHandler.class)
-public class AnvilScreenHandlerMixin {
-    @ModifyConstant(method = "updateResult", constant = @Constant(intValue = 40, ordinal = 2))
-    private int mTweaks$updateResult(int constant) {
-        //based
-        return Tweaks.CONFIG.balancedMending ? Integer.MAX_VALUE : constant;
+public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
+    @Unique
+    private ItemStack fakeStack = ItemStack.EMPTY;
+
+    public AnvilScreenHandlerMixin(@org.jetbrains.annotations.Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+        super(type, syncId, playerInventory, context);
+    }
+
+    @ModifyArg(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/CraftingResultInventory;setStack(ILnet/minecraft/item/ItemStack;)V", ordinal = 4), index = 1)
+    private ItemStack mTweaks$setFakeStack(ItemStack stack) {
+        if (Tweaks.CONFIG.balancedMending) if (!this.getSlot(1).getStack().isOf(Items.ENCHANTED_BOOK))
+            if (EnchantmentHelper.get(fakeStack).containsKey(Enchantments.MENDING)) {
+                return fakeStack;
+            }
+        return stack;
+    }
+
+    @Inject(at = @At(value = "FIELD", target = "net/minecraft/item/ItemStack.EMPTY : Lnet/minecraft/item/ItemStack;", opcode = Opcodes.GETSTATIC, ordinal = 5, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "updateResult")
+    private void mTweaks$updateResult(CallbackInfo ci, ItemStack itemStack, int i, int j, int k, ItemStack itemStack2, ItemStack itemStack3, Map map) {
+        if (Tweaks.CONFIG.balancedMending) fakeStack = itemStack2.copy();
     }
 }

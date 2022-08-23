@@ -25,7 +25,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     @Shadow
     BeeEntity.PollinateGoal pollinateGoal;
     @Unique
-    private int plantingCoolDown;
+    private int mTweaks$plantingCoolDown;
 
     protected BeeEntityMixin(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
@@ -36,13 +36,13 @@ public abstract class BeeEntityMixin extends AnimalEntity {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
             BeeEntity.PollinateGoal pollinateGoal = this.pollinateGoal;
-            if (plantingCoolDown > 0) {
-                --plantingCoolDown;
+            if (mTweaks$plantingCoolDown > 0) {
+                --mTweaks$plantingCoolDown;
             }
             if (pollinateGoal != null) {
-                if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.canPlant()) {
-                    this.growFlower();
-                    LogUtil.info(plantingCoolDown);
+                if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
+                    this.mTweaks$growFlower();
+                    LogUtil.info(mTweaks$plantingCoolDown);
                     LogUtil.info("{} stopped pollinating flower at {}", bee, flowerPos);
                 }
             }
@@ -51,20 +51,20 @@ public abstract class BeeEntityMixin extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     private void mTweaks$writeNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("MT-plantingCoolDown", this.plantingCoolDown);
+        nbt.putInt("MT-plantingCoolDown", this.mTweaks$plantingCoolDown);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     private void mTweaks$readNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
+        this.mTweaks$plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
     }
 
     @Unique
-    private void growFlower() {
+    private void mTweaks$growFlower() {
         if (this.flowerPos != null) {
             BlockState flowerState = world.getBlockState(flowerPos);
             if (flowerState.getBlock() instanceof FlowerBlock flowerBlock) {
-                plantingCoolDown = world.random.nextBetween(3600, 6490);
+                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 6490);
                 for (int i = -2; i <= 2; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -2; c <= 2; c++) {
@@ -79,7 +79,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     }
                 }
             } else if (flowerState.getBlock() instanceof TallFlowerBlock flowerBlock && Tweaks.CONFIG.beeTallFlowerDuplication) {
-                plantingCoolDown = world.random.nextBetween(3600, 8000);
+                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 8000);
                 for (int i = -1; i <= 1; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -1; c <= 1; c++) {
@@ -98,7 +98,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     }
 
     @Unique
-    private boolean canPlant() {
-        return this.plantingCoolDown == 0;
+    private boolean mTweaks$canPlant() {
+        return this.mTweaks$plantingCoolDown == 0;
     }
 }

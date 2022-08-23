@@ -47,8 +47,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     }
 
     public void tick() {
+        assert world != null;
         if (this.processingTime > 0) {
-            assert world != null;
             if (world.getBlockState(pos.down()).getBlock() instanceof CampfireBlock ||
                     world.getBlockState(pos.down().down()).getBlock() instanceof CampfireBlock) {
                 if (!world.isClient) this.processingTime--;
@@ -59,7 +59,6 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                 }
             }
         }
-        assert world != null;
         if (!world.isClient()) {
             ItemStack stack = this.inventory.get(0);
             BlockState state = world.getBlockState(this.pos);

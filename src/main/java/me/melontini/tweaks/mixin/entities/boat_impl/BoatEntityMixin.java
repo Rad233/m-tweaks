@@ -27,7 +27,7 @@ public abstract class BoatEntityMixin extends Entity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 1, shift = At.Shift.BEFORE), method = "updateVelocity", locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-    public void mTweaks$aVoid(CallbackInfo ci, double e, double f) {
+    public void mTweaks$furnaceBoatVelocity(CallbackInfo ci, double e, double f) {
         BoatEntity boat = (BoatEntity) (Object) this;
         if (boat instanceof FurnaceBoatEntity furnaceBoat) {
             Vec3d vec3d = this.getVelocity();

@@ -61,7 +61,7 @@ public class AnvilMinecartItem extends MinecartItem {
                 }
             }
 
-            AnvilMinecartEntity anvilMinecartEntity = (AnvilMinecartEntity) AnvilMinecartEntity.create(world, d, e + g, f, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_ANVIL"));
+            AnvilMinecartEntity anvilMinecartEntity = new AnvilMinecartEntity(world, d, e + g, f);
             if (stack.hasCustomName()) {
                 anvilMinecartEntity.setCustomName(stack.getName());
             }
@@ -100,7 +100,7 @@ public class AnvilMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                AnvilMinecartEntity anvilMinecartEntity = (AnvilMinecartEntity) AnvilMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_ANVIL"));
+                AnvilMinecartEntity anvilMinecartEntity = new AnvilMinecartEntity(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5);
                 if (itemStack.hasCustomName()) {
                     anvilMinecartEntity.setCustomName(itemStack.getName());
                 }

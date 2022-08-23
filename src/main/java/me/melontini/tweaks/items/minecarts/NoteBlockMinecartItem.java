@@ -61,7 +61,7 @@ public class NoteBlockMinecartItem extends MinecartItem {
                 }
             }
 
-            NoteBlockMinecartEntity noteBlockMinecart = (NoteBlockMinecartEntity) NoteBlockMinecartEntity.create(world, d, e + g, f, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_NOTEBLOCK"));
+            NoteBlockMinecartEntity noteBlockMinecart = new NoteBlockMinecartEntity(world, d, e + g, f);
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getInt("Note") >= 0){
@@ -106,7 +106,7 @@ public class NoteBlockMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                NoteBlockMinecartEntity noteBlockMinecart = (NoteBlockMinecartEntity) NoteBlockMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_NOTEBLOCK"));
+                NoteBlockMinecartEntity noteBlockMinecart = new NoteBlockMinecartEntity(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5);
 
                 NbtCompound nbt = itemStack.getNbt();
                 if (nbt != null) if (nbt.getInt("Note") >= 0){

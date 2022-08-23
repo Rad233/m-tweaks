@@ -66,8 +66,7 @@ public class SpawnerMinecartItem extends MinecartItem {
                 }
             }
 
-            AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.SPAWNER);
-            SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
+            SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.SPAWNER);
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getString("Entity") != null) {
@@ -75,10 +74,10 @@ public class SpawnerMinecartItem extends MinecartItem {
             }
 
             if (stack.hasCustomName()) {
-                abstractMinecartEntity.setCustomName(stack.getName());
+                spawnerMinecartEntity.setCustomName(stack.getName());
             }
 
-            world.spawnEntity(abstractMinecartEntity);
+            world.spawnEntity(spawnerMinecartEntity);
             stack.decrement(1);
             return stack;
         }
@@ -121,8 +120,7 @@ public class SpawnerMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, this.type);
-                SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
+                SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) AbstractMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, this.type);
 
                 NbtCompound nbt = stack.getNbt();
                 if (nbt != null) if (nbt.getString("Entity") != null) {

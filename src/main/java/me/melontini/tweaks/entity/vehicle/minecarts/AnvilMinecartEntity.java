@@ -1,6 +1,5 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import net.minecraft.block.AnvilBlock;
@@ -30,8 +29,8 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     }
 
     @Override
-    public AbstractMinecartEntity.Type getMinecartType() {
-        return ClassTinkerers.getEnum(Type.class, "M_TWEAKS_ANVIL");
+    public Type getMinecartType() {
+        return Type.CHEST;
     }
 
     @Override

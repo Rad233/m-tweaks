@@ -61,7 +61,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
                 }
             }
 
-            JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, d, e + g, f, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+            JukeboxMinecartEntity jukeBoxMinecartEntity = new JukeboxMinecartEntity(world, d, e + g, f);
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getCompound("Items") != null) {
@@ -107,7 +107,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+                JukeboxMinecartEntity jukeBoxMinecartEntity = new JukeboxMinecartEntity(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5);
 
                 NbtCompound nbt = itemStack.getNbt();
                 if (nbt != null) if (nbt.getCompound("Items") != null) {

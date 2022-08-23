@@ -24,7 +24,7 @@ import java.util.Map;
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @Unique
-    private ItemStack fakeStack = ItemStack.EMPTY;
+    private ItemStack mTweaks$fakeStack = ItemStack.EMPTY;
 
     public AnvilScreenHandlerMixin(@org.jetbrains.annotations.Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(type, syncId, playerInventory, context);
@@ -33,14 +33,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
     @ModifyArg(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/CraftingResultInventory;setStack(ILnet/minecraft/item/ItemStack;)V", ordinal = 4), index = 1)
     private ItemStack mTweaks$setFakeStack(ItemStack stack) {
         if (Tweaks.CONFIG.balancedMending) if (!this.getSlot(1).getStack().isOf(Items.ENCHANTED_BOOK))
-            if (EnchantmentHelper.get(fakeStack).containsKey(Enchantments.MENDING)) {
-                return fakeStack;
+            if (EnchantmentHelper.get(mTweaks$fakeStack).containsKey(Enchantments.MENDING)) {
+                return mTweaks$fakeStack;
             }
         return stack;
     }
 
     @Inject(at = @At(value = "FIELD", target = "net/minecraft/item/ItemStack.EMPTY : Lnet/minecraft/item/ItemStack;", opcode = Opcodes.GETSTATIC, ordinal = 5, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "updateResult")
     private void mTweaks$updateResult(CallbackInfo ci, ItemStack itemStack, int i, int j, int k, ItemStack itemStack2, ItemStack itemStack3, Map map) {
-        if (Tweaks.CONFIG.balancedMending) fakeStack = itemStack2.copy();
+        if (Tweaks.CONFIG.balancedMending) mTweaks$fakeStack = itemStack2.copy();
     }
 }

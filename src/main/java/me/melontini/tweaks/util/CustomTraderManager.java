@@ -40,9 +40,7 @@ public class CustomTraderManager extends PersistentState {
     }
 
     public void tick() {
-        if (this.cooldown > 0) {
-            --this.cooldown;
-        }
+        if (this.cooldown > 0) --this.cooldown;
     }
 
     public void trySpawn(ServerWorld world, ServerWorldProperties properties, PlayerEntity player) {
@@ -50,11 +48,10 @@ public class CustomTraderManager extends PersistentState {
             BlockPos blockPos = player.getBlockPos();
 
             PointOfInterestStorage pointOfInterestStorage = world.getPointOfInterestStorage();
-            Optional<BlockPos> optional = pointOfInterestStorage.getPosition(
-                    registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING), pos -> true, blockPos, 48, PointOfInterestStorage.OccupationStatus.ANY
-            );
+            Optional<BlockPos> optional = pointOfInterestStorage.getPosition(registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING), pos -> true, blockPos, 48, PointOfInterestStorage.OccupationStatus.ANY);
             BlockPos blockPos2 = optional.orElse(blockPos);
             BlockPos blockPos3 = getNearbySpawnPos(world, blockPos2, 48);
+
             if (blockPos3 != null && doesNotSuffocateAt(world, blockPos3)) {
                 if (world.getBiome(blockPos3).isIn(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS)) {
                     return;

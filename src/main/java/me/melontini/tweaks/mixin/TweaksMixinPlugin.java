@@ -43,9 +43,8 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                     for (AnnotationNode node1 : node.visibleAnnotations) {
                         if (node1.desc.equals("Lme/melontini/tweaks/util/annotations/MixinRelatedConfigOption;")) {
                             List<Boolean> booleans = new ArrayList<>();
-                            for (int i = 0; i < node1.values.size(); i++) {
-                                if (i % 2 == 1) {
-                                    String configOption = (String) node1.values.get(i);
+                            List<String> configOptions = (List<String>) node1.values.get(1);
+                            for (String configOption : configOptions) {
                                     List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
                                     boolean j;
                                     if (classes.size() == 2) {
@@ -54,7 +53,6 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                                         j = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
                                     }
                                     booleans.add(j);
-                                }
                             }
                             LogUtil.info("{} : {}", mixinClassName, booleans.stream().allMatch(aBoolean -> aBoolean) ? "loaded" : "not loaded");
                             return booleans.stream().allMatch(aBoolean -> aBoolean);

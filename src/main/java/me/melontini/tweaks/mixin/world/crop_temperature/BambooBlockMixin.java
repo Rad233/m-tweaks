@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.BambooBlock;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.minecraft.block.BambooBlock.STAGE;
 
+@MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Mixin(BambooBlock.class)
 public abstract class BambooBlockMixin extends Block implements Fertilizable {
     @Shadow

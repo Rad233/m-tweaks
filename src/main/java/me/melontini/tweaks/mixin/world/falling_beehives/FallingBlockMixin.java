@@ -5,6 +5,7 @@ import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.WorldUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeehiveBlockEntity;
@@ -33,6 +34,7 @@ import java.util.Optional;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
+@MixinRelatedConfigOption("canBeeNestsFall")
 @Mixin(FallingBlockEntity.class)
 public abstract class FallingBlockMixin extends Entity {
     @Shadow

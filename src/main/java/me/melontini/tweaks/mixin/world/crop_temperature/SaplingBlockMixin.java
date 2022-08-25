@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Mixin(SaplingBlock.class)
 public abstract class SaplingBlockMixin {
     @Shadow public abstract void generate(ServerWorld world, BlockPos pos, BlockState state, Random random);

@@ -30,7 +30,9 @@ public class ItemRegistry {
     public static  AnvilMinecartItem ANVIL_MINECART;
     public static  NoteBlockMinecartItem NOTE_BLOCK_MINECART;
     public static JukeBoxMinecartItem JUKEBOX_MINECART;
-    public static Item INCUBATOR;
+    public static BlockItem INCUBATOR;
+
+    public static Item INFINITE_TOTEM;
 
     public static void register() {
         SPAWNER_MINECART = new SpawnerMinecartItem(AbstractMinecartEntity.Type.SPAWNER, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
@@ -71,6 +73,11 @@ public class ItemRegistry {
         if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
             INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
             Registry.register(Registry.ITEM, new Identifier(MODID, "incubator"), INCUBATOR);
+        }
+
+        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
+            INFINITE_TOTEM = new Item(new Item.Settings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "infinite_totem"), INFINITE_TOTEM);
         }
 
         LogUtil.info("ItemRegistry init complete!");

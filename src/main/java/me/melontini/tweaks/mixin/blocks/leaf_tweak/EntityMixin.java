@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.leaf_tweak;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.melontini.tweaks.Tweaks.LEAF_SLOWNESS;
 
+@MixinRelatedConfigOption("leafSlowdown")
 @Mixin(LivingEntity.class)
 public abstract class EntityMixin extends Entity {
 

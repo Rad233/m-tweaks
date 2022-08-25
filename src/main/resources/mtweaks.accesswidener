@@ -1,6 +1,7 @@
 accessWidener  v2	named
 accessible class net/minecraft/block/entity/BeehiveBlockEntity$Bee
 # Fields
+accessible field net/minecraft/block/entity/BeaconBlockEntity level I
 accessible field net/minecraft/block/entity/BeehiveBlockEntity$Bee entityData Lnet/minecraft/nbt/NbtCompound;
 mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;

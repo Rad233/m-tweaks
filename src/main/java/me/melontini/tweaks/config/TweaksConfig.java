@@ -179,6 +179,26 @@ public class TweaksConfig implements ConfigData {
         public boolean isHopperBoatOn = true;
     }
 
+
+    @ConfigEntry.Category("items")
+    @Comment("Infinite Totem settings. Pleas see the wiki for proper descriptions")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public TotemSettings totemSettings = new TotemSettings();
+
+    public static class TotemSettings {
+        @ConfigEntry.Category("items")
+        @Comment("Enables Infinite Totem of Undying.")
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean enableInfiniteTotem = false;
+
+        @ConfigEntry.Category("items")
+        @Comment("Enables ascension of \"Totem of Undying\" to infinity. Otherwise there's no way to make IToU")
+        @ConfigEntry.Gui.Tooltip
+        public boolean enableTotemAscension = true;
+    }
+
     @ConfigEntry.Category("items")
     @Comment("Shows in-game-time inside clock's tooltip")
     @ConfigEntry.Gui.Tooltip

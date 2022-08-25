@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.falling_beehives;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.melontini.tweaks.util.WorldUtil.trySpawnFallingBeeNest;
 
+@MixinRelatedConfigOption("canBeeNestsFall")
 @Mixin(value = BeehiveBlockEntity.class)
 public abstract class BeehiveBlockEntityMixin extends BlockEntity {
     private boolean mTweaks$FromFallen;

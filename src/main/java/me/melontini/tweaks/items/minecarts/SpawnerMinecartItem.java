@@ -86,11 +86,9 @@ public class SpawnerMinecartItem extends MinecartItem {
             pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
         }
     };
-    public final AbstractMinecartEntity.Type type;
 
     public SpawnerMinecartItem(AbstractMinecartEntity.Type type, FabricItemSettings properties) {
         super(type, properties);
-        this.type = AbstractMinecartEntity.Type.SPAWNER;
         DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 

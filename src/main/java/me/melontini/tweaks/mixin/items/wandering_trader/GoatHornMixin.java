@@ -3,6 +3,7 @@ package me.melontini.tweaks.mixin.items.wandering_trader;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.WorldUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.GoatHornItem;
@@ -27,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Objects;
 import java.util.Optional;
 
+@MixinRelatedConfigOption("tradingGoatHorn")
 @Mixin(GoatHornItem.class)
 public class GoatHornMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "use", cancellable = true)

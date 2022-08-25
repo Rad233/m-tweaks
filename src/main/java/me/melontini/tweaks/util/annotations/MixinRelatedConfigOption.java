@@ -1,0 +1,13 @@
+package me.melontini.tweaks.util.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MixinRelatedConfigOption {
+    String value();
+    String secondaryOption() default "";
+}

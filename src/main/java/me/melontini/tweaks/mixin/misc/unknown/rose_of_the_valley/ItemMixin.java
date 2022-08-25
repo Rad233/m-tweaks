@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.misc.unknown.rose_of_the_valley;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@MixinRelatedConfigOption("unknown")
 @Mixin(Item.class)
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "onClicked", cancellable = true)

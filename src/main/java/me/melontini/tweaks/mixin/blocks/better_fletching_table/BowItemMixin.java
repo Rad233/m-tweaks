@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@MixinRelatedConfigOption("usefulFletching")
 @Mixin(BowItem.class)
 public abstract class BowItemMixin extends RangedWeaponItem {
     public BowItemMixin(Settings settings) {

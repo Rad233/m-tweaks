@@ -4,6 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CraftingTableBlock;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@MixinRelatedConfigOption("usefulFletching")
 @Mixin(FletchingTableBlock.class)
 public class FletchingTableBlockMixin extends CraftingTableBlock {
     public FletchingTableBlockMixin(Settings settings) {

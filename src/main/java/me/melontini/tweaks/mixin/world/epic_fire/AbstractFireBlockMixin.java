@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.epic_fire;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@MixinRelatedConfigOption("quickFire")
 @Mixin(FireBlock.class)
 public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
     @Shadow

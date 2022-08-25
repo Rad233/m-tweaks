@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin;
 
+import com.google.common.io.Resources;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.LogUtil;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -11,10 +12,12 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class TweaksMixinPlugin implements IMixinConfigPlugin {
-    Map<String, Boolean> OPTION_MAP = new HashMap<>();
     private TweaksConfig CONFIG;
 
     @Override
@@ -26,11 +29,13 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
+    @SuppressWarnings({"UnstableApiUsage", "ConstantConditions"})
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (CONFIG.compatMode) {
             try {
-                ClassReader reader = new ClassReader(mixinClassName);
+                //"inspired" by https://github.com/unascribed/Fabrication/blob/3.0/1.18/src/main/java/com/unascribed/fabrication/support/MixinConfigPlugin.java
+                ClassReader reader = new ClassReader(Resources.asByteSource(getClass().getClassLoader().getResource(mixinClassName.replace(".", "/") + ".class")).read());
                 ClassNode node = new ClassNode();
                 reader.accept(node, 0);
 
@@ -40,7 +45,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                             List<Boolean> booleans = new ArrayList<>();
                             for (int i = 0; i < node1.values.size(); i++) {
                                 if (i % 2 == 1) {
-                                    String configOption = (String) node1.values.get(i);//probably fine?
+                                    String configOption = (String) node1.values.get(i);
                                     List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
                                     boolean j;
                                     if (classes.size() == 2) {

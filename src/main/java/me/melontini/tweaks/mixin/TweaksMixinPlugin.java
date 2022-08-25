@@ -37,29 +37,22 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                 if (node.visibleAnnotations != null) {
                     for (AnnotationNode node1 : node.visibleAnnotations) {
                         if (node1.desc.equals("Lme/melontini/tweaks/util/annotations/MixinRelatedConfigOption;")) {
-                            String configOption = (String) node1.values.get(1);//probably fine?
-                            List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
-                            boolean i;
-                            if (classes.size() == 2) {
-                                i = CONFIG.getClass().getField(classes.get(0)).get(CONFIG).getClass().getField(classes.get(1)).getBoolean(CONFIG.getClass().getField(classes.get(0)).get(CONFIG));
-                            } else {
-                                i = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
-                            }
-                            if (node1.values.size() == 4) {
-                                String configOption2 = (String) node1.values.get(3);//probably fine?
-                                List<String> classes2 = Arrays.stream(configOption2.split("\\.")).toList();
-                                boolean j;
-                                if (classes2.size() == 2) {
-                                    j = CONFIG.getClass().getField(classes2.get(0)).get(CONFIG).getClass().getField(classes2.get(1)).getBoolean(CONFIG.getClass().getField(classes2.get(0)).get(CONFIG));
-                                } else {
-                                    j = CONFIG.getClass().getField(configOption2).getBoolean(CONFIG);
+                            List<Boolean> booleans = new ArrayList<>();
+                            for (int i = 0; i < node1.values.size(); i++) {
+                                if (i % 2 == 1) {
+                                    String configOption = (String) node1.values.get(i);//probably fine?
+                                    List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
+                                    boolean j;
+                                    if (classes.size() == 2) {
+                                        j = CONFIG.getClass().getField(classes.get(0)).get(CONFIG).getClass().getField(classes.get(1)).getBoolean(CONFIG.getClass().getField(classes.get(0)).get(CONFIG));
+                                    } else {
+                                        j = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
+                                    }
+                                    booleans.add(j);
                                 }
-
-                                LogUtil.info("mixin 4 {} was {}", mixinClassName, i && j ? "loaded" : "not loaded");
-                                return i && j;
                             }
-                            LogUtil.info("mixin 2 {} was {}", mixinClassName, i ? "loaded" : "not loaded");
-                            return i;
+                            LogUtil.info("{} : {}", mixinClassName, booleans.stream().allMatch(aBoolean -> aBoolean) ? "loaded" : "not loaded");
+                            return booleans.stream().allMatch(aBoolean -> aBoolean);
                         }
                     }
                 }

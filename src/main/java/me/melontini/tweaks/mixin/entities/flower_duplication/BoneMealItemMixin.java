@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.item.BoneMealItem;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@MixinRelatedConfigOption("beeFlowerDuplication")
 @Mixin(BoneMealItem.class)
 public class BoneMealItemMixin {
     @Inject(at = @At("HEAD"), method = "useOnFertilizable", cancellable = true)

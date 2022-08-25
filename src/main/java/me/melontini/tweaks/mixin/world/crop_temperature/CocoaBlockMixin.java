@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Mixin(CocoaBlock.class)
 public class CocoaBlockMixin {
     @Shadow @Final public static IntProperty AGE;

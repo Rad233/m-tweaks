@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.AbstractPlantPartBlock;
 import net.minecraft.block.AbstractPlantStemBlock;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Mixin(AbstractPlantStemBlock.class)
 public abstract class AbstractPlantStemBlockMixin extends AbstractPlantPartBlock {
     @Shadow @Final private double growthChance;

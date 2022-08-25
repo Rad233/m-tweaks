@@ -1,6 +1,5 @@
 package me.melontini.tweaks.items.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -8,10 +7,9 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.enums.RailShape;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.MinecartItem;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPointer;
@@ -21,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 
-public class AnvilMinecartItem extends MinecartItem {
+public class AnvilMinecartItem extends Item {
     //TODO minecart block picking
     private static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
         private final ItemDispenserBehavior defaultBehavior = new ItemDispenserBehavior();
@@ -78,7 +76,7 @@ public class AnvilMinecartItem extends MinecartItem {
     };
 
     public AnvilMinecartItem(Settings settings) {
-        super(ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_ANVIL"), settings);
+        super(settings);
         DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 

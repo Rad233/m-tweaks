@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.crop_temperature;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.minecraft.block.SugarCaneBlock.AGE;
 
+@MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Mixin(CactusBlock.class)
 public abstract class CactusBlockMixin extends Block {
     public CactusBlockMixin(Settings settings) {

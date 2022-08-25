@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.items.clock_tooltip;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+@MixinRelatedConfigOption("clockTooltip")
 @Mixin(Item.class)
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")

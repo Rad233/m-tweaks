@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+@MixinRelatedConfigOption("usefulFletching")
 @Mixin(Item.class)
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")

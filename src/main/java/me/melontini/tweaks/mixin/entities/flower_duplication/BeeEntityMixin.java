@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("beeFlowerDuplication")
 @Mixin(BeeEntity.class)
 public abstract class BeeEntityMixin extends AnimalEntity {
 

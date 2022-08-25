@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.misc.unknown.wakeup;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.WorldUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
+@MixinRelatedConfigOption("unknown")
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
 

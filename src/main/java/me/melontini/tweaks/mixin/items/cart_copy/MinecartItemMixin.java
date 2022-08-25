@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.items.cart_copy;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -38,6 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
+@MixinRelatedConfigOption("minecartBlockPicking")
 @Mixin(MinecartItem.class)
 public abstract class MinecartItemMixin extends Item {
     @Final

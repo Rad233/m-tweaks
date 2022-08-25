@@ -1,6 +1,7 @@
 package me.melontini.tweaks.client;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.client.particles.KnockoffTotemParticle;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
 import me.melontini.tweaks.client.render.block.IncubatorBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
@@ -11,6 +12,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.block.Blocks;
@@ -33,6 +35,9 @@ public class TweaksClient implements ClientModInitializer {
 
         if (Tweaks.CONFIG.usefulFletching)
             HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
+
+        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
+            ParticleFactoryRegistry.getInstance().register(Tweaks.KNOCKOFF_TOTEM_PARTICLE, KnockoffTotemParticle.Factory::new);
     }
 
     public void registerBlockRenderers() {

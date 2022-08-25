@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.items.mending_fix;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
+@MixinRelatedConfigOption("balancedMending")
 @Mixin(AnvilScreen.class)
 public abstract class AnvilScreenMixin extends HandledScreen<AnvilScreenHandler> {
     public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory inventory, Text title) {

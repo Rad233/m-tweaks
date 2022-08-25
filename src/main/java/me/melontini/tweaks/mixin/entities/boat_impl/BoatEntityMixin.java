@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.entities.boat_impl;
 
 import me.melontini.tweaks.entity.vehicle.boats.FurnaceBoatEntity;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@MixinRelatedConfigOption("newBoats.isFurnaceBoatOn")
 @Mixin(BoatEntity.class)
 public abstract class BoatEntityMixin extends Entity {
     @Shadow

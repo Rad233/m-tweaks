@@ -4,6 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.InvalidConfigEntryException;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Objects;
 
+@MixinRelatedConfigOption("campfireTweaks.campfireEffects")
 @Mixin(CampfireBlockEntity.class)
 public class CampfireBlockEntityMixin {
     @Inject(at = @At("HEAD"), method = "litServerTick")

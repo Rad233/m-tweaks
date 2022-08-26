@@ -71,22 +71,18 @@ public class ItemRegistry {
         }
 
         if (Tweaks.CONFIG.unknown)
-            ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem("rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), RoseOfTheValley.class, BlockRegistry.ROSE_OF_THE_VALLEY);
+            ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem(RoseOfTheValley.class,"rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), BlockRegistry.ROSE_OF_THE_VALLEY);
 
-        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
-            INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "incubator"), INCUBATOR);
-        }
+        if (Tweaks.CONFIG.incubatorSettings.enableIncubator)
+            INCUBATOR = (BlockItem) createItem(BlockItem.class,"incubator", new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS), BlockRegistry.INCUBATOR_BLOCK);
 
-        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
-            INFINITE_TOTEM = new Item(new Item.Settings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "infinite_totem"), INFINITE_TOTEM);
-        }
+        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
+            INFINITE_TOTEM = createItem(Item.class, "infinite_totem", new Item.Settings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
 
         LogUtil.info("ItemRegistry init complete!");
     }
 
-    private static Item createItem(String identifier, Item.Settings settings, Class<?> itemClass, Object... params) {
+    private static Item createItem(Class<?> itemClass, String identifier, Item.Settings settings, Object... params) {
         List<Class> list = new ArrayList<>();
         List<Object> objects = new ArrayList<>();
         for (Object o : params) {
@@ -99,7 +95,7 @@ public class ItemRegistry {
         try {
             item = (Item) ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(objects.toArray());
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("[m-tweaks] couldn't create item. identifier: %s", identifier), e);
         }
 
         Registry.register(Registry.ITEM, new Identifier(MODID, identifier), item);

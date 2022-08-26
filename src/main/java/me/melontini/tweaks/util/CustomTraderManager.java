@@ -25,10 +25,6 @@ public class CustomTraderManager extends PersistentState {
     private final Random random = Random.create();
     public int cooldown;
 
-    //I'm so good at making bad decisions
-    public CustomTraderManager() {
-    }
-
     public void readNbt(@NotNull NbtCompound nbt) {
         this.cooldown = nbt.getInt("mt-trd-cooldown");
     }

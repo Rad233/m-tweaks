@@ -4,8 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import me.melontini.tweaks.util.data.PlantData;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -18,10 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @MixinRelatedConfigOption("temperatureBasedCropGrowthSpeed")
 @Pseudo
-@Mixin(targets = {
-        "net.minecraft.block.AbstractPlantStemBlock", "net.minecraft.block.BambooBlock", "net.minecraft.block.CactusBlock",
-        "net.minecraft.block.CocoaBlock", "net.minecraft.block.CropBlock", "net.minecraft.block.SaplingBlock",
-        "net.minecraft.block.SugarCaneBlock", "net.minecraft.block.SweetBerryBushBlock"})
+@Mixin(value = {AbstractPlantStemBlock.class, BambooBlock.class, CactusBlock.class, CocoaBlock.class, CropBlock.class, SaplingBlock.class, SugarCaneBlock.class, SweetBerryBushBlock.class})
 public class PlantBlocksMixin {
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
     private void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {

@@ -40,7 +40,7 @@ public class TextUtil {//At the end of the day, just changing 2 lines of Text wo
         try {
             method = findMethod("class_5250", DEV_ENV ? "method_27695" : "method_27692", "([Lnet/minecraft/class_124;)Lnet/minecraft/class_5250;", findClass("class_124"));
         } catch (NoSuchMethodException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("[m-tweaks] couldn't apply formatting to text", e);
         }
         for (Formatting formatting1 : formattings) {
             try {

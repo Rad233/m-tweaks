@@ -20,15 +20,20 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ItemRegistry {
 
     public static RoseOfTheValley ROSE_OF_THE_VALLEY;
-    public static  SpawnerMinecartItem SPAWNER_MINECART;
-    public static  AnvilMinecartItem ANVIL_MINECART;
-    public static  NoteBlockMinecartItem NOTE_BLOCK_MINECART;
+    public static SpawnerMinecartItem SPAWNER_MINECART;
+    public static AnvilMinecartItem ANVIL_MINECART;
+    public static NoteBlockMinecartItem NOTE_BLOCK_MINECART;
     public static JukeBoxMinecartItem JUKEBOX_MINECART;
     public static BlockItem INCUBATOR;
 
@@ -65,10 +70,8 @@ public class ItemRegistry {
             Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
 
-        if (Tweaks.CONFIG.unknown) {
-            ROSE_OF_THE_VALLEY = new RoseOfTheValley(BlockRegistry.ROSE_OF_THE_VALLEY, new FabricItemSettings().rarity(Rarity.UNCOMMON));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
-        }
+        if (Tweaks.CONFIG.unknown)
+            ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem("rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), RoseOfTheValley.class, BlockRegistry.ROSE_OF_THE_VALLEY);
 
         if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
             INCUBATOR = new BlockItem(BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
@@ -81,5 +84,25 @@ public class ItemRegistry {
         }
 
         LogUtil.info("ItemRegistry init complete!");
+    }
+
+    private static Item createItem(String identifier, Item.Settings settings, Class<?> itemClass, Object... params) {
+        List<Class> list = new ArrayList<>();
+        List<Object> objects = new ArrayList<>();
+        for (Object o : params) {
+            list.add(o.getClass());
+            objects.add(o);
+        }
+        list.add(settings.getClass());
+        objects.add(settings);
+        Item item;
+        try {
+            item = (Item) ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(objects.toArray());
+        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+
+        Registry.register(Registry.ITEM, new Identifier(MODID, identifier), item);
+        return item;
     }
 }

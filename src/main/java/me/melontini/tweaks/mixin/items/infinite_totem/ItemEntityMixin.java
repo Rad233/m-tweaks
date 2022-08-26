@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@MixinRelatedConfigOption(value = {"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
+@MixinRelatedConfigOption({"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity implements ItemEntityFriendAccess {
     @Shadow

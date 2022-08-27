@@ -30,13 +30,13 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ItemRegistry {
 
-    public static RoseOfTheValley ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem(Tweaks.CONFIG.unknown, RoseOfTheValley.class,"rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), BlockRegistry.ROSE_OF_THE_VALLEY);
+    public static RoseOfTheValley ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem(Tweaks.CONFIG.unknown, RoseOfTheValley.class, "rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), BlockRegistry.ROSE_OF_THE_VALLEY);
     public static SpawnerMinecartItem SPAWNER_MINECART = (SpawnerMinecartItem) createItem(SpawnerMinecartItem.class, "spawner_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1), AbstractMinecartEntity.Type.SPAWNER);
     public static AnvilMinecartItem ANVIL_MINECART = (AnvilMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn, AnvilMinecartItem.class, "anvil_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
     public static NoteBlockMinecartItem NOTE_BLOCK_MINECART = (NoteBlockMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn, NoteBlockMinecartItem.class, "note_block_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
     public static JukeBoxMinecartItem JUKEBOX_MINECART = (JukeBoxMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn, JukeBoxMinecartItem.class, "jukebox_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
-    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class,"incubator", new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS), BlockRegistry.INCUBATOR_BLOCK);
-    public static Item INFINITE_TOTEM = createItem(Tweaks.CONFIG.totemSettings.enableInfiniteTotem, Item.class, "infinite_totem", new Item.Settings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
+    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class, "incubator", new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS), BlockRegistry.INCUBATOR_BLOCK);
+    public static Item INFINITE_TOTEM = createItem(Tweaks.CONFIG.totemSettings.enableInfiniteTotem, Item.class, "infinite_totem", new FabricItemSettings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
 
     public static void register() {
         for (BoatEntity.Type value : BoatEntity.Type.values()) {

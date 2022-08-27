@@ -1,4 +1,4 @@
-package me.melontini.tweaks.mixin.duck_impl;
+package me.melontini.tweaks.mixin.a_impl;
 
 import me.melontini.tweaks.ducks.ItemEntityFriendAccess;
 import net.minecraft.entity.ItemEntity;

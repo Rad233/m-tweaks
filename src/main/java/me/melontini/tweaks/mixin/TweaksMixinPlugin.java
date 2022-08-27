@@ -45,14 +45,14 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                             List<Boolean> booleans = new ArrayList<>();
                             List<String> configOptions = (List<String>) node1.values.get(1);
                             for (String configOption : configOptions) {
-                                    List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
-                                    boolean j;
-                                    if (classes.size() == 2) {
-                                        j = CONFIG.getClass().getField(classes.get(0)).get(CONFIG).getClass().getField(classes.get(1)).getBoolean(CONFIG.getClass().getField(classes.get(0)).get(CONFIG));
-                                    } else {
-                                        j = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
-                                    }
-                                    booleans.add(j);
+                                List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
+                                boolean j;
+                                if (classes.size() == 2) {
+                                    j = CONFIG.getClass().getField(classes.get(0)).get(CONFIG).getClass().getField(classes.get(1)).getBoolean(CONFIG.getClass().getField(classes.get(0)).get(CONFIG));
+                                } else {
+                                    j = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
+                                }
+                                booleans.add(j);
                             }
                             LogUtil.info("{} : {}", mixinClassName, booleans.stream().allMatch(aBoolean -> aBoolean) ? "loaded" : "not loaded");
                             return booleans.stream().allMatch(aBoolean -> aBoolean);

@@ -6,6 +6,7 @@
   "plugin": "me.melontini.tweaks.mixin.TweaksMixinPlugin",
   "mixins": [
     "a_impl.ItemEntityFriendMixin",
+    "accessors.ItemAccess",
     "blocks.beds_revenge.BedBlockMixin",
     "blocks.better_fletching_table.BowItemMixin",
     "blocks.better_fletching_table.FletchingTableBlockMixin",
@@ -35,6 +36,8 @@
     "world.falling_beehives.PersistentProjectileEntityMixin"
   ],
   "client": [
+    "a_impl.creative_tabs.ItemGroupMixin",
+    "a_impl.creative_tabs.TitleScreenMixin",
     "items.mending_fix.AnvilScreenMixin",
     "misc.unknown.nice_level.LevelLoadingScreenMixin",
     "misc.unknown.useless_info.DebugHudMixin",

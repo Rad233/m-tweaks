@@ -38,14 +38,17 @@ public class LogUtil {
     public static void warn(Object object) {
         LOGGER.warn("[" + MODID + "] " + object);
     }
+    public static void warn(String string, Object... params) {
+        LOGGER.warn("[" + MODID + "] " + string, params);
+    }
+
     public static void error(String string) {
         LOGGER.error("[" + MODID + "] " + string);
     }
-
-    public static void error(String string, Object... params) {
-        LOGGER.error("[" + MODID + "] " + string, params);
-    }
     public static void error(Object object) {
         LOGGER.error("[" + MODID + "] " + object);
+    }
+    public static void error(String string, Object... params) {
+        LOGGER.error("[" + MODID + "] " + string, params);
     }
 }

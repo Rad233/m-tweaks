@@ -20,9 +20,9 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class BlockRegistry {
     public static FlowerBlock ROSE_OF_THE_VALLEY;
-
     public static IncubatorBlock INCUBATOR_BLOCK;
     public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY;
+
     public static void register() {
         if (Tweaks.CONFIG.unknown) {
             ROSE_OF_THE_VALLEY = new FlowerBlock(StatusEffects.REGENERATION, 12, AbstractBlock.Settings.copy(Blocks.LILY_OF_THE_VALLEY));

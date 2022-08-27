@@ -36,8 +36,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract ItemStack getStackInHand(Hand hand);
 
-    @SuppressWarnings({"MixinAnnotationTarget", "InvalidInjectorMethodSignature"})
-    @ModifyVariable(method = "tryUseTotem", at = @At(value = "LOAD"), name = "itemStack")
+    @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
+    @ModifyVariable(method = "tryUseTotem", at = @At(value = "LOAD"), name = "$$1")
     private ItemStack mTweaks$infinite(ItemStack itemStack) {
         if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
             for (Hand hand : Hand.values()) {

@@ -6,7 +6,6 @@
   "plugin": "me.melontini.tweaks.mixin.TweaksMixinPlugin",
   "mixins": [
     "a_impl.ItemEntityFriendMixin",
-    "accessors.ItemAccess",
     "blocks.beds_revenge.BedBlockMixin",
     "blocks.better_fletching_table.BowItemMixin",
     "blocks.better_fletching_table.FletchingTableBlockMixin",

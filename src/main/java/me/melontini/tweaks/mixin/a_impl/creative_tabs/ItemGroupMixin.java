@@ -3,11 +3,9 @@ package me.melontini.tweaks.mixin.a_impl.creative_tabs;
 import com.google.common.collect.Table;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.ducks.ItemGroupAccess;
-import me.melontini.tweaks.mixin.accessors.ItemAccess;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +33,9 @@ public class ItemGroupMixin implements ItemGroupAccess {
     @Override
     public void mTweaks$initItems() {
         for (Item item : Registry.ITEM) {
-            if (((ItemAccess)item).isIn((ItemGroup) (Object) this) || item == Items.ENCHANTED_BOOK) {
+            DefaultedList<ItemStack> defaultedList = DefaultedList.of();
+            item.appendStacks((ItemGroup) (Object) this, defaultedList);
+            if (!defaultedList.isEmpty()) {
                 ITEMS.add(item);
             }
         }

@@ -35,8 +35,6 @@
     "world.falling_beehives.PersistentProjectileEntityMixin"
   ],
   "client": [
-    "a_impl.creative_tabs.ItemGroupMixin",
-    "a_impl.creative_tabs.TitleScreenMixin",
     "items.mending_fix.AnvilScreenMixin",
     "misc.unknown.nice_level.LevelLoadingScreenMixin",
     "misc.unknown.useless_info.DebugHudMixin",

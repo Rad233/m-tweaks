@@ -1,5 +1,6 @@
 package me.melontini.tweaks.items.minecarts;
 
+import me.melontini.tweaks.util.TextUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -17,7 +18,6 @@ import net.minecraft.item.MinecartItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -66,8 +66,7 @@ public class SpawnerMinecartItem extends MinecartItem {
                 }
             }
 
-            AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.SPAWNER);
-            SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
+            SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.SPAWNER);
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getString("Entity") != null) {
@@ -75,10 +74,10 @@ public class SpawnerMinecartItem extends MinecartItem {
             }
 
             if (stack.hasCustomName()) {
-                abstractMinecartEntity.setCustomName(stack.getName());
+                spawnerMinecartEntity.setCustomName(stack.getName());
             }
 
-            world.spawnEntity(abstractMinecartEntity);
+            world.spawnEntity(spawnerMinecartEntity);
             stack.decrement(1);
             return stack;
         }
@@ -87,11 +86,9 @@ public class SpawnerMinecartItem extends MinecartItem {
             pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
         }
     };
-    public final AbstractMinecartEntity.Type type;
 
     public SpawnerMinecartItem(AbstractMinecartEntity.Type type, FabricItemSettings properties) {
         super(type, properties);
-        this.type = AbstractMinecartEntity.Type.SPAWNER;
         DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 
@@ -99,7 +96,7 @@ public class SpawnerMinecartItem extends MinecartItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getNbt();
         if (nbt != null) if (nbt.getString("Entity") != null) {
-            tooltip.add(new TranslatableText("tooltip.m-tweaks.spawner_minecart.filled", Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()).formatted(Formatting.ITALIC, Formatting.GRAY));
+            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.spawner_minecart.filled", Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()), Formatting.GRAY));
         }
     }
 
@@ -121,8 +118,7 @@ public class SpawnerMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, this.type);
-                SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) abstractMinecartEntity;
+                SpawnerMinecartEntity spawnerMinecartEntity = (SpawnerMinecartEntity) AbstractMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, this.type);
 
                 NbtCompound nbt = stack.getNbt();
                 if (nbt != null) if (nbt.getString("Entity") != null) {

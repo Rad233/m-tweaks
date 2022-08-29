@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.items.cart_copy;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -26,8 +27,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -40,6 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
+@MixinRelatedConfigOption("minecartBlockPicking")
 @Mixin(MinecartItem.class)
 public abstract class MinecartItemMixin extends Item {
     @Final
@@ -219,7 +219,6 @@ public abstract class MinecartItemMixin extends Item {
             pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
         }
     };
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @Shadow
     @Final
@@ -349,7 +348,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.put("Items", nbtList);
                     chestMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(chestMinecart);
+                    player.getInventory().offerOrDrop(chestMinecart);
                     chestBlockEntity.inventory.clear();
                     world.breakBlock(pos, false);
                 }
@@ -364,10 +363,11 @@ public abstract class MinecartItemMixin extends Item {
 
                         NbtCompound nbtCompound = new NbtCompound();
                         //assert mobSpawnerBlockEntity != null : "Somehow, MobSpawnerBlockEntity was null!";
+                        assert mobSpawnerBlockEntity != null;
                         nbtCompound.putString("Entity", String.valueOf(getEntityId(mobSpawnerBlockEntity)));
                         spawnerMinecart.setNbt(nbtCompound);
 
-                        player.getInventory().insertStack(spawnerMinecart);
+                        player.getInventory().offerOrDrop(spawnerMinecart);
                         world.breakBlock(pos, false);
                     }
                     cir.setReturnValue(ActionResult.success(world.isClient));
@@ -380,7 +380,7 @@ public abstract class MinecartItemMixin extends Item {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack tntMinecart = new ItemStack(Items.TNT_MINECART, 1);
 
-                    player.getInventory().insertStack(tntMinecart);
+                    player.getInventory().offerOrDrop(tntMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.success(world.isClient));
@@ -399,7 +399,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.putInt("Fuel", fuel);
                     furnaceMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(furnaceMinecart);
+                    player.getInventory().offerOrDrop(furnaceMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.success(world.isClient));
@@ -415,7 +415,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.putInt("Note", noteProp);
                     noteBlockMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(noteBlockMinecart);
+                    player.getInventory().offerOrDrop(noteBlockMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
@@ -424,6 +424,7 @@ public abstract class MinecartItemMixin extends Item {
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
                     JukeboxBlockEntity jukeboxBlockEntity = (JukeboxBlockEntity) world.getBlockEntity(pos);
+                    assert jukeboxBlockEntity != null;
                     ItemStack record = jukeboxBlockEntity.getRecord();
                     ItemStack jukeboxMinecart = new ItemStack(ItemRegistry.JUKEBOX_MINECART);
 
@@ -435,7 +436,7 @@ public abstract class MinecartItemMixin extends Item {
                         jukeboxMinecart.setNbt(nbt);
                     }
 
-                    player.getInventory().insertStack(jukeboxMinecart);
+                    player.getInventory().offerOrDrop(jukeboxMinecart);
                     jukeboxBlockEntity.clear();
                     world.breakBlock(pos, false);
                 }
@@ -445,7 +446,7 @@ public abstract class MinecartItemMixin extends Item {
                 if (!world.isClient()) {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack anvilMinecart = new ItemStack(ItemRegistry.ANVIL_MINECART);
-                    player.getInventory().insertStack(anvilMinecart);
+                    player.getInventory().offerOrDrop(anvilMinecart);
                     world.breakBlock(pos, false);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
@@ -471,7 +472,7 @@ public abstract class MinecartItemMixin extends Item {
                     nbt.put("Items", nbtList);
                     hopperMinecart.setNbt(nbt);
 
-                    player.getInventory().insertStack(hopperMinecart);
+                    player.getInventory().offerOrDrop(hopperMinecart);
                     hopperBlockEntity.inventory.clear();
                     world.breakBlock(pos, false);
                 }
@@ -482,14 +483,13 @@ public abstract class MinecartItemMixin extends Item {
 
     @Nullable
     private Identifier getEntityId(MobSpawnerBlockEntity mobSpawnerBlockEntity) {
-        String string = mobSpawnerBlockEntity.getLogic().spawnEntry.getNbt().getString("id");
+        String identifier = mobSpawnerBlockEntity.getLogic().spawnEntry.getNbt().getString("id");
 
         try {
-            return StringUtils.isEmpty(string) ? null : new Identifier(string);
-        } catch (InvalidIdentifierException var4) {
+            return StringUtils.isEmpty(identifier) ? null : new Identifier(identifier);
+        } catch (InvalidIdentifierException e) {
             BlockPos blockPos = mobSpawnerBlockEntity.getPos();
-            LOGGER.warn("Invalid entity id '{}' at spawner {}:[{},{},{}]", string, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            return null;
+            throw new RuntimeException(String.format("Invalid entity id '%s' at spawner %s:[%s,%s,%s]", identifier, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ()));
         }
     }
 }

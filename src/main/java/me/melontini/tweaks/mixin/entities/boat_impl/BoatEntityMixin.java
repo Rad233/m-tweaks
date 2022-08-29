@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.entities.boat_impl;
 
 import me.melontini.tweaks.entity.vehicle.boats.FurnaceBoatEntity;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@MixinRelatedConfigOption("newBoats.isFurnaceBoatOn")
 @Mixin(BoatEntity.class)
 public abstract class BoatEntityMixin extends Entity {
     @Shadow
@@ -27,7 +29,7 @@ public abstract class BoatEntityMixin extends Entity {
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;getVelocity()Lnet/minecraft/util/math/Vec3d;", ordinal = 1, shift = At.Shift.BEFORE), method = "updateVelocity", locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-    public void mTweaks$aVoid(CallbackInfo ci, double e, double f) {
+    public void mTweaks$furnaceBoatVelocity(CallbackInfo ci, double e, double f) {
         BoatEntity boat = (BoatEntity) (Object) this;
         if (boat instanceof FurnaceBoatEntity furnaceBoat) {
             Vec3d vec3d = this.getVelocity();

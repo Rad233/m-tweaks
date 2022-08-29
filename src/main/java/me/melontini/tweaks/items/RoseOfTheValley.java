@@ -1,11 +1,11 @@
 package me.melontini.tweaks.items;
 
+import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +20,6 @@ public class RoseOfTheValley extends BlockItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("tooltip.m-tweaks.rose_of_the_valley").formatted(Formatting.ITALIC, Formatting.GRAY));
+        tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.rose_of_the_valley"), Formatting.GRAY));
     }
 }

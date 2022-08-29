@@ -1,27 +1,86 @@
 package me.melontini.tweaks.util;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeehiveBlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
+
+import static me.melontini.tweaks.Tweaks.MODID;
 
 public class WorldUtil {
-    public static List<ItemStack> prepareLoot(World world, Identifier lootId) {
+
+    private static final List<Direction> AROUND_BLOCK_DIRECTIONS = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+
+    public static CustomTraderManager getTraderManager(@NotNull ServerWorld world) {
+        return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
+            CustomTraderManager manager = new CustomTraderManager();
+            manager.readNbt(nbtCompound);
+            return manager;
+        }, CustomTraderManager::new, "mt_trader_statemanager");
+    }
+
+    public static void addParticle(World world, ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        if (!world.isClient) {
+            PacketByteBuf packetByteBuf = PacketByteBufs.create();
+            packetByteBuf.writeRegistryValue(Registry.PARTICLE_TYPE, parameters.getType());
+            packetByteBuf.writeDouble(x);
+            packetByteBuf.writeDouble(y);
+            packetByteBuf.writeDouble(z);
+            packetByteBuf.writeDouble(velocityX);
+            packetByteBuf.writeDouble(velocityY);
+            packetByteBuf.writeDouble(velocityZ);
+
+            for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, new BlockPos(x, y, z), 85)) {
+                ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "particles_thing"), packetByteBuf);
+            }
+        } else {
+            throw new UnsupportedOperationException("Can't send packets to client unless you're on server.");
+        }
+    }
+
+    public static void crudeSetVelocity(Entity entity, double x, double y, double z) {
+        crudeSetVelocity(entity, new Vec3d(x, y, z));
+    }
+
+    public static void crudeSetVelocity(Entity entity, Vec3d velocity) {
+        if (!entity.world.isClient) {
+            ServerWorld world = (ServerWorld) entity.getWorld();
+            entity.setVelocity(velocity);
+            for (ServerPlayerEntity player : world.getPlayers()) {
+                player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(entity));
+            }
+        } else {
+            throw new UnsupportedOperationException("Can't send packets to client unless you're on server.");
+        }
+    }
+
+    public static List<ItemStack> prepareLoot(@NotNull World world, Identifier lootId) {
         return ((ServerWorld) world).getServer()
                 .getLootManager()
                 .getTable(lootId)
@@ -48,9 +107,8 @@ public class WorldUtil {
         world.spawnEntity(fallingBlock);
     }
 
-    static final List<Direction> dirAroundMap = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
     public static boolean isClear(World world, BlockPos pos) {
-        for (Direction dir : dirAroundMap) {
+        for (Direction dir : AROUND_BLOCK_DIRECTIONS) {
             if (!world.getBlockState(pos.offset(dir)).isAir()) {
                 return false;
             }
@@ -58,18 +116,17 @@ public class WorldUtil {
         return true;
     }
 
-    public static BlockPos pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
+    public static Optional<BlockPos> pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
         int i = 0;
+        double j = (range * range * range) * 0.75;
         while (true) {
             ++i;
-            if (i > (range * range * range) * 0.75) {
-                return null;
+            if (i > j) {
+                return Optional.empty();
             }
-            var pos = new BlockPos(blockPos.getX() + MiscUtil.nextBetween(-range, range, random), blockPos.getY() + MiscUtil.nextBetween(-range, range, random), blockPos.getZ() + MiscUtil.nextBetween(-range, range, random));
-            //LogUtil.info(pos);
+            var pos = new BlockPos(blockPos.getX() + random.nextBetween(-range, range), blockPos.getY() + random.nextBetween(-range, range), blockPos.getZ() + random.nextBetween(-range, range));
             if (world.getBlockState(pos.up()).isAir() && world.getBlockState(pos).isAir() && isClear(world, pos) && isClear(world, pos.up())) {
-                //LogUtil.info("SS: {}", pos);
-                return pos;
+                return Optional.of(pos);
             }
         }
     }

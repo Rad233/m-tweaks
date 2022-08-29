@@ -3,7 +3,6 @@ package me.melontini.tweaks.entity.vehicle.boats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -27,7 +26,7 @@ public class BoatEntityWithBlock extends BoatEntity {
     }
 
     @Override
-    public boolean canAddPassenger(Entity passenger) {
-        return this.getPassengerList().size() == 0 && !this.isSubmergedIn(FluidTags.WATER);
+    public int getMaxPassengers() {
+        return 1;
     }
 }

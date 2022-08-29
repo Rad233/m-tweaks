@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.entities.baiting_villagers;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.entity.ai.goal.VillagerTemptGoal;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("villagersFollowEmeraldBlocks")
 @Mixin(VillagerEntity.class)
 public abstract class VillagerEntityMixin extends MerchantEntity {
 
@@ -23,7 +25,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/VillagerEntity;setVillagerData(Lnet/minecraft/village/VillagerData;)V", shift = At.Shift.AFTER), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;Lnet/minecraft/village/VillagerType;)V")
     private void mTweaks$init(EntityType<? extends VillagerEntity> entityType, World world, VillagerType type, CallbackInfo ci) {
-        //0 invasive changes detected
-        if (Tweaks.CONFIG.villagersFollowEmeraldBlocks) this.goalSelector.add(6, new VillagerTemptGoal((VillagerEntity) (Object) this, 0.5, Ingredient.ofItems(Items.EMERALD_BLOCK), false));
+        if (Tweaks.CONFIG.villagersFollowEmeraldBlocks)
+            this.goalSelector.add(6, new VillagerTemptGoal((VillagerEntity) (Object) this, 0.5, Ingredient.ofItems(Items.EMERALD_BLOCK), false));
     }
 }

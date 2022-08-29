@@ -1,6 +1,5 @@
 package me.melontini.tweaks.items.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -8,10 +7,9 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.enums.RailShape;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.MinecartItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
@@ -22,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 
-public class JukeBoxMinecartItem extends MinecartItem {
+public class JukeBoxMinecartItem extends Item {
     private static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
         private final ItemDispenserBehavior defaultBehavior = new ItemDispenserBehavior();
 
@@ -61,7 +59,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
                 }
             }
 
-            JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, d, e + g, f, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+            JukeboxMinecartEntity jukeBoxMinecartEntity = new JukeboxMinecartEntity(world, d, e + g, f);
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getCompound("Items") != null) {
@@ -85,7 +83,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
     };
 
     public JukeBoxMinecartItem(Settings settings) {
-        super(ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"), settings);
+        super(settings);
         DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 
@@ -107,7 +105,7 @@ public class JukeBoxMinecartItem extends MinecartItem {
                     d = 0.5;
                 }
 
-                JukeboxMinecartEntity jukeBoxMinecartEntity = (JukeboxMinecartEntity) JukeboxMinecartEntity.create(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5, ClassTinkerers.getEnum(AbstractMinecartEntity.Type.class, "M_TWEAKS_JUKEBOX"));
+                JukeboxMinecartEntity jukeBoxMinecartEntity = new JukeboxMinecartEntity(world, (double) blockPos.getX() + 0.5, (double) blockPos.getY() + 0.0625 + d, (double) blockPos.getZ() + 0.5);
 
                 NbtCompound nbt = itemStack.getNbt();
                 if (nbt != null) if (nbt.getCompound("Items") != null) {

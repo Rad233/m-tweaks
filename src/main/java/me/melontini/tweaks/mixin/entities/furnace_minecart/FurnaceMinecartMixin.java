@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.entities.furnace_minecart;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.fabricmc.fabric.impl.content.registry.FuelRegistryImpl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@MixinRelatedConfigOption("betterFurnaceMinecart")
 @Mixin(FurnaceMinecartEntity.class)
 public class FurnaceMinecartMixin {
     @Shadow
@@ -34,7 +36,7 @@ public class FurnaceMinecartMixin {
                 if ((this.fuel + (itemFuel * 2.25)) <= Tweaks.CONFIG.maxFurnaceMinecartFuel) {
                     if (!player.getAbilities().creativeMode) {
                         if (stack.getItem().getRecipeRemainder() != null)
-                            player.getInventory().insertStack(stack.getItem().getRecipeRemainder().getDefaultStack());
+                            player.getInventory().offerOrDrop(stack.getItem().getRecipeRemainder().getDefaultStack());
                         stack.decrement(1);
                     }
 

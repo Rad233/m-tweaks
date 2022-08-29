@@ -24,13 +24,13 @@ public class PersistentMovingSoundInstance extends MovingSoundInstance {
     public void tick() {
         Entity entity = world.getEntityLookup().get(entityId);
         if (entity != null) {
-            volume = 3;
+            this.volume = 3;
             this.x = entity.getX();
             this.y = entity.getY();
             this.z = entity.getZ();
         } else {
             //this sucks
-            volume = 0;
+            this.volume = 0;
         }
     }
 }

@@ -3,6 +3,8 @@ package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CraftingTableBlock;
@@ -10,7 +12,6 @@ import net.minecraft.block.FletchingTableBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@MixinRelatedConfigOption("usefulFletching")
 @Mixin(FletchingTableBlock.class)
 public class FletchingTableBlockMixin extends CraftingTableBlock {
     public FletchingTableBlockMixin(Settings settings) {
@@ -33,7 +35,7 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);
 
-            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), new TranslatableText("gui.m-tweaks.fletching")));
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), TextUtil.createTranslatable(("gui.m-tweaks.fletching"))));
             cir.setReturnValue(ActionResult.SUCCESS);
             LogUtil.info("HELLO");
         }

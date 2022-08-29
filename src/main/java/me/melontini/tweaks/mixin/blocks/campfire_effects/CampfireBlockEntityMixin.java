@@ -4,6 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.InvalidConfigEntryException;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.CampfireBlockEntity;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Objects;
 
+@MixinRelatedConfigOption("campfireTweaks.campfireEffects")
 @Mixin(CampfireBlockEntity.class)
 public class CampfireBlockEntityMixin {
     @Inject(at = @At("HEAD"), method = "litServerTick")
@@ -28,21 +30,19 @@ public class CampfireBlockEntityMixin {
             if (world.getTime() % 180 == 0) {
                 if (state.get(CampfireBlock.LIT)) {
                     List<PlayerEntity> players = PlayerUtil.findPlayersInRange(world, pos, Tweaks.CONFIG.campfireTweaks.campfireEffectsRange);
+                    List<String> identifiers = Tweaks.CONFIG.campfireTweaks.campfireEffectsList;
+                    List<Integer> amplifiers = Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList;
+
                     for (PlayerEntity player : players) {
-                        if (Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size() == Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size()) {
-                            for (int i = 0; i < Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(); i++) {
+                        if (identifiers.size() == amplifiers.size()) {
+                            for (int i = 0; i < identifiers.size(); i++) {
                                 StatusEffectInstance effectInstance = new StatusEffectInstance(
-                                        Objects.requireNonNull(PotionUtil.getStatusEffect(Identifier.tryParse(Tweaks.CONFIG.campfireTweaks.campfireEffectsList.get(i))), String.format("One of campfireEffectsList entries was null! This means that you probably provided an invalid identifier! null entry index: %s", i)),
-                                        200,
-                                        Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.get(i),
-                                        true,
-                                        false,
-                                        true
-                                );
+                                        Objects.requireNonNull(PotionUtil.getStatusEffect(Identifier.tryParse(identifiers.get(i)))),
+                                        200, amplifiers.get(i), true, false, true);
                                 player.addStatusEffect(effectInstance);
                             }
                         } else {
-                            throw new InvalidConfigEntryException(String.format("campfireEffectsList (size: %s) & campfireEffectsAmplifierList (size: %s) don't match in size!", Tweaks.CONFIG.campfireTweaks.campfireEffectsList.size(), Tweaks.CONFIG.campfireTweaks.campfireEffectsAmplifierList.size()));
+                            throw new InvalidConfigEntryException(String.format("campfireEffectsList (size: %s) & campfireEffectsAmplifierList (size: %s) don't match in size!", identifiers.size(), amplifiers.size()));
                         }
                     }
                 }

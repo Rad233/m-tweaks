@@ -1,6 +1,5 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
-import com.chocohead.mm.api.ClassTinkerers;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.ItemStackUtil;
@@ -104,7 +103,7 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
 
     @Override
     public Type getMinecartType() {
-        return ClassTinkerers.getEnum(Type.class, "M_TWEAKS_NOTEBLOCK");
+        return Type.CHEST;
     }
 
     @Override

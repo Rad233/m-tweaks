@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.world.falling_beehives;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BeehiveBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,9 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.melontini.tweaks.util.WorldUtil.trySpawnFallingBeeNest;
 
+@MixinRelatedConfigOption("canBeeNestsFall")
 @Mixin(value = BeehiveBlockEntity.class)
 public abstract class BeehiveBlockEntityMixin extends BlockEntity {
-    private static boolean mTweaks$FromFallen;
+    private boolean mTweaks$FromFallen;
 
     public BeehiveBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -63,11 +65,11 @@ public abstract class BeehiveBlockEntityMixin extends BlockEntity {
 
     @Inject(at = @At("TAIL"), method = "readNbt")
     private void mTweaks$readNbt(@NotNull NbtCompound nbt, CallbackInfo ci) {
-        mTweaks$FromFallen = nbt.getBoolean("MT-FromFallenBlock");
+        this.mTweaks$FromFallen = nbt.getBoolean("MT-FromFallenBlock");
     }
 
     @Inject(at = @At("TAIL"), method = "writeNbt")
     private void mTweaks$writeNbt(@NotNull NbtCompound nbt, CallbackInfo ci) {
-        nbt.putBoolean("MT-FromFallenBlock", mTweaks$FromFallen);
+        nbt.putBoolean("MT-FromFallenBlock", this.mTweaks$FromFallen);
     }
 }

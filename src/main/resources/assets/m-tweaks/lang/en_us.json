@@ -1,12 +1,15 @@
 {
-  "tooltip.m-tweaks.bow.tight": "*Tightened, usages left: %s",
-  "tooltip.m-tweaks.spawner_minecart.filled": "*Entity inside: %s",
+  "tooltip.m-tweaks.bow.tight": "Tightened, usages left: %s",
+  "tooltip.m-tweaks.spawner_minecart.filled": "Entity inside: %s",
   "tooltip.m-tweaks.rose_of_the_valley": "The smell reminds you of some valley",
   "tooltip.m-tweaks.incubator[0]": "A handy little device, helpful with hatching eggs.",
   "tooltip.m-tweaks.incubator[1]": "Courtesy of \"Bad Software & Hardware LLC\"®",
+  "tooltip.m-tweaks.clock": "Current time: %s",
 
   "block.m-tweaks.rose_of_the_valley": "Rose of the Valley",
   "block.m-tweaks.incubator": "Incubator",
+
+  "item.m-tweaks.infinite_totem": "Infinite Totem of Undying",
 
   "item.m-tweaks.spawner_minecart": "Minecart with Spawner",
   "item.m-tweaks.anvil_minecart": "Minecart with Anvil",
@@ -141,6 +144,14 @@
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
 
   "text.autoconfig.m-tweaks.category.items": "Items",
+  "text.autoconfig.m-tweaks.option.totemSettings": "Infinite Totem of Undying",
+  "text.autoconfig.m-tweaks.option.totemSettings.@Tooltip": "Infinite Totem settings. Please see the wiki for proper descriptions",
+  "text.autoconfig.m-tweaks.option.totemSettings.enableInfiniteTotem": "Enable Infinite Totem of Undying",
+  "text.autoconfig.m-tweaks.option.totemSettings.enableInfiniteTotem.@Tooltip": "Enables Infinite Totem of Undying.",
+  "text.autoconfig.m-tweaks.option.totemSettings.enableTotemAscension": "Enable Totem Ascension",
+  "text.autoconfig.m-tweaks.option.totemSettings.enableTotemAscension.@Tooltip": "Enables ascension of \"Totem of Undying\" to infinity. Otherwise there's no way to make IToU",
+  "text.autoconfig.m-tweaks.option.clockTooltip": "Clock Tooltip",
+  "text.autoconfig.m-tweaks.option.clockTooltip.@Tooltip": "Shows in-game-time inside clock's tooltip",
   "text.autoconfig.m-tweaks.option.balancedMending": "Balanced Mending",
   "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[0]": "Makes mending a bit less OP by making it remove the \"Too Expensive\" error",
   "text.autoconfig.m-tweaks.option.balancedMending.@Tooltip[1]": "instead of repairing items via XP",

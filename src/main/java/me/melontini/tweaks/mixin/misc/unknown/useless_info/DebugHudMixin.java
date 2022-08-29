@@ -3,6 +3,7 @@ package me.melontini.tweaks.mixin.misc.unknown.useless_info;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.TweaksClient;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.gui.hud.DebugHud;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
+@MixinRelatedConfigOption("unknown")
 @Mixin(DebugHud.class)
 public class DebugHudMixin {
     @SuppressWarnings("InvalidInjectorMethodSignature")

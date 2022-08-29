@@ -3,7 +3,8 @@
     {
       "condition": "m-tweaks:config_option",
       "values": [
-        "incubatorSettings.incubatorRecipe"
+        "incubatorSettings.incubatorRecipe",
+        "incubatorSettings.enableIncubator"
       ]
     }
   ],

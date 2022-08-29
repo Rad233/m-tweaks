@@ -7,7 +7,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 public class ItemStackUtil {
+    private static final Random random = new Random();
+
     public static void spawnItem(@NotNull BlockPos pos, ItemStack stack, World world) {
         ItemEntity itemEntity = new ItemEntity(
                 world,
@@ -37,9 +41,9 @@ public class ItemStackUtil {
                 pos.getY() + 0.2,
                 pos.getZ(),
                 stack,
-                (Math.random() - range) * range,
+                random.nextDouble(range + range) - range,
                 0,
-                (Math.random() - range) * range);
+                random.nextDouble(range + range) - range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }
@@ -51,9 +55,9 @@ public class ItemStackUtil {
                 pos.getY() + 0.2,
                 pos.getZ(),
                 stack,
-                (Math.random() - range) * range,
+                random.nextDouble(range + range) - range,
                 0,
-                (Math.random() - range) * range);
+                random.nextDouble(range + range) - range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }

@@ -3,7 +3,7 @@ package me.melontini.tweaks.blocks;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
 import me.melontini.tweaks.registries.BlockRegistry;
-import me.melontini.tweaks.util.ItemStackUtil;
+import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -62,9 +61,9 @@ public class IncubatorBlock extends BlockWithEntity {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(new TranslatableText("tooltip.m-tweaks.incubator[0]"));
+        tooltip.add(TextUtil.createTranslatable(("tooltip.m-tweaks.incubator[0]")));
         if (Tweaks.CONFIG.unknown)
-            tooltip.add(new TranslatableText("tooltip.m-tweaks.incubator[1]").formatted(Formatting.GRAY, Formatting.ITALIC));
+            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.incubator[1]"), Formatting.GRAY));
     }
 
     @Override
@@ -79,7 +78,6 @@ public class IncubatorBlock extends BlockWithEntity {
             if (blockEntity instanceof IncubatorBlockEntity incubatorBlockEntity) {
                 if (!world.isClient) {
                     ItemScatterer.spawn(world, pos, incubatorBlockEntity);
-                    ItemStackUtil.spawnItem(pos, incubatorBlockEntity.egg, world);
                 }
 
                 world.updateComparators(pos, this);

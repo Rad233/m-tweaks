@@ -2,10 +2,8 @@ package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.TallFlowerBlock;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.BeeEntity;
@@ -20,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@MixinRelatedConfigOption("beeFlowerDuplication")
 @Mixin(BeeEntity.class)
 public abstract class BeeEntityMixin extends AnimalEntity {
 
@@ -28,7 +27,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     @Shadow
     BeeEntity.PollinateGoal pollinateGoal;
     @Unique
-    private int plantingCoolDown;
+    private int mTweaks$plantingCoolDown;
 
     protected BeeEntityMixin(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
@@ -38,14 +37,14 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
             BeeEntity bee = (BeeEntity) (Object) this;
-            var pollinateGoal = this.pollinateGoal;
-            if (plantingCoolDown > 0) {
-                --plantingCoolDown;
+            BeeEntity.PollinateGoal pollinateGoal = this.pollinateGoal;
+            if (mTweaks$plantingCoolDown > 0) {
+                --mTweaks$plantingCoolDown;
             }
             if (pollinateGoal != null) {
-                if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.canPlant()) {
-                    this.growFlower();
-                    LogUtil.info(plantingCoolDown);
+                if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
+                    this.mTweaks$growFlower();
+                    LogUtil.info(mTweaks$plantingCoolDown);
                     LogUtil.info("{} stopped pollinating flower at {}", bee, flowerPos);
                 }
             }
@@ -54,27 +53,27 @@ public abstract class BeeEntityMixin extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     private void mTweaks$writeNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("MT-plantingCoolDown", this.plantingCoolDown);
+        nbt.putInt("MT-plantingCoolDown", this.mTweaks$plantingCoolDown);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     private void mTweaks$readNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
+        this.mTweaks$plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
     }
 
     @Unique
-    private void growFlower() {
+    private void mTweaks$growFlower() {
         if (this.flowerPos != null) {
-            var flowerState = world.getBlockState(flowerPos);
+            BlockState flowerState = world.getBlockState(flowerPos);
             if (flowerState.getBlock() instanceof FlowerBlock flowerBlock) {
-                plantingCoolDown = (int) Math.floor(Math.random() * (6490 - 3600) + 3600);
+                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 6490);
                 for (int i = -2; i <= 2; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -2; c <= 2; c++) {
-                            var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            var state = world.getBlockState(pos);
+                            BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
+                            BlockState state = world.getBlockState(pos);
                             if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                                if (world.getRandom().nextInt(12) == 0) {
+                                if (world.random.nextInt(12) == 0) {
                                     world.setBlockState(pos, flowerState);
                                 }
                             }
@@ -82,14 +81,14 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     }
                 }
             } else if (flowerState.getBlock() instanceof TallFlowerBlock flowerBlock && Tweaks.CONFIG.beeTallFlowerDuplication) {
-                plantingCoolDown = (int) Math.floor(Math.random() * (8000 - 3600) + 3600);
+                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 8000);
                 for (int i = -1; i <= 1; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -1; c <= 1; c++) {
-                            var pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            var state = world.getBlockState(pos);
+                            BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
+                            BlockState state = world.getBlockState(pos);
                             if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
-                                if (world.getRandom().nextInt(6) == 0) {
+                                if (world.random.nextInt(6) == 0) {
                                     TallFlowerBlock.placeAt(world, flowerState, pos, Block.NOTIFY_LISTENERS);
                                 }
                             }
@@ -101,7 +100,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     }
 
     @Unique
-    private boolean canPlant() {
-        return this.plantingCoolDown == 0;
+    private boolean mTweaks$canPlant() {
+        return this.mTweaks$plantingCoolDown == 0;
     }
 }

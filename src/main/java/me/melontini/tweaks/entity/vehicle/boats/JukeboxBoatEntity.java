@@ -83,7 +83,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
         if (!world.isClient())
             if (!this.record.isEmpty() && player.isSneaking()) {
                 ItemStackUtil.spawnItemWithRandVelocity(
-                        new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world, 0.5);
+                        new Vec3d(this.getX(), this.getY() + 0.5, this.getZ()), this.record, this.world, 0.2);
                 this.stopPlaying();
                 this.clear();
                 return ActionResult.SUCCESS;

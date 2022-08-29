@@ -1,25 +1,37 @@
 package me.melontini.tweaks.util;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeehiveBlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
+
+import static me.melontini.tweaks.Tweaks.MODID;
 
 public class WorldUtil {
 
@@ -29,6 +41,36 @@ public class WorldUtil {
             manager.readNbt(nbtCompound);
             return manager;
         }, CustomTraderManager::new, "mt_trader_statemanager");
+    }
+
+    public static void addParticle(World world, ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        PacketByteBuf packetByteBuf = PacketByteBufs.create();
+        packetByteBuf.writeRegistryValue(Registry.PARTICLE_TYPE, parameters.getType());
+        packetByteBuf.writeDouble(x);
+        packetByteBuf.writeDouble(y);
+        packetByteBuf.writeDouble(z);
+        packetByteBuf.writeDouble(velocityX);
+        packetByteBuf.writeDouble(velocityY);
+        packetByteBuf.writeDouble(velocityZ);
+
+        for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, new BlockPos(x, y, z), 85)) {
+            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "particles_thing"), packetByteBuf);
+        }
+    }
+    public static void crudeSetVelocity(Entity entity, double x, double y, double z) {
+        crudeSetVelocity(entity, new Vec3d(x, y, z));
+    }
+
+    public static void crudeSetVelocity(Entity entity, Vec3d velocity) {
+        if (!entity.world.isClient) {
+            ServerWorld world = (ServerWorld) entity.getWorld();
+            entity.setVelocity(velocity);
+            for (ServerPlayerEntity player : world.getPlayers()) {
+                player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(entity));
+            }
+        } else {
+            throw new UnsupportedOperationException("Can't send packets to client unless you're on server.");
+        }
     }
 
     public static List<ItemStack> prepareLoot(@NotNull World world, Identifier lootId) {

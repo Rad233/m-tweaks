@@ -14,7 +14,7 @@ public class BeaconUtil {
 
         int i = 0;
 
-        for(int j = 1; j <= 4; i = j++) {
+        for (int j = 1; j <= 4; i = j++) {
             int k = y - j;
             if (k < world.getBottomY()) {
                 break;
@@ -22,8 +22,8 @@ public class BeaconUtil {
 
             boolean bl = true;
 
-            for(int l = x - j; l <= x + j && bl; ++l) {
-                for(int m = z - j; m <= z + j; ++m) {
+            for (int l = x - j; l <= x + j && bl; ++l) {
+                for (int m = z - j; m <= z + j; ++m) {
                     if (!allowedBlocks.contains(world.getBlockState(new BlockPos(l, k, m)).getBlock())) {
                         bl = false;
                         break;

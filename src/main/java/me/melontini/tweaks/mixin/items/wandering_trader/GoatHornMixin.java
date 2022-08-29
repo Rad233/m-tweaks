@@ -47,13 +47,14 @@ public class GoatHornMixin {
                             WorldUtil.getTraderManager((ServerWorld) world).trySpawn((ServerWorld) world, server.getSaveProperties().getMainWorldProperties(), user);
                     }
                 }
-                if (FabricLoader.getInstance().isDevelopmentEnvironment()) if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:yearn_goat_horn")) {
-                    int i = user.getInventory().size();
-                    for (int j = 0; j < i; j++) {
-                        user.getInventory().getStack(j).damage(500, Random.create(), (ServerPlayerEntity) user);
+                if (FabricLoader.getInstance().isDevelopmentEnvironment())
+                    if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:yearn_goat_horn")) {
+                        int i = user.getInventory().size();
+                        for (int j = 0; j < i; j++) {
+                            user.getInventory().getStack(j).damage(500, Random.create(), (ServerPlayerEntity) user);
+                        }
+                        cir.setReturnValue(TypedActionResult.pass(itemStack));
                     }
-                    cir.setReturnValue(TypedActionResult.pass(itemStack));
-                }
             }
         }
     }

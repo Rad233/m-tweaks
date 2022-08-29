@@ -35,6 +35,8 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class WorldUtil {
 
+    private static final List<Direction> AROUND_BLOCK_DIRECTIONS = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+
     public static CustomTraderManager getTraderManager(@NotNull ServerWorld world) {
         return world.getPersistentStateManager().getOrCreate(nbtCompound -> {
             CustomTraderManager manager = new CustomTraderManager();
@@ -44,19 +46,24 @@ public class WorldUtil {
     }
 
     public static void addParticle(World world, ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-        PacketByteBuf packetByteBuf = PacketByteBufs.create();
-        packetByteBuf.writeRegistryValue(Registry.PARTICLE_TYPE, parameters.getType());
-        packetByteBuf.writeDouble(x);
-        packetByteBuf.writeDouble(y);
-        packetByteBuf.writeDouble(z);
-        packetByteBuf.writeDouble(velocityX);
-        packetByteBuf.writeDouble(velocityY);
-        packetByteBuf.writeDouble(velocityZ);
+        if (!world.isClient) {
+            PacketByteBuf packetByteBuf = PacketByteBufs.create();
+            packetByteBuf.writeRegistryValue(Registry.PARTICLE_TYPE, parameters.getType());
+            packetByteBuf.writeDouble(x);
+            packetByteBuf.writeDouble(y);
+            packetByteBuf.writeDouble(z);
+            packetByteBuf.writeDouble(velocityX);
+            packetByteBuf.writeDouble(velocityY);
+            packetByteBuf.writeDouble(velocityZ);
 
-        for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, new BlockPos(x, y, z), 85)) {
-            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "particles_thing"), packetByteBuf);
+            for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, new BlockPos(x, y, z), 85)) {
+                ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "particles_thing"), packetByteBuf);
+            }
+        } else {
+            throw new UnsupportedOperationException("Can't send packets to client unless you're on server.");
         }
     }
+
     public static void crudeSetVelocity(Entity entity, double x, double y, double z) {
         crudeSetVelocity(entity, new Vec3d(x, y, z));
     }
@@ -100,7 +107,6 @@ public class WorldUtil {
         world.spawnEntity(fallingBlock);
     }
 
-    private static final List<Direction> AROUND_BLOCK_DIRECTIONS = List.of(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
     public static boolean isClear(World world, BlockPos pos) {
         for (Direction dir : AROUND_BLOCK_DIRECTIONS) {
             if (!world.getBlockState(pos.offset(dir)).isAir()) {

@@ -3,8 +3,11 @@ package me.melontini.tweaks.mixin.items.infinite_totem;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.BeaconUtil;
+import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,11 +15,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -33,6 +40,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import static me.melontini.tweaks.Tweaks.MODID;
 
 @MixinRelatedConfigOption({"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
 @Mixin(ItemEntity.class)
@@ -75,6 +84,9 @@ public abstract class ItemEntityMixin extends Entity {
                                     mTweaks$itemEntity = list.stream().findAny().get();
                                     MTWEAKS$ITEMS.add(mTweaks$itemEntity);
 
+                                    mTweaks$itemEntity.setPickupDelayInfinite();
+                                    this.setPickupDelayInfinite();
+
                                     int i = mTweaks$itemEntity.getDataTracker().get(STACK).getCount() - 1;
 
                                     if (i != 0) {
@@ -83,12 +95,22 @@ public abstract class ItemEntityMixin extends Entity {
                                         mTweaks$itemEntity.getDataTracker().get(STACK).setCount(1);
                                         ItemEntity itemEntity1 = EntityType.ITEM.create(world);
                                         itemEntity1.setStack(entityStack);
-                                        itemEntity1.setPos(mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY() + 0.3, mTweaks$itemEntity.getZ());
+                                        itemEntity1.setPos(mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY() + 0.2, mTweaks$itemEntity.getZ());
                                         world.spawnEntity(itemEntity1);
-                                    }
 
-                                    mTweaks$itemEntity.setPickupDelayInfinite();
-                                    this.setPickupDelayInfinite();
+                                        PacketByteBuf packetByteBuf = PacketByteBufs.create();
+                                        packetByteBuf.writeUuid(mTweaks$itemEntity.getUuid());
+                                        packetByteBuf.writeItemStack(mTweaks$itemEntity.getDataTracker().get(STACK));
+
+                                        PacketByteBuf packetByteBuf2 = PacketByteBufs.create();
+                                        packetByteBuf2.writeUuid(itemEntity1.getUuid());
+                                        packetByteBuf2.writeItemStack(itemEntity1.getDataTracker().get(STACK));
+
+                                        for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 85)) {
+                                            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf);
+                                            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf2);
+                                        }
+                                    }
                                 }
                             }
                         } else {

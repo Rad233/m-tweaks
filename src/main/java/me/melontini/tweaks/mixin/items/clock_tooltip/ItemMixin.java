@@ -24,7 +24,7 @@ public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")
     public void mTweaks$tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
         if (Tweaks.CONFIG.clockTooltip) if (world != null) if (world.isClient) {
-            if (stack.getItem() == Items.CLOCK){
+            if (stack.getItem() == Items.CLOCK) {
                 //totally not stolen from here https://bukkit.org/threads/how-can-i-convert-minecraft-long-time-to-real-hours-and-minutes.122912/
                 int i = (int) Math.floor((world.getTimeOfDay() / 1000 + 8) % 24);
                 int j = (int) Math.floor(60 * (world.getTimeOfDay() % 1000) / 1000);

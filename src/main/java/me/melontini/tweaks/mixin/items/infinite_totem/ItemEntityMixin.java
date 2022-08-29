@@ -72,7 +72,7 @@ public abstract class ItemEntityMixin extends Entity {
                 ItemEntity self = (ItemEntity) (Object) this;
                 if (age % 35 == 0 && mTweaks$ascensionTicks == 0) mTweaks$beaconCheck();
 
-                if (mTweaks$beacon.getLeft() != null && mTweaks$beacon.getRight() == 4) {
+                if (mTweaks$beacon.getLeft() != null && mTweaks$beacon.getRight() >= 4) {
                     if (!world.isClient) {
                         if (mTweaks$itemEntity == null) {
                             if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;

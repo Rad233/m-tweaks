@@ -7,6 +7,7 @@ import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.particle.ParticleType;
@@ -87,6 +88,15 @@ public class ClientSideNetworking {
             client.execute(() -> {
                 assert particle != null;
                 client.worldRenderer.addParticle(particle.getParametersFactory().read(particle, packetByteBuf), particle.shouldAlwaysSpawn(), x, y, z, velocityX, velocityY, velocityZ);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "notify_client_about_stuff_please"), (client, handler, packetByteBuf, responseSender) -> {
+            UUID uuid = packetByteBuf.readUuid();
+            ItemStack stack = packetByteBuf.readItemStack();
+            client.execute(() -> {
+                ItemEntity entity = (ItemEntity) client.world.getEntityLookup().get(uuid);
+                entity.getDataTracker().set(ItemEntity.STACK, stack);
             });
         });
         LogUtil.info("ClientSideNetworking init complete!");

@@ -27,6 +27,7 @@ import net.minecraft.util.math.Direction;
 public class TweaksClient implements ClientModInitializer {
 
     public static String TEXT;
+
     @Override
     public void onInitializeClient() {
         ClientSideNetworking.register();

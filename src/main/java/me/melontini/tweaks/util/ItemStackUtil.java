@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class ItemStackUtil {
     private static final Random random = new Random();
+
     public static void spawnItem(@NotNull BlockPos pos, ItemStack stack, World world) {
         ItemEntity itemEntity = new ItemEntity(
                 world,

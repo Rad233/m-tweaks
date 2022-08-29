@@ -18,6 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @MixinRelatedConfigOption("quickFire")
 @Mixin(FireBlock.class)
 public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
+    public AbstractFireBlockMixin(Settings settings, float damage) {
+        super(settings, damage);
+    }
+
     @Shadow
     protected abstract int getSpreadChance(BlockState state);
 
@@ -26,10 +30,6 @@ public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
 
     @Shadow
     protected abstract void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge);
-
-    public AbstractFireBlockMixin(Settings settings, float damage) {
-        super(settings, damage);
-    }
 
     @Inject(at = @At("HEAD"), method = "trySpreadingFire", cancellable = true)
     public void mTweaks$spreadFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge, CallbackInfo ci) {

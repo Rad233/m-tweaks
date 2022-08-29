@@ -93,7 +93,11 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             this.scheduleVelocityUpdate();
             this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
             boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity) source.getAttacker()).getAbilities().creativeMode;
-            if (bl || this.getDamageWobbleStrength() > 40.0F) {
+            if (bl) {
+                this.discard();
+                return false;
+            }
+            if (this.getDamageWobbleStrength() > 40.0F) {
                 this.explode();
             }
         }

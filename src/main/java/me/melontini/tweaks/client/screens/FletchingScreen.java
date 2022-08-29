@@ -12,7 +12,7 @@ import static me.melontini.tweaks.Tweaks.MODID;
 
 public class FletchingScreen extends ForgingScreen<FletchingScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(MODID,"textures/gui/fletching.png");
+    private static final Identifier TEXTURE = new Identifier(MODID, "textures/gui/fletching.png");
 
     public FletchingScreen(FletchingScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(handler, playerInventory, title, TEXTURE);

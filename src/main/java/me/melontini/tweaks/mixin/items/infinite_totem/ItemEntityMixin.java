@@ -1,9 +1,9 @@
 package me.melontini.tweaks.mixin.items.infinite_totem;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.ducks.ItemEntityFriendAccess;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.BeaconUtil;
+import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
@@ -29,20 +29,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 @MixinRelatedConfigOption({"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
 @Mixin(ItemEntity.class)
-public abstract class ItemEntityMixin extends Entity implements ItemEntityFriendAccess {
+public abstract class ItemEntityMixin extends Entity {
+    private static final Set<ItemEntity> MTWEAKS$ITEMS = new HashSet<>();
     @Shadow
     @Final
     private static TrackedData<ItemStack> STACK;
     private final Random mTweaks$random = new Random();
     private int mTweaks$ascensionTicks;
-    private Optional<ItemEntity> mTweaks$itemEntity = Optional.empty();
+    private ItemEntity mTweaks$itemEntity;
     private Pair<BeaconBlockEntity, Integer> mTweaks$beacon = new Pair<>(null, 0);
 
     public ItemEntityMixin(EntityType<?> type, World world) {
@@ -58,64 +59,68 @@ public abstract class ItemEntityMixin extends Entity implements ItemEntityFriend
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V", shift = At.Shift.AFTER), method = "tick")
     private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.totemSettings.enableTotemAscension && Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
-            ItemEntity self = (ItemEntity) (Object) this;
             if (this.dataTracker.get(STACK).isOf(Items.TOTEM_OF_UNDYING)) {
+                ItemEntity self = (ItemEntity) (Object) this;
                 if (age % 35 == 0 && mTweaks$ascensionTicks == 0) mTweaks$beaconCheck();
 
                 if (mTweaks$beacon.getLeft() != null && mTweaks$beacon.getRight() == 4) {
-                    if (mTweaks$itemEntity.isEmpty()) {
-                        if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;
-                        if (age % 35 == 0) {
-                            List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, new Box(getPos().x + 0.5, getPos().y + 0.5, getPos().z + 0.5, getPos().x - 0.5, getPos().y - 0.5, getPos().z - 0.5),
-                                    itemEntity1 -> itemEntity1.getDataTracker().get(STACK).isOf(Items.NETHER_STAR) && (((ItemEntityFriendAccess) itemEntity1).mTweaks$getFriend() == self || !((ItemEntityFriendAccess) itemEntity1).mTweaks$hasFriend()));
+                    if (!world.isClient) {
+                        if (mTweaks$itemEntity == null) {
+                            if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;
+                            if (age % 40 == 0) {
+                                List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, new Box(getPos().x + 0.5, getPos().y + 0.5, getPos().z + 0.5, getPos().x - 0.5, getPos().y - 0.5, getPos().z - 0.5),
+                                        itemEntity1 -> itemEntity1.getDataTracker().get(STACK).isOf(Items.NETHER_STAR) && !MTWEAKS$ITEMS.contains(itemEntity1));
 
-                            if (!list.isEmpty()) {
-                                mTweaks$itemEntity = list.stream().min(Comparator.comparingDouble(itemEntity2 -> itemEntity2.squaredDistanceTo(self)));
+                                if (!list.isEmpty()) {
+                                    mTweaks$itemEntity = list.stream().findAny().get();
+                                    MTWEAKS$ITEMS.add(mTweaks$itemEntity);
 
-                                int i = mTweaks$itemEntity.get().getDataTracker().get(STACK).getCount() - 1;
-                                if (i != 0) {
-                                    ItemStack entityStack = mTweaks$itemEntity.get().getDataTracker().get(STACK).copy();
-                                    entityStack.setCount(i);
-                                    mTweaks$itemEntity.get().getDataTracker().get(STACK).setCount(1);
-                                    ItemEntity itemEntity1 = EntityType.ITEM.create(world);
-                                    itemEntity1.setStack(entityStack);
-                                    itemEntity1.setPos(mTweaks$itemEntity.get().getX(), mTweaks$itemEntity.get().getY() + 0.3, mTweaks$itemEntity.get().getZ());
-                                    world.spawnEntity(itemEntity1);
+                                    int i = mTweaks$itemEntity.getDataTracker().get(STACK).getCount() - 1;
+
+                                    if (i != 0) {
+                                        ItemStack entityStack = mTweaks$itemEntity.getDataTracker().get(STACK).copy();
+                                        entityStack.setCount(i);
+                                        mTweaks$itemEntity.getDataTracker().get(STACK).setCount(1);
+                                        ItemEntity itemEntity1 = EntityType.ITEM.create(world);
+                                        itemEntity1.setStack(entityStack);
+                                        itemEntity1.setPos(mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY() + 0.3, mTweaks$itemEntity.getZ());
+                                        world.spawnEntity(itemEntity1);
+                                    }
+
+                                    mTweaks$itemEntity.setPickupDelayInfinite();
+                                    this.setPickupDelayInfinite();
                                 }
-                                mTweaks$itemEntity.get().setPickupDelayInfinite();
-                                this.setPickupDelayInfinite();
-                                ((ItemEntityFriendAccess) mTweaks$itemEntity.get()).mTweaks$setFriend(self);
                             }
-                        }
-                    } else {
-                        if (((ItemEntityFriendAccess) mTweaks$itemEntity.get()).mTweaks$getFriend() != self) {
-                            mTweaks$itemEntity = Optional.empty();
                         } else {
-                            if (mTweaks$ascensionTicks < 180 && mTweaks$beaconCheck()) {
-                                ++mTweaks$ascensionTicks;
-                                mTweaks$itemEntity.get().setVelocity(mTweaks$itemEntity.get().getVelocity().x * .5, .07, mTweaks$itemEntity.get().getVelocity().z * .5);
-                                self.setVelocity(getVelocity().x * .5, .07, getVelocity().z * .5);
-                                if (world.isClient) {
-                                    if (mTweaks$random.nextInt(8) == 0)
-                                        world.addParticle(ParticleTypes.END_ROD, self.getX(), self.getY(), self.getZ(), getVelocity().x, -.07, getVelocity().z);
-                                    if (mTweaks$random.nextInt(8) == 0)
-                                        world.addParticle(ParticleTypes.END_ROD, mTweaks$itemEntity.get().getX(), mTweaks$itemEntity.get().getY(), mTweaks$itemEntity.get().getZ(), mTweaks$itemEntity.get().getVelocity().x, -.07, mTweaks$itemEntity.get().getVelocity().z);
-                                }
-                            } else if (mTweaks$ascensionTicks == 180) {
-                                mTweaks$ascensionTicks = 0;
-                                ItemStack stack = new ItemStack(ItemRegistry.INFINITE_TOTEM);
-                                ItemEntity itemEntity2 = new ItemEntity(world, self.getX(), self.getY(), self.getZ(), stack);
-                                world.spawnEntity(itemEntity2);
-                                if (!world.isClient()) {
-                                    ((ServerWorld) world).spawnParticles(Tweaks.KNOCKOFF_TOTEM_PARTICLE, itemEntity2.getX(), itemEntity2.getY(), itemEntity2.getZ(), 19, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, 0.5);
-                                }
-                                mTweaks$itemEntity.get().discard();
-                                self.discard();
-                            } else if (!mTweaks$beaconCheck()) {
-                                mTweaks$ascensionTicks = 0;
+                            if (!mTweaks$itemEntity.cannotPickup()) {
                                 setToDefaultPickupDelay();
-                                mTweaks$itemEntity.get().setToDefaultPickupDelay();
-                                ((ItemEntityFriendAccess) mTweaks$itemEntity.get()).mTweaks$setFriend(null);
+                                mTweaks$itemEntity = null;
+                            } else {
+                                if (mTweaks$ascensionTicks < 180 && mTweaks$beaconCheck()) {
+                                    ++mTweaks$ascensionTicks;
+
+                                    WorldUtil.crudeSetVelocity(mTweaks$itemEntity, mTweaks$itemEntity.getVelocity().x * .5, .07, mTweaks$itemEntity.getVelocity().z * .5);
+                                    WorldUtil.crudeSetVelocity(self, getVelocity().x * .5, .07, getVelocity().z * .5);
+
+                                    if (mTweaks$random.nextInt(13) == 0)
+                                        WorldUtil.addParticle(world, ParticleTypes.END_ROD, self.getX(), self.getY(), self.getZ(), getVelocity().x, -.07, getVelocity().z);
+                                    if (mTweaks$random.nextInt(13) == 0)
+                                        WorldUtil.addParticle(world, ParticleTypes.END_ROD, mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY(), mTweaks$itemEntity.getZ(), mTweaks$itemEntity.getVelocity().x, -.07, mTweaks$itemEntity.getVelocity().z);
+                                } else if (mTweaks$ascensionTicks == 180) {
+                                    mTweaks$ascensionTicks = 0;
+                                    ItemStack stack = new ItemStack(ItemRegistry.INFINITE_TOTEM);
+                                    ItemEntity itemEntity2 = new ItemEntity(world, self.getX(), self.getY(), self.getZ(), stack);
+                                    world.spawnEntity(itemEntity2);
+
+                                    if (!world.isClient)
+                                        ((ServerWorld) world).spawnParticles(Tweaks.KNOCKOFF_TOTEM_PARTICLE, itemEntity2.getX(), itemEntity2.getY(), itemEntity2.getZ(), 19, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, 0.5);
+
+                                    mTweaks$itemEntity.discard();
+                                    self.discard();
+                                } else if (!mTweaks$beaconCheck()) {
+                                    setToDefaultPickupDelay();
+                                    mTweaks$itemEntity.setToDefaultPickupDelay();
+                                }
                             }
                         }
                     }

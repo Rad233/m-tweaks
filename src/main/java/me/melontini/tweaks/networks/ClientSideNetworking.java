@@ -9,10 +9,12 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +76,19 @@ public class ClientSideNetworking {
                 });
             });
 
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "particles_thing"), (client, handler, packetByteBuf, responseSender) -> {
+            ParticleType particle = packetByteBuf.readRegistryValue(Registry.PARTICLE_TYPE);//using <?> breaks factory.read(particle<T>, pbf)
+            double x = packetByteBuf.readDouble();
+            double y = packetByteBuf.readDouble();
+            double z = packetByteBuf.readDouble();
+            double velocityX = packetByteBuf.readDouble();
+            double velocityY = packetByteBuf.readDouble();
+            double velocityZ = packetByteBuf.readDouble();
+            client.execute(() -> {
+                assert particle != null;
+                client.worldRenderer.addParticle(particle.getParametersFactory().read(particle, packetByteBuf), particle.shouldAlwaysSpawn(), x, y, z, velocityX, velocityY, velocityZ);
+            });
+        });
         LogUtil.info("ClientSideNetworking init complete!");
     }
 }

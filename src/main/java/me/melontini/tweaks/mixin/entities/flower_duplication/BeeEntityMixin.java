@@ -2,6 +2,7 @@ package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
@@ -66,7 +67,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
         if (this.flowerPos != null) {
             BlockState flowerState = world.getBlockState(flowerPos);
             if (flowerState.getBlock() instanceof FlowerBlock flowerBlock) {
-                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 6490);
+                mTweaks$plantingCoolDown = MiscUtil.nextBetween(3600, 6490, world.random);
                 for (int i = -2; i <= 2; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -2; c <= 2; c++) {
@@ -81,7 +82,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     }
                 }
             } else if (flowerState.getBlock() instanceof TallFlowerBlock flowerBlock && Tweaks.CONFIG.beeTallFlowerDuplication) {
-                mTweaks$plantingCoolDown = world.random.nextBetween(3600, 8000);
+                mTweaks$plantingCoolDown = MiscUtil.nextBetween(3600, 8000, world.random);
                 for (int i = -1; i <= 1; i++) {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -1; c <= 1; c++) {

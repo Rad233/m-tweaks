@@ -1,10 +1,7 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.entity.vehicle.boats.FurnaceBoatEntity;
-import me.melontini.tweaks.entity.vehicle.boats.HopperBoatEntity;
-import me.melontini.tweaks.entity.vehicle.boats.JukeboxBoatEntity;
-import me.melontini.tweaks.entity.vehicle.boats.TNTBoatEntity;
+import me.melontini.tweaks.entity.vehicle.boats.*;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
@@ -22,6 +19,7 @@ public class EntityTypeRegistry {
     public static EntityType<AnvilMinecartEntity> ANVIL_MINECART_ENTITY = createEntityType(Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn, "anvil_minecart", FabricEntityTypeBuilder.<AnvilMinecartEntity>create(SpawnGroup.MISC, AnvilMinecartEntity::new).dimensions(EntityDimensions.fixed(0.98F, 0.7F)));
     public static EntityType<NoteBlockMinecartEntity> NOTEBLOCK_MINECART_ENTITY = createEntityType(Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn, "note_block_minecart", FabricEntityTypeBuilder.<NoteBlockMinecartEntity>create(SpawnGroup.MISC, NoteBlockMinecartEntity::new).dimensions(EntityDimensions.fixed(0.98F, 0.7F)));
     public static EntityType<JukeboxMinecartEntity> JUKEBOX_MINECART_ENTITY = createEntityType(Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn, "jukebox_minecart", FabricEntityTypeBuilder.<JukeboxMinecartEntity>create(SpawnGroup.MISC, JukeboxMinecartEntity::new).dimensions(EntityDimensions.fixed(0.98F, 0.7F)));
+    public static EntityType<ChestBoatEntity> BOAT_WITH_CHEST = createEntityType(Tweaks.CONFIG.newBoats.isChestBoatOn, "chest_boat", FabricEntityTypeBuilder.<ChestBoatEntity>create(SpawnGroup.MISC, ChestBoatEntity::new).dimensions(EntityDimensions.fixed(1.375F, 0.5625F)));
     public static EntityType<TNTBoatEntity> BOAT_WITH_TNT = createEntityType(Tweaks.CONFIG.newBoats.isTNTBoatOn, "tnt_boat", FabricEntityTypeBuilder.<TNTBoatEntity>create(SpawnGroup.MISC, TNTBoatEntity::new).dimensions(EntityDimensions.fixed(1.375F, 0.5625F)));
     public static EntityType<FurnaceBoatEntity> BOAT_WITH_FURNACE = createEntityType(Tweaks.CONFIG.newBoats.isFurnaceBoatOn, "furnace_boat", FabricEntityTypeBuilder.<FurnaceBoatEntity>create(SpawnGroup.MISC, FurnaceBoatEntity::new).dimensions(EntityDimensions.fixed(1.375F, 0.5625F)));
     public static EntityType<JukeboxBoatEntity> BOAT_WITH_JUKEBOX = createEntityType(Tweaks.CONFIG.newBoats.isJukeboxBoatOn, "jukebox_boat", FabricEntityTypeBuilder.<JukeboxBoatEntity>create(SpawnGroup.MISC, JukeboxBoatEntity::new).dimensions(EntityDimensions.fixed(1.375F, 0.5625F)));

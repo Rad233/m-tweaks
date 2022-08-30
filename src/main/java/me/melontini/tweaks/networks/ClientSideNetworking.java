@@ -14,7 +14,6 @@ import net.minecraft.particle.ParticleType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
@@ -38,7 +37,7 @@ public class ClientSideNetworking {
                     if (stack.getItem() instanceof MusicDiscItem disc) {
 
                         var discName = disc.getDescription();
-                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world, Random.create());
+                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world);
                         soundInstanceMap.put(id, instance);
                         client.getSoundManager().play(instance);
 
@@ -78,7 +77,7 @@ public class ClientSideNetworking {
             });
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "particles_thing"), (client, handler, packetByteBuf, responseSender) -> {
-            ParticleType particle = packetByteBuf.readRegistryValue(Registry.PARTICLE_TYPE);//using <?> breaks factory.read(particle<T>, pbf)
+            ParticleType particle = Registry.PARTICLE_TYPE.get(packetByteBuf.readIdentifier());//using <?> breaks factory.read(particle<T>, pbf)
             double x = packetByteBuf.readDouble();
             double y = packetByteBuf.readDouble();
             double z = packetByteBuf.readDouble();

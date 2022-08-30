@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -27,7 +26,10 @@ import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -78,10 +80,10 @@ public class ResourceConditionRegistry {
             @Override
             public void reload(ResourceManager manager) {
                 Tweaks.PLANT_DATA.clear();
-                var map = manager.findResources("mt_crop_temperatures", identifier -> identifier.getPath().endsWith(".json"));
-                for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
+                var map = manager.findResources("mt_crop_temperatures", identifier -> identifier.endsWith(".json"));
+                for (Identifier entry : map) {
                     try {
-                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
+                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(manager.getResource(entry).getInputStream()));
                         LogUtil.info(jsonElement);
                         PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
@@ -113,10 +115,10 @@ public class ResourceConditionRegistry {
                         Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.getId(spawnEggItem), new EggProcessingData(Registry.ITEM.getId(spawnEggItem).toString(), Registry.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
                     }
                 }
-                var map = manager.findResources("mt_egg_processing", identifier -> identifier.getPath().endsWith(".json"));
-                for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
+                var map = manager.findResources("mt_egg_processing", identifier -> identifier.endsWith(".json"));
+                for (Identifier entry : map) {
                     try {
-                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
+                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(manager.getResource(entry).getInputStream()));
                         LogUtil.info(jsonElement);
                         EggProcessingData data = GSON.fromJson(jsonElement, EggProcessingData.class);
 

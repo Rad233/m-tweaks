@@ -26,7 +26,7 @@ public class BoatEntityWithBlock extends BoatEntity {
     }
 
     @Override
-    public int getMaxPassengers() {
-        return 1;
+    public boolean canAddPassenger(Entity passenger) {
+        return this.getPassengerList().isEmpty();
     }
 }

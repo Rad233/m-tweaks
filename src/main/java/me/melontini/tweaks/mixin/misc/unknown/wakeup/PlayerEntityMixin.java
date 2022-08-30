@@ -13,7 +13,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
+import java.util.Random;
 
 @MixinRelatedConfigOption("unknown")
 @Mixin(PlayerEntity.class)
@@ -33,8 +33,8 @@ public abstract class PlayerEntityMixin {
     private void mTweaks$wakeUp(boolean skipSleepTimer, boolean updateSleepingPlayers, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (Tweaks.CONFIG.unknown) {
-            if (!player.world.isClient) if (Random.create().nextInt(100000) == 0) {
-                Optional<BlockPos> optional = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, Random.create());
+            if (!player.world.isClient) if (new Random().nextInt(100000) == 0) {
+                Optional<BlockPos> optional = WorldUtil.pickRandomSpot(player.world, player.getBlockPos(), 10, new Random());
                 if (optional.isPresent()) {
                     BlockPos pos = optional.get();
                     ArmorStandEntity stand = new ArmorStandEntity(player.world, pos.getX(), pos.getY(), pos.getZ());

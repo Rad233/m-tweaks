@@ -6,3 +6,6 @@
 * Mixins now use [Fabrication-esque](https://www.curseforge.com/minecraft/mc-mods/fabrication) annotation to check if they need to be loaded.
 * Fixed the game crashing on start-up.
 * Other mainly maintenance changes.
+* Things from 0.4.2
+
+P.S I love that part where I said "it's 1.18-ing time!" and then 1.18-ed all over the place!

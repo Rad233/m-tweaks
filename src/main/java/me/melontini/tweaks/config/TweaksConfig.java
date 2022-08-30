@@ -226,6 +226,16 @@ public class TweaksConfig implements ConfigData {
     public boolean minecartSpawnerPicking = true;
 
     @ConfigEntry.Category("misc")
+    @Comment("Enables Smooth Tooltips. With this on, tooltips won't \"bend\" to the other side when near the edge of the screen.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean enableSmoothTooltips = true;
+
+    @ConfigEntry.Category("misc")
+    @Comment("The higher this number is, the faster tooltips move")
+    @ConfigEntry.Gui.Tooltip
+    public int tooltipMultiplier = 5;
+
+    @ConfigEntry.Category("misc")
     @Comment("makes the player explode after taking any damage")
     @ConfigEntry.Gui.Tooltip
     public boolean minorInconvenience = false;

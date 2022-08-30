@@ -164,6 +164,11 @@
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking.@Tooltip[1]": "Does nothing if Minecart Block Picking is off",
 
   "text.autoconfig.m-tweaks.category.misc": "Misc",
+  "text.autoconfig.m-tweaks.option.enableSmoothTooltips": "Smooth Tooltips",
+  "text.autoconfig.m-tweaks.option.enableSmoothTooltips.@Tooltip[0]": "Makes tooltips slowly move towards the mouse.",
+  "text.autoconfig.m-tweaks.option.enableSmoothTooltips.@Tooltip[1]": "With this on, tooltips won't \"bend\" to the other side when near the edge of the screen",
+  "text.autoconfig.m-tweaks.option.tooltipMultiplier": "Tooltips Speed Multiplier",
+  "text.autoconfig.m-tweaks.option.tooltipMultiplier.@Tooltip": "The higher this number is, the faster tooltips move",
   "text.autoconfig.m-tweaks.option.minorInconvenience": "Minor Inconvenience",
   "text.autoconfig.m-tweaks.option.minorInconvenience.@Tooltip": "Makes the player explode after taking any damage",
   "text.autoconfig.m-tweaks.option.compatMode": "Compat Mode",

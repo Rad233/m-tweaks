@@ -86,17 +86,10 @@ public abstract class ItemEntityMixin extends Entity {
                                 try {
                                     if (mTweaks$future == null || (mTweaks$future.isDone() && mTweaks$future.get().isEmpty()))
                                         mTweaks$future = Tweaks.EXECUTOR_SERVICE.submit(new ItemDiscoveryRunnable(self, MTWEAKS$ITEMS));
-                                } catch (InterruptedException | ExecutionException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                if (mTweaks$future.isDone()) {
-                                    try {
+
+                                    if (mTweaks$future.isDone()) {
                                         if (mTweaks$future.get().isPresent()) {
-                                            try {
-                                                mTweaks$itemEntity = mTweaks$future.get().get();
-                                            } catch (InterruptedException | ExecutionException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            mTweaks$itemEntity = mTweaks$future.get().get();
                                             mTweaks$future = null;
                                             if (MTWEAKS$ITEMS.contains(mTweaks$itemEntity)) {
                                                 mTweaks$itemEntity = null;
@@ -132,9 +125,9 @@ public abstract class ItemEntityMixin extends Entity {
                                                 }
                                             }
                                         }
-                                    } catch (InterruptedException | ExecutionException e) {
-                                        throw new RuntimeException(e);
                                     }
+                                } catch (InterruptedException | ExecutionException e) {
+                                    throw new RuntimeException(e);
                                 }
                             }
                         } else {

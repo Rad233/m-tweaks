@@ -27,6 +27,8 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Tweaks implements ModInitializer {
 
@@ -37,6 +39,8 @@ public class Tweaks implements ModInitializer {
     public static Map<Identifier, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Identifier, EggProcessingData> EGG_DATA = new HashMap<>();
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE = FabricParticleTypes.simple();
+
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool(Thread::new);
 
     @Override
     public void onInitialize() {

@@ -49,9 +49,18 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     public void tick() {
         assert world != null;
         if (this.processingTime > 0) {
-            if (world.getBlockState(pos.down()).getBlock() instanceof CampfireBlock ||
-                    world.getBlockState(pos.down().down()).getBlock() instanceof CampfireBlock) {
-                if (world.getBlockState(pos.down()).get(CampfireBlock.LIT) || world.getBlockState(pos.down().down()).get(CampfireBlock.LIT)) {
+            if (world.getBlockState(pos.down().down()).getBlock() instanceof CampfireBlock) {
+                if (world.getBlockState(pos.down().down()).get(CampfireBlock.LIT)) {
+                    if (!world.isClient) this.processingTime--;
+                    if (world.random.nextInt(4) == 0 && world.isClient) {
+                        double i = (jRandom.nextDouble(0.6) - 0.3);
+                        double j = (jRandom.nextDouble(0.6) - 0.3);
+                        world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
+                    }
+                }
+            }
+            if (world.getBlockState(pos.down()).getBlock() instanceof CampfireBlock) {
+                if (world.getBlockState(pos.down()).get(CampfireBlock.LIT)) {
                     if (!world.isClient) this.processingTime--;
                     if (world.random.nextInt(4) == 0 && world.isClient) {
                         double i = (jRandom.nextDouble(0.6) - 0.3);

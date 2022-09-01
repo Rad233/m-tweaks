@@ -3,6 +3,7 @@ package me.melontini.tweaks.mixin.items.infinite_totem;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.BeaconUtil;
+import me.melontini.tweaks.util.ItemDiscoveryRunnable;
 import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
@@ -26,7 +27,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -36,17 +36,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
 @MixinRelatedConfigOption({"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
-    private static final Set<ItemEntity> MTWEAKS$ITEMS = new HashSet<>();
+    private static volatile Set<ItemEntity> MTWEAKS$ITEMS = ConcurrentHashMap.newKeySet();
     @Shadow
     @Final
     private static TrackedData<ItemStack> STACK;
@@ -54,6 +57,8 @@ public abstract class ItemEntityMixin extends Entity {
     private int mTweaks$ascensionTicks;
     private ItemEntity mTweaks$itemEntity;
     private Pair<BeaconBlockEntity, Integer> mTweaks$beacon = new Pair<>(null, 0);
+
+    private Future<Optional<ItemEntity>> mTweaks$future;
 
     public ItemEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -76,40 +81,59 @@ public abstract class ItemEntityMixin extends Entity {
                     if (!world.isClient) {
                         if (mTweaks$itemEntity == null) {
                             if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;
-                            if (age % 40 == 0) {
-                                List<ItemEntity> list = world.getEntitiesByClass(ItemEntity.class, new Box(getPos().x + 0.5, getPos().y + 0.5, getPos().z + 0.5, getPos().x - 0.5, getPos().y - 0.5, getPos().z - 0.5),
-                                        itemEntity1 -> itemEntity1.getDataTracker().get(STACK).isOf(Items.NETHER_STAR) && !MTWEAKS$ITEMS.contains(itemEntity1));
 
-                                if (!list.isEmpty()) {
-                                    mTweaks$itemEntity = list.stream().findAny().get();
-                                    MTWEAKS$ITEMS.add(mTweaks$itemEntity);
+                            if (age % 10 == 0) {
+                                try {
+                                    if (mTweaks$future == null || (mTweaks$future.isDone() && mTweaks$future.get().isEmpty()))
+                                        mTweaks$future = Tweaks.EXECUTOR_SERVICE.submit(new ItemDiscoveryRunnable(self, MTWEAKS$ITEMS));
+                                } catch (InterruptedException | ExecutionException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                if (mTweaks$future.isDone()) {
+                                    try {
+                                        if (mTweaks$future.get().isPresent()) {
+                                            try {
+                                                mTweaks$itemEntity = mTweaks$future.get().get();
+                                            } catch (InterruptedException | ExecutionException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            mTweaks$future = null;
+                                            if (MTWEAKS$ITEMS.contains(mTweaks$itemEntity)) {
+                                                mTweaks$itemEntity = null;
+                                                return;
+                                            }
+                                            MTWEAKS$ITEMS.add(mTweaks$itemEntity);
 
-                                    mTweaks$itemEntity.setPickupDelayInfinite();
-                                    this.setPickupDelayInfinite();
+                                            mTweaks$itemEntity.setPickupDelayInfinite();
+                                            this.setPickupDelayInfinite();
 
-                                    int i = mTweaks$itemEntity.getDataTracker().get(STACK).getCount() - 1;
+                                            int i = mTweaks$itemEntity.getDataTracker().get(STACK).getCount() - 1;
 
-                                    if (i != 0) {
-                                        ItemStack entityStack = mTweaks$itemEntity.getDataTracker().get(STACK).copy();
-                                        entityStack.setCount(i);
-                                        mTweaks$itemEntity.getDataTracker().get(STACK).setCount(1);
-                                        ItemEntity itemEntity1 = EntityType.ITEM.create(world);
-                                        itemEntity1.setStack(entityStack);
-                                        itemEntity1.setPos(mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY() + 0.2, mTweaks$itemEntity.getZ());
-                                        world.spawnEntity(itemEntity1);
+                                            if (i != 0) {
+                                                ItemStack entityStack = mTweaks$itemEntity.getDataTracker().get(STACK).copy();
+                                                entityStack.setCount(i);
+                                                mTweaks$itemEntity.getDataTracker().get(STACK).setCount(1);
+                                                ItemEntity itemEntity1 = EntityType.ITEM.create(world);
+                                                itemEntity1.setStack(entityStack);
+                                                itemEntity1.setPos(mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY() + 0.2, mTweaks$itemEntity.getZ());
+                                                world.spawnEntity(itemEntity1);
 
-                                        PacketByteBuf packetByteBuf = PacketByteBufs.create();
-                                        packetByteBuf.writeUuid(mTweaks$itemEntity.getUuid());
-                                        packetByteBuf.writeItemStack(mTweaks$itemEntity.getDataTracker().get(STACK));
+                                                PacketByteBuf packetByteBuf = PacketByteBufs.create();
+                                                packetByteBuf.writeUuid(mTweaks$itemEntity.getUuid());
+                                                packetByteBuf.writeItemStack(mTweaks$itemEntity.getDataTracker().get(STACK));
 
-                                        PacketByteBuf packetByteBuf2 = PacketByteBufs.create();
-                                        packetByteBuf2.writeUuid(itemEntity1.getUuid());
-                                        packetByteBuf2.writeItemStack(itemEntity1.getDataTracker().get(STACK));
+                                                PacketByteBuf packetByteBuf2 = PacketByteBufs.create();
+                                                packetByteBuf2.writeUuid(itemEntity1.getUuid());
+                                                packetByteBuf2.writeItemStack(itemEntity1.getDataTracker().get(STACK));
 
-                                        for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 85)) {
-                                            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf);
-                                            ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf2);
+                                                for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 85)) {
+                                                    ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf);
+                                                    ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf2);
+                                                }
+                                            }
                                         }
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        throw new RuntimeException(e);
                                     }
                                 }
                             }

@@ -89,7 +89,7 @@ public class ResourceConditionRegistry {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid identifier provided! %s", data.identifier));
                         }
 
-                        Tweaks.PLANT_DATA.putIfAbsent(Identifier.tryParse(data.identifier), data);
+                        Tweaks.PLANT_DATA.putIfAbsent(Registry.BLOCK.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
                         LogUtil.error(e);
                     }
@@ -110,7 +110,7 @@ public class ResourceConditionRegistry {
                 //well...
                 for (Item item : Registry.ITEM) {
                     if (item instanceof SpawnEggItem spawnEggItem) {
-                        Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.getId(spawnEggItem), new EggProcessingData(Registry.ITEM.getId(spawnEggItem).toString(), Registry.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
+                        Tweaks.EGG_DATA.putIfAbsent(spawnEggItem, new EggProcessingData(Registry.ITEM.getId(spawnEggItem).toString(), Registry.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
                     }
                 }
                 var map = manager.findResources("mt_egg_processing", identifier -> identifier.getPath().endsWith(".json"));
@@ -128,7 +128,7 @@ public class ResourceConditionRegistry {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid item identifier provided! %s", data.identifier));
                         }
 
-                        Tweaks.EGG_DATA.putIfAbsent(Identifier.tryParse(data.identifier), data);
+                        Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
                         LogUtil.error(e);
                     }

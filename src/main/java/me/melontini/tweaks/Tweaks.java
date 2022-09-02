@@ -16,7 +16,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.minecraft.block.Block;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
@@ -36,8 +38,8 @@ public class Tweaks implements ModInitializer {
     public static final String MODID = "m-tweaks";
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
-    public static Map<Identifier, PlantData> PLANT_DATA = new HashMap<>();
-    public static Map<Identifier, EggProcessingData> EGG_DATA = new HashMap<>();
+    public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
+    public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE = FabricParticleTypes.simple();
 
     public static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool(Thread::new);

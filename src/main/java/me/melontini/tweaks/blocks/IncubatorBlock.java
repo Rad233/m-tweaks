@@ -20,7 +20,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -51,7 +50,7 @@ public class IncubatorBlock extends BlockWithEntity {
         IncubatorBlockEntity entity = (IncubatorBlockEntity) world.getBlockEntity(pos);
         if (!world.isClient)
             if (entity != null)
-                if (Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(stack.getItem())) && hand.equals(Hand.MAIN_HAND)) {
+                if (Tweaks.EGG_DATA.containsKey(stack.getItem()) && hand.equals(Hand.MAIN_HAND)) {
                     return entity.insertEgg(stack) ? ActionResult.SUCCESS : ActionResult.FAIL;
                 } else if (stack.isEmpty() && hand.equals(Hand.MAIN_HAND)) {
                     return entity.takeEgg(player, stack) ? ActionResult.SUCCESS : ActionResult.FAIL;

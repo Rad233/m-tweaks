@@ -1,4 +1,4 @@
-package me.melontini.tweaks.util;
+package me.melontini.tweaks.util.concurrent;
 
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Items;

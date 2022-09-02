@@ -8,7 +8,6 @@ import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +21,7 @@ public class PlantBlocksMixin {
     @Inject(at = @At("HEAD"), method = "randomTick", cancellable = true)
     private void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (Tweaks.CONFIG.temperatureBasedCropGrowthSpeed) {
-            PlantData data = Tweaks.PLANT_DATA.get(Registry.BLOCK.getId((Block) (Object) this));
+            PlantData data = Tweaks.PLANT_DATA.get((Block) (Object) this);
             if (data != null) {
                 float temp = world.getBiome(pos).value().getTemperature();
                 if ((temp > data.max && temp <= data.aMax) || (temp < data.min && temp >= data.aMin)) {

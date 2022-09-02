@@ -74,7 +74,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
             ItemStack stack = this.inventory.get(0);
             BlockState state = world.getBlockState(this.pos);
             if (!stack.isEmpty() && this.processingTime == -1) {
-                EggProcessingData data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
+                EggProcessingData data = Tweaks.EGG_DATA.get(stack.getItem());
                 if (data != null) {
                     this.processingTime = Tweaks.CONFIG.incubatorSettings.incubatorRandomness ? (int) (data.time + (Math.random() * (data.time * 0.3) * 2) - data.time * 0.3) : data.time;
                     world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
@@ -87,8 +87,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
             }
 
             if (this.processingTime == 0) {
-                if (Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(stack.getItem()))) {
-                    EggProcessingData data = Tweaks.EGG_DATA.get(Registry.ITEM.getId(stack.getItem()));
+                if (Tweaks.EGG_DATA.containsKey(stack.getItem())) {
+                    EggProcessingData data = Tweaks.EGG_DATA.get(stack.getItem());
                     Entity entity = Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)).create(world);
                     BlockPos entityPos = pos.offset(state.get(IncubatorBlock.FACING));
                     assert entity != null;
@@ -232,7 +232,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
         assert world != null;
-        return dir != world.getBlockState(this.pos).get(IncubatorBlock.FACING) && Tweaks.EGG_DATA.containsKey(Registry.ITEM.getId(stack.getItem()));
+        return dir != world.getBlockState(this.pos).get(IncubatorBlock.FACING) && Tweaks.EGG_DATA.containsKey(stack.getItem());
     }
 
     @Override

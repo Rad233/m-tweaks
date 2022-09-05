@@ -46,8 +46,8 @@ public abstract class ScreenMixin {
                 mTweaks$aFloat2 = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier, mTweaks$aFloat2, mouseY), mouseY - 30, mouseY + 30);
             }
             MatrixStack matrixStack = new MatrixStack();
-            matrixStack.translate(mTweaks$aFloat, mTweaks$aFloat2, 0);
-            renderTooltipFromComponents(matrixStack, components, 0, 0);
+            matrixStack.translate(mTweaks$aFloat - mouseX, mTweaks$aFloat2 - mouseY, 0);
+            renderTooltipFromComponents(matrixStack, components, mouseX, mouseY);
         } else renderTooltipFromComponents(matrices, components, mouseX, mouseY);
     }
 
@@ -66,8 +66,8 @@ public abstract class ScreenMixin {
                 mTweaks$aFloat2 = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier, mTweaks$aFloat2, mouseY), mouseY - 30, mouseY + 30);
             }
             MatrixStack matrixStack = new MatrixStack();
-            matrixStack.translate(mTweaks$aFloat, mTweaks$aFloat2, 0);
-            renderTooltipFromComponents(matrixStack, components, 0, 0);
+            matrixStack.translate(mTweaks$aFloat - mouseX, mTweaks$aFloat2 - mouseY, 0);
+            renderTooltipFromComponents(matrixStack, components, mouseX, mouseY);
         } else renderTooltipFromComponents(matrices, components, mouseX, mouseY);
     }
 }

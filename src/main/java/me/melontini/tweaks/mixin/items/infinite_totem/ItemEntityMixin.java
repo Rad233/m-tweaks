@@ -26,6 +26,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -85,7 +86,7 @@ public abstract class ItemEntityMixin extends Entity {
                             if (age % 10 == 0) {
                                 try {
                                     if (mTweaks$future == null || (mTweaks$future.isDone() && mTweaks$future.get().isEmpty()))
-                                        mTweaks$future = Tweaks.EXECUTOR_SERVICE.submit(new ItemDiscoveryRunnable(self, MTWEAKS$ITEMS));
+                                        mTweaks$future = Util.getMainWorkerExecutor().submit(new ItemDiscoveryRunnable(self, MTWEAKS$ITEMS));
 
                                     if (mTweaks$future.isDone()) {
                                         if (mTweaks$future.get().isPresent()) {

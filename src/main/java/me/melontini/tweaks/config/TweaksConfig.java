@@ -233,7 +233,7 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("misc")
     @Comment("The higher this number is, the faster tooltips move")
     @ConfigEntry.Gui.Tooltip
-    public int tooltipMultiplier = 5;
+    public float tooltipMultiplier = 0.04f;
 
     @ConfigEntry.Category("misc")
     @Comment("makes the player explode after taking any damage")

@@ -226,8 +226,8 @@ public class TweaksConfig implements ConfigData {
     public boolean minecartSpawnerPicking = true;
 
     @ConfigEntry.Category("misc")
-    @Comment("Enables Smooth Tooltips. With this on, tooltips won't \"bend\" to the other side when near the edge of the screen.")
-    @ConfigEntry.Gui.Tooltip(count = 2)
+    @Comment("Enables Smooth Tooltips.")
+    @ConfigEntry.Gui.Tooltip
     public boolean enableSmoothTooltips = true;
 
     @ConfigEntry.Category("misc")

@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.misc.smooth_tooltips;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.MinecraftClient;
@@ -45,11 +46,13 @@ public abstract class ScreenMixin {
             if (!(mTweaks$aFloat2 <= mouseY + 0.1 && mTweaks$aFloat2 >= mouseY - 0.1)) {
                 mTweaks$aFloat2 = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier, mTweaks$aFloat2, mouseY), mouseY - 30, mouseY + 30);
             }
-            MatrixStack matrixStack = new MatrixStack();
-            matrixStack.push();
-            matrixStack.translate(mTweaks$aFloat - (int) (mTweaks$aFloat), mTweaks$aFloat2 - (int) (mTweaks$aFloat2), 0);
-            renderTooltipFromComponents(matrixStack, components, (int) (mTweaks$aFloat), (int) (mTweaks$aFloat2));
-            matrixStack.pop();
+            MatrixStack matrixStack1 = RenderSystem.getModelViewStack();
+            matrixStack1.push();
+            matrixStack1.translate(mTweaks$aFloat - (int) (mTweaks$aFloat), mTweaks$aFloat2 - (int) (mTweaks$aFloat2), 0);
+            RenderSystem.applyModelViewMatrix();
+            renderTooltipFromComponents(matrices, components, (int) (mTweaks$aFloat), (int) (mTweaks$aFloat2));
+            matrixStack1.pop();
+            RenderSystem.applyModelViewMatrix();
         } else renderTooltipFromComponents(matrices, components, mouseX, mouseY);
     }
 
@@ -67,11 +70,13 @@ public abstract class ScreenMixin {
             if (!(mTweaks$aFloat2 <= mouseY + 0.1 && mTweaks$aFloat2 >= mouseY - 0.1)) {
                 mTweaks$aFloat2 = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier, mTweaks$aFloat2, mouseY), mouseY - 30, mouseY + 30);
             }
-            MatrixStack matrixStack = new MatrixStack();
-            matrixStack.push();
-            matrixStack.translate(mTweaks$aFloat - (int) (mTweaks$aFloat), mTweaks$aFloat2 - (int) (mTweaks$aFloat2), 0);
-            renderTooltipFromComponents(matrixStack, components, (int) (mTweaks$aFloat), (int) (mTweaks$aFloat2));
-            matrixStack.pop();
+            MatrixStack matrixStack1 = RenderSystem.getModelViewStack();
+            matrixStack1.push();
+            matrixStack1.translate(mTweaks$aFloat - (int) (mTweaks$aFloat), mTweaks$aFloat2 - (int) (mTweaks$aFloat2), 0);
+            RenderSystem.applyModelViewMatrix();
+            renderTooltipFromComponents(matrices, components, (int) (mTweaks$aFloat), (int) (mTweaks$aFloat2));
+            matrixStack1.pop();
+            RenderSystem.applyModelViewMatrix();
         } else renderTooltipFromComponents(matrices, components, mouseX, mouseY);
     }
 }

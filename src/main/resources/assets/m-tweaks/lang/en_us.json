@@ -5,6 +5,7 @@
   "tooltip.m-tweaks.incubator[0]": "A handy little device, helpful with hatching eggs.",
   "tooltip.m-tweaks.incubator[1]": "Courtesy of \"Bad Software & Hardware LLC\"®",
   "tooltip.m-tweaks.clock": "Current time: %s",
+  "tooltip.m-tweaks.frameitem": "Item inside this frame",
 
   "block.m-tweaks.rose_of_the_valley": "Rose of the Valley",
   "block.m-tweaks.incubator": "Incubator",

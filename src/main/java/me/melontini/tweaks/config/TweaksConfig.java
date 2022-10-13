@@ -226,6 +226,11 @@ public class TweaksConfig implements ConfigData {
     public boolean minecartSpawnerPicking = true;
 
     @ConfigEntry.Category("misc")
+    @Comment("Enables in-game tooltips for item frames.")
+    @ConfigEntry.Gui.Tooltip
+    public boolean itemFrameTooltips = true;
+
+    @ConfigEntry.Category("misc")
     @Comment("Enables Smooth Tooltips.")
     @ConfigEntry.Gui.Tooltip
     public boolean enableSmoothTooltips = true;

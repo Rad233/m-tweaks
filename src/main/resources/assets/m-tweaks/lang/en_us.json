@@ -165,6 +165,8 @@
   "text.autoconfig.m-tweaks.option.minecartSpawnerPicking.@Tooltip[1]": "Does nothing if Minecart Block Picking is off",
 
   "text.autoconfig.m-tweaks.category.misc": "Misc",
+  "text.autoconfig.m-tweaks.option.itemFrameTooltips": "Item Frame Tooltips",
+  "text.autoconfig.m-tweaks.option.itemFrameTooltips.@Tooltip": "Enables in-game tooltips for item frames.",
   "text.autoconfig.m-tweaks.option.enableSmoothTooltips": "Smooth Tooltips",
   "text.autoconfig.m-tweaks.option.enableSmoothTooltips.@Tooltip": "Makes tooltips slowly move towards the mouse.",
   "text.autoconfig.m-tweaks.option.tooltipMultiplier": "Tooltips Speed Multiplier",

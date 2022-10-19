@@ -35,6 +35,7 @@
   ],
   "client": [
     "items.mending_fix.AnvilScreenMixin",
+    "misc.GameRendererMixin",
     "misc.smooth_tooltips.ScreenMixin",
     "misc.unknown.nice_level.LevelLoadingScreenMixin",
     "misc.unknown.useless_info.DebugHudMixin",

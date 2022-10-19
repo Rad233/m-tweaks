@@ -14,7 +14,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -27,6 +26,7 @@ import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -34,6 +34,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +47,9 @@ public class TweaksClient implements ClientModInitializer {
 
     public static String TEXT;
     public static ItemStack FRAME_STACK = ItemStack.EMPTY;
+
+    public static float OLD_TIME, NEW_TIME, DELTA;
+    private float tooltipFlow;
 
     @Override
     public void onInitializeClient() {
@@ -65,11 +69,16 @@ public class TweaksClient implements ClientModInitializer {
     private void inGameTooltips() {
         HudRenderCallback.EVENT.register((matrices, delta) -> {
             if (Tweaks.CONFIG.itemFrameTooltips) {
+                var client = MinecraftClient.getInstance();
+                var cast = client.crosshairTarget;
+
+                getCast(cast);
+
                 if (!FRAME_STACK.isEmpty()) {
-                    var client = MinecraftClient.getInstance();
+                    tooltipFlow = MathHelper.lerp(0.005f * DELTA, tooltipFlow, 1);
                     matrices.push();
                     matrices.scale(1, 1, 1);
-                    RenderSystem.setShaderColor(1, 1, 1, 0.75f);
+                    RenderSystem.setShaderColor(1, 1, 1, Math.min(tooltipFlow, 0.8f));
                     var list = getTooltipFromItem(FRAME_STACK);
                     list.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.frameitem"), Formatting.GRAY));
                     List<TooltipComponent> list1 = list.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
@@ -80,29 +89,31 @@ public class TweaksClient implements ClientModInitializer {
                         j += tooltipComponent.getHeight();
                     }
 
-                    renderTooltipFromComponents(matrices, list1, client.getWindow().getScaledWidth() / 2, ((client.getWindow().getScaledHeight() - j) / 2) + 12);
+                    MatrixStack matrixStack1 = RenderSystem.getModelViewStack();
+                    matrixStack1.push();
+                    matrixStack1.translate((((client.getWindow().getScaledWidth() / 2f)) - (tooltipFlow * 15)) + 15, ((client.getWindow().getScaledHeight() - j) / 2f) + 12, 0);
+                    RenderSystem.applyModelViewMatrix();
+                    renderTooltipFromComponents(matrices, list1, 0, 0);
+                    matrixStack1.pop();
+                    RenderSystem.applyModelViewMatrix();
                     RenderSystem.setShaderColor(1, 1, 1, 1);
                     matrices.pop();
+                } else {
+                    tooltipFlow = MathHelper.lerp(0.004f * DELTA, tooltipFlow, 0);
                 }
             }
         });
+    }
 
-        ClientTickEvents.END_WORLD_TICK.register(world -> {
-            if (Tweaks.CONFIG.itemFrameTooltips) {
-                var client = MinecraftClient.getInstance();
-                var cast = client.crosshairTarget;
-
-                if (cast != null) if (cast.getType() == HitResult.Type.ENTITY) {
-                    EntityHitResult hitResult = (EntityHitResult) cast;
-                    if (hitResult.getEntity() instanceof ItemFrameEntity itemFrameEntity) {
-                        FRAME_STACK = itemFrameEntity.getHeldItemStack();
-                        return;
-                    }
-                }
-
-                FRAME_STACK = ItemStack.EMPTY;
+    private void getCast(HitResult cast) {
+        if (cast != null) if (cast.getType() == HitResult.Type.ENTITY) {
+            EntityHitResult hitResult = (EntityHitResult) cast;
+            if (hitResult.getEntity() instanceof ItemFrameEntity itemFrameEntity) {
+                FRAME_STACK = itemFrameEntity.getHeldItemStack();
+                return;
             }
-        });
+        }
+        FRAME_STACK = ItemStack.EMPTY;
     }
 
     public void registerBlockRenderers() {

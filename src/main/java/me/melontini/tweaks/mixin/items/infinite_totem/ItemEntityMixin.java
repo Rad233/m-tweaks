@@ -3,12 +3,12 @@ package me.melontini.tweaks.mixin.items.infinite_totem;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.BeaconUtil;
-import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
-import me.melontini.tweaks.util.concurrent.ItemDiscoveryRunnable;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,7 +16,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -28,6 +27,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -86,7 +86,15 @@ public abstract class ItemEntityMixin extends Entity {
                             if (age % 10 == 0) {
                                 try {
                                     if (mTweaks$future == null || (mTweaks$future.isDone() && mTweaks$future.get().isEmpty()))
-                                        mTweaks$future = Util.getMainWorkerExecutor().submit(new ItemDiscoveryRunnable(self, MTWEAKS$ITEMS));
+                                        mTweaks$future = Util.getMainWorkerExecutor().submit(() -> {
+                                            try {
+                                                List<ItemEntity> list = this.world.getEntitiesByClass(ItemEntity.class, new Box(this.getPos().x + 0.5, this.getPos().y + 0.5, this.getPos().z + 0.5, this.getPos().x - 0.5, this.getPos().y - 0.5, this.getPos().z - 0.5),
+                                                        itemEntity1 -> itemEntity1.getDataTracker().get(STACK).isOf(Items.NETHER_STAR) && !MTWEAKS$ITEMS.contains(itemEntity1));
+                                                return list.stream().findAny();
+                                            } catch (Exception e) {
+                                                return Optional.empty(); //I have 0 IQ
+                                            }
+                                        });
 
                                     if (mTweaks$future.isDone()) {
                                         if (mTweaks$future.get().isPresent()) {
@@ -120,9 +128,9 @@ public abstract class ItemEntityMixin extends Entity {
                                                 packetByteBuf2.writeUuid(itemEntity1.getUuid());
                                                 packetByteBuf2.writeItemStack(itemEntity1.getDataTracker().get(STACK));
 
-                                                for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 85)) {
-                                                    ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf);
-                                                    ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf2);
+                                                for (ServerPlayerEntity player : PlayerLookup.tracking(this)) {
+                                                    ServerPlayNetworking.send(player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf);
+                                                    ServerPlayNetworking.send(player, new Identifier(MODID, "notify_client_about_stuff_please"), packetByteBuf2);
                                                 }
                                             }
                                         }
@@ -169,10 +177,12 @@ public abstract class ItemEntityMixin extends Entity {
         }
     }
 
+    private final List<Block> beaconBlocks = List.of(Blocks.DIAMOND_BLOCK, Blocks.NETHERITE_BLOCK);
+
     private boolean mTweaks$beaconCheck() {
         BlockEntity entity = world.getBlockEntity(new BlockPos(getX(), world.getTopY(Heightmap.Type.WORLD_SURFACE, getBlockPos().getX(), getBlockPos().getZ()) - 1, getZ()));
         if (entity instanceof BeaconBlockEntity beaconBlock) {
-            this.mTweaks$beacon = new Pair<>(beaconBlock, BeaconUtil.getLevelFromBlocks(world, beaconBlock.getPos(), List.of(Blocks.DIAMOND_BLOCK, Blocks.NETHERITE_BLOCK)));
+            this.mTweaks$beacon = new Pair<>(beaconBlock, BeaconUtil.getLevelFromBlocks(world, beaconBlock.getPos(), beaconBlocks));
             return true;
         } else {
             this.mTweaks$beacon = new Pair<>(null, 0);

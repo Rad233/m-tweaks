@@ -1,6 +1,7 @@
 package me.melontini.tweaks.util;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -70,9 +71,8 @@ public class WorldUtil {
 
     public static void crudeSetVelocity(Entity entity, Vec3d velocity) {
         if (!entity.world.isClient) {
-            ServerWorld world = (ServerWorld) entity.getWorld();
             entity.setVelocity(velocity);
-            for (ServerPlayerEntity player : world.getPlayers()) {
+            for (ServerPlayerEntity player : PlayerLookup.tracking(entity)) {
                 player.networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(entity));
             }
         } else {

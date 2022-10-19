@@ -1,8 +1,8 @@
-## 0.4.3 update
+## 0.4.4 update
 ### What's new:
-
-* New Item: Infinite Totem of Undying! [Relevant wiki page](https://github.com/melontini/m-tweaks/wiki/4.Item-tweaks#infinite-totem-of-undying-043)
-[![totem_of_not_dying](https://user-images.githubusercontent.com/104443436/187249403-218c2ca3-5f35-42a1-ae26-2f5d9b01b003.png)](https://github.com/melontini/m-tweaks/wiki/4.Item-tweaks#infinite-totem-of-undying-043)
-* Mixins now use [Fabrication-esque](https://www.curseforge.com/minecraft/mc-mods/fabrication) annotation to check if they need to be loaded.
-* Fixed the game crashing on start-up.
-* Other mainly maintenance changes.
+* New Tweak: Smooth Tooltips!
+  ![](https://user-images.githubusercontent.com/104443436/196708886-3cbde116-f03d-4496-a4cf-432697f77290.gif)
+* New Tweak: In-Game Item Frame Tooltips!
+  ![](https://user-images.githubusercontent.com/104443436/196716085-af76ee61-495b-4c76-ba24-4ed8c8c674a0.gif)
+* Fixed the Incubator working even if the fire below wasn't lit.
+* Maybe fixed some other things idk.

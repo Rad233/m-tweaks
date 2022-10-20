@@ -21,7 +21,7 @@ jobs:
       - name: build
         run: ./gradlew build
       - name: Publish Minecraft Mods
-        uses: Kir-Antipov/mc-publish@v3.0
+        uses: Kir-Antipov/mc-publish@v3.2
         with:
           version-type: beta
           modrinth-id: TseYlb0f

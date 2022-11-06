@@ -47,8 +47,6 @@ public class TweaksClient implements ClientModInitializer {
 
     public static String TEXT;
     public static ItemStack FRAME_STACK = ItemStack.EMPTY;
-
-    public static float OLD_TIME, NEW_TIME, DELTA;
     private float tooltipFlow;
 
     @Override
@@ -75,7 +73,7 @@ public class TweaksClient implements ClientModInitializer {
                 getCast(cast);
 
                 if (!FRAME_STACK.isEmpty()) {
-                    tooltipFlow = MathHelper.lerp(0.005f * DELTA, tooltipFlow, 1);
+                    tooltipFlow = MathHelper.lerp(0.25f * client.getLastFrameDuration(), tooltipFlow, 1);
                     matrices.push();
                     matrices.scale(1, 1, 1);
                     RenderSystem.setShaderColor(1, 1, 1, Math.min(tooltipFlow, 0.8f));
@@ -99,7 +97,7 @@ public class TweaksClient implements ClientModInitializer {
                     RenderSystem.setShaderColor(1, 1, 1, 1);
                     matrices.pop();
                 } else {
-                    tooltipFlow = MathHelper.lerp(0.004f * DELTA, tooltipFlow, 0);
+                    tooltipFlow = MathHelper.lerp(0.1f * client.getLastFrameDuration(), tooltipFlow, 0);
                 }
             }
         });

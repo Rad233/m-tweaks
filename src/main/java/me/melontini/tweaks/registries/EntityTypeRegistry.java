@@ -18,6 +18,7 @@ import net.minecraft.util.registry.Registry;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class EntityTypeRegistry {
     public static EntityType<AnvilMinecartEntity> ANVIL_MINECART_ENTITY = createEntityType(Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn, "anvil_minecart", FabricEntityTypeBuilder.<AnvilMinecartEntity>create(SpawnGroup.MISC, AnvilMinecartEntity::new).dimensions(EntityDimensions.fixed(0.98F, 0.7F)));
     public static EntityType<NoteBlockMinecartEntity> NOTEBLOCK_MINECART_ENTITY = createEntityType(Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn, "note_block_minecart", FabricEntityTypeBuilder.<NoteBlockMinecartEntity>create(SpawnGroup.MISC, NoteBlockMinecartEntity::new).dimensions(EntityDimensions.fixed(0.98F, 0.7F)));
@@ -31,7 +32,11 @@ public class EntityTypeRegistry {
         LogUtil.info("EntityTypeRegistry init complete!");
     }
 
-    private static EntityType createEntityType(boolean shouldRegister, String id, FabricEntityTypeBuilder builder) {
+    public static EntityType createEntityType(String id, FabricEntityTypeBuilder builder) {
+        return createEntityType(true, id, builder);
+    }
+
+    public static EntityType createEntityType(boolean shouldRegister, String id, FabricEntityTypeBuilder builder) {
         if (shouldRegister) {
             EntityType type = builder.build();
             Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, id), type);

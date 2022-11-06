@@ -47,8 +47,12 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                             for (String configOption : configOptions) {
                                 List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
                                 boolean j;
-                                if (classes.size() == 2) {
-                                    j = CONFIG.getClass().getField(classes.get(0)).get(CONFIG).getClass().getField(classes.get(1)).getBoolean(CONFIG.getClass().getField(classes.get(0)).get(CONFIG));
+                                if (classes.size() > 1) {//🤯🤯🤯
+                                    Object obj = TweaksConfig.class.getField(classes.get(0)).get(CONFIG);
+                                    for (int i = 1; i < (classes.size() - 1); i++) {
+                                        obj = obj.getClass().getField(classes.get(i)).get(obj);
+                                    }
+                                    j = obj.getClass().getField(classes.get(1)).getBoolean(obj);
                                 } else {
                                     j = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
                                 }
@@ -83,11 +87,9 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-
     }
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-
     }
 }

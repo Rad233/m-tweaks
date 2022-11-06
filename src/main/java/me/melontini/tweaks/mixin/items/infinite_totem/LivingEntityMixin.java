@@ -2,17 +2,15 @@ package me.melontini.tweaks.mixin.items.infinite_totem;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
-import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -56,8 +54,8 @@ public abstract class LivingEntityMixin extends Entity {
     private void mTweaks$useInfiniteTotem(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
         if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
             if (itemStack.isOf(ItemRegistry.INFINITE_TOTEM)) {
-                for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 120)) {
-                    ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "infinite_totem_use"), PacketByteBufs.create().writeUuid(this.getUuid()));
+                if (!world.isClient()) {
+                    PlayerLookup.tracking(this).forEach(entity -> ServerPlayNetworking.send(entity, new Identifier(MODID, "infinite_totem_use"), PacketByteBufs.create().writeUuid(this.getUuid())));
                 }
                 cir.setReturnValue(true);
             }

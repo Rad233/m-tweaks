@@ -21,6 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -28,14 +29,15 @@ import java.util.List;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
+@SuppressWarnings("rawtypes")
 public class ItemRegistry {
 
-    public static RoseOfTheValley ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem(Tweaks.CONFIG.unknown, RoseOfTheValley.class, "rose_of_the_valley", new FabricItemSettings().rarity(Rarity.UNCOMMON), BlockRegistry.ROSE_OF_THE_VALLEY);
-    public static SpawnerMinecartItem SPAWNER_MINECART = (SpawnerMinecartItem) createItem(SpawnerMinecartItem.class, "spawner_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1), AbstractMinecartEntity.Type.SPAWNER);
+    public static RoseOfTheValley ROSE_OF_THE_VALLEY = (RoseOfTheValley) createItem(Tweaks.CONFIG.unknown, RoseOfTheValley.class, "rose_of_the_valley", BlockRegistry.ROSE_OF_THE_VALLEY, new FabricItemSettings().rarity(Rarity.UNCOMMON));
+    public static SpawnerMinecartItem SPAWNER_MINECART = (SpawnerMinecartItem) createItem(SpawnerMinecartItem.class, "spawner_minecart", AbstractMinecartEntity.Type.SPAWNER, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
     public static AnvilMinecartItem ANVIL_MINECART = (AnvilMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn, AnvilMinecartItem.class, "anvil_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
     public static NoteBlockMinecartItem NOTE_BLOCK_MINECART = (NoteBlockMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn, NoteBlockMinecartItem.class, "note_block_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
     public static JukeBoxMinecartItem JUKEBOX_MINECART = (JukeBoxMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn, JukeBoxMinecartItem.class, "jukebox_minecart", new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1));
-    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class, "incubator", new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS), BlockRegistry.INCUBATOR_BLOCK);
+    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class, "incubator", BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE).group(ItemGroup.DECORATIONS));
     public static Item INFINITE_TOTEM = createItem(Tweaks.CONFIG.totemSettings.enableInfiniteTotem, Item.class, "infinite_totem", new FabricItemSettings().maxCount(1).group(ItemGroup.COMBAT).rarity(Rarity.EPIC));
 
     public static void register() {
@@ -48,25 +50,21 @@ public class ItemRegistry {
         LogUtil.info("ItemRegistry init complete!");
     }
 
-    private static Item createItem(Class<?> itemClass, String identifier, Item.Settings settings, Object... params) {
-        return createItem(true, itemClass, identifier, settings, params);
+    public static Item createItem(Class<?> itemClass, String identifier, Object... params) {
+        return createItem(true, itemClass, identifier, params);
     }
 
-    private static Item createItem(boolean shouldRegister, Class<?> itemClass, String identifier, Item.Settings settings, Object... params) {
+    public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, String identifier, Object... params) {
         if (shouldRegister) {
             List<Class> list = new ArrayList<>();
-            List<Object> objects = new ArrayList<>();
             for (Object o : params) {
                 list.add(o.getClass());
-                objects.add(o);
             }
-            list.add(settings.getClass());
-            objects.add(settings);
             Item item;
             try {
-                item = (Item) ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(objects.toArray());
+                item = (Item) ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(params);
             } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                throw new RuntimeException(String.format("[m-tweaks] couldn't create item. identifier: %s", identifier), e);
+                throw new RuntimeException(String.format("[" + MODID + "] couldn't create item. identifier: %s", identifier), e);
             }
 
             Registry.register(Registry.ITEM, new Identifier(MODID, identifier), item);

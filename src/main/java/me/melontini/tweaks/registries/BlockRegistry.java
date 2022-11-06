@@ -6,35 +6,65 @@ import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
 import me.melontini.tweaks.util.LogUtil;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
+@SuppressWarnings("rawtypes")
 public class BlockRegistry {
-    public static FlowerBlock ROSE_OF_THE_VALLEY;
-    public static IncubatorBlock INCUBATOR_BLOCK;
-    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY;
+    public static FlowerBlock ROSE_OF_THE_VALLEY = (FlowerBlock) createBlock(Tweaks.CONFIG.unknown, FlowerBlock.class, "rose_of_the_valley", StatusEffects.REGENERATION, 12, AbstractBlock.Settings.copy(Blocks.LILY_OF_THE_VALLEY));
+    public static IncubatorBlock INCUBATOR_BLOCK = (IncubatorBlock) createBlock(Tweaks.CONFIG.incubatorSettings.enableIncubator, IncubatorBlock.class, "incubator", FabricBlockSettings.of(Material.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD));
+    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = createBlockEntity(INCUBATOR_BLOCK != null, "incubator", FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK));
 
     public static void register() {
-        if (Tweaks.CONFIG.unknown) {
-            ROSE_OF_THE_VALLEY = new FlowerBlock(StatusEffects.REGENERATION, 12, AbstractBlock.Settings.copy(Blocks.LILY_OF_THE_VALLEY));
-            Registry.register(Registry.BLOCK, new Identifier(MODID, "rose_of_the_valley"), ROSE_OF_THE_VALLEY);
-        }
-
-        if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
-            INCUBATOR_BLOCK = new IncubatorBlock(FabricBlockSettings.of(Material.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD));
-            Registry.register(Registry.BLOCK, new Identifier(MODID, "incubator"), INCUBATOR_BLOCK);
-            INCUBATOR_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK).build();
-            Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, "incubator"), INCUBATOR_BLOCK_ENTITY);
-        }
         LogUtil.info("BlockRegistry init complete!");
     }
+
+    public static Block createBlock(Class<?> blockClass, String id, Object... params) {
+        return createBlock(true, blockClass, id, params);
+    }
+
+    public static Block createBlock(boolean shouldRegister, Class<?> blockClass, String id, Object... params) {
+        if (shouldRegister) {
+            List<Class> list = new ArrayList<>();
+            for (Object o : params) {
+                list.add(o.getClass());
+            }
+            Block block;
+            try {
+                block = (Block) ConstructorUtils.getMatchingAccessibleConstructor(blockClass, list.toArray(Class[]::new)).newInstance(params);
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                throw new RuntimeException(String.format("[" + MODID + "] couldn't create block. identifier: %s", id), e);
+            }
+
+            Registry.register(Registry.BLOCK, new Identifier(MODID, id), block);
+            return block;
+        }
+        return null;
+    }
+
+    public static BlockEntityType createBlockEntity(String id, FabricBlockEntityTypeBuilder builder) {
+        return createBlockEntity(true, id, builder);
+    }
+
+    public static BlockEntityType createBlockEntity(boolean shouldRegister, String id, FabricBlockEntityTypeBuilder builder) {
+        if (shouldRegister) {
+            BlockEntityType type = builder.build();
+            Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, id), type);
+            return type;
+        }
+        return null;
+    }
+
+
 }

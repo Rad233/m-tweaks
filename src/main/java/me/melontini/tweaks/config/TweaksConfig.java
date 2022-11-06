@@ -225,6 +225,16 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean minecartSpawnerPicking = true;
 
+    @ConfigEntry.Category("bugfixes")
+    @Comment("")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean frameIndependentAdvancementShadow = true;
+
+    @ConfigEntry.Category("bugfixes")
+    @Comment("")
+    @ConfigEntry.Gui.Tooltip
+    public boolean properlyAlignedRecipeAlternatives = true;
+
     @ConfigEntry.Category("misc")
     @Comment("Enables in-game tooltips for item frames.")
     @ConfigEntry.Gui.Tooltip

@@ -42,10 +42,10 @@ public class ItemRegistry {
 
     public static void register() {
         for (BoatEntity.Type value : BoatEntity.Type.values()) {
-            if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_furnace"), new FurnaceBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_jukebox"), new JukeboxBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isTNTBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_tnt"), new TNTBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isHopperBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName() + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+            if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_furnace"), new FurnaceBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+            if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_jukebox"), new JukeboxBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+            if (Tweaks.CONFIG.newBoats.isTNTBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_tnt"), new TNTBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
+            if (Tweaks.CONFIG.newBoats.isHopperBoatOn) Registry.register(Registry.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
         LogUtil.info("ItemRegistry init complete!");
     }

@@ -7,6 +7,7 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
+import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
@@ -20,6 +21,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -30,15 +34,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static me.melontini.tweaks.util.MiscUtil.hackAdvancements;
+
 public class Tweaks implements ModInitializer {
 
-    public static final EntityAttributeModifier LEAF_SLOWNESS = new EntityAttributeModifier(UUID.fromString("f72625eb-d4c4-4e1d-8e5c-1736b9bab349"), "Leaf Slowness", -0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE);
     public static final String MODID = "m-tweaks";
+    public static EntityAttributeModifier LEAF_SLOWNESS;
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
-    public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE = FabricParticleTypes.simple();
+    public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
 
     @Override
     public void onInitialize() {
@@ -47,6 +53,9 @@ public class Tweaks implements ModInitializer {
         EntityTypeRegistry.register();
         ServerSideNetworking.register();
         ResourceConditionRegistry.register();
+
+        LEAF_SLOWNESS = new EntityAttributeModifier(UUID.fromString("f72625eb-d4c4-4e1d-8e5c-1736b9bab349"), "Leaf Slowness", -0.3, EntityAttributeModifier.Operation.MULTIPLY_BASE);
+        KNOCKOFF_TOTEM_PARTICLE = FabricParticleTypes.simple();
 
         if (CONFIG.usefulFletching) {
             FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);
@@ -80,6 +89,27 @@ public class Tweaks implements ModInitializer {
                 if (manager.loadedStates.containsKey("mt_trader_statemanager"))
                     WorldUtil.getTraderManager(world).tick();
             }
+        });
+
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.BLASTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/blasting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.SMOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smoking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.SMELTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smelting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.CAMPFIRE_COOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/campfire_cooking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.STONECUTTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/stonecutting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        MiscUtil.TYPE_CONSUMER_MAP.put(RecipeType.CRAFTING, (map, recipe) -> {
+            if (!(recipe instanceof SpecialCraftingRecipe)) {
+                if (!recipe.getIngredients().isEmpty()) {
+                    map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/crafting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
+                }
+            }
+        });
+
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            if (Tweaks.CONFIG.autoGenRecipes.autogenRecipeAdvancements) hackAdvancements(server);
+        });
+
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, b) -> {
+            if (b) if (Tweaks.CONFIG.autoGenRecipes.autogenRecipeAdvancements) hackAdvancements(server);
         });
     }
 }

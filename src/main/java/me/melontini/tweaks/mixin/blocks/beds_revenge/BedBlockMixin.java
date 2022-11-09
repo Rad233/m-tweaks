@@ -5,7 +5,6 @@ import me.melontini.tweaks.util.TextUtil;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -14,15 +13,15 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
-import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.minecraft.block.BedBlock.isBedWorking;
+import static net.minecraft.block.HorizontalFacingBlock.FACING;
 
 @Mixin(BedBlock.class)
 public abstract class BedBlockMixin extends Block {
@@ -31,38 +30,39 @@ public abstract class BedBlockMixin extends Block {
         super(settings);
     }
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;createExplosion(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/world/explosion/ExplosionBehavior;DDDFZLnet/minecraft/world/explosion/Explosion$DestructionType;)Lnet/minecraft/world/explosion/Explosion;"), method = "onUse")
-    public Explosion mTweaks$explosionRedirect(@NotNull World instance, Entity entity, DamageSource damageSource, ExplosionBehavior behavior, double x, double y, double z, float power, boolean createFire, Explosion.DestructionType destructionType) {
-        float explosionPower = Tweaks.CONFIG.bedExplosionPower;
-        Explosion explosion = new Explosion(instance, entity, damageSource, behavior, x, y, z, explosionPower, createFire, destructionType);
-        explosion.collectBlocksAndDamageEntities();
-        explosion.affectWorld(true);
-        return explosion;
+    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;createExplosion(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/world/explosion/ExplosionBehavior;DDDFZLnet/minecraft/world/explosion/Explosion$DestructionType;)Lnet/minecraft/world/explosion/Explosion;"), index = 6, method = "onUse")
+    public float mTweaks$explosionRedirect(float power) {
+        return Tweaks.CONFIG.bedExplosionPower;
+    }
+
+
+    @Inject(at = @At("HEAD"), method = "onUse", cancellable = true)
+    private void mTweaks$alwaysExplode(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+        if (Tweaks.CONFIG.bedsExplodeEverywhere) {
+            world.removeBlock(pos, false);
+            BlockPos blockPos = pos.offset(state.get(FACING).getOpposite());
+            if (world.getBlockState(blockPos).isOf(this)) {
+                world.removeBlock(blockPos, false);
+            }
+
+            world.createExplosion(
+                    null,
+                    DamageSource.badRespawnPoint(),
+                    null,
+                    (double) pos.getX() + 0.5,
+                    (double) pos.getY() + 0.5,
+                    (double) pos.getZ() + 0.5,
+                    Tweaks.CONFIG.bedExplosionPower,
+                    true,
+                    Explosion.DestructionType.DESTROY
+            );
+            cir.setReturnValue(ActionResult.SUCCESS);
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "onUse", cancellable = true)
     public void mTweaks$onUse(BlockState state, @NotNull World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         if (!world.isClient) {
-            if (Tweaks.CONFIG.bedsExplodeEverywhere) {
-                float explosionPower = Tweaks.CONFIG.bedExplosionPower;
-                world.removeBlock(pos, false);
-                BlockPos blockPos = pos.offset(state.get(BedBlock.FACING).getOpposite());
-                if (world.getBlockState(blockPos).isOf(this)) {
-                    world.removeBlock(blockPos, false);
-                }
-                world.createExplosion(
-                        null,
-                        DamageSource.badRespawnPoint(),
-                        null,
-                        pos.getX() + 0.5,
-                        pos.getY() + 0.5,
-                        pos.getZ() + 0.5,
-                        explosionPower,
-                        true,
-                        Explosion.DestructionType.DESTROY
-                );
-                cir.setReturnValue(ActionResult.SUCCESS);
-            }
             if (Tweaks.CONFIG.safeBeds) {
                 if (!isBedWorking(world)) {
                     player.sendMessage(TextUtil.createTranslatable("m-tweaks.safebeds.action"), true);

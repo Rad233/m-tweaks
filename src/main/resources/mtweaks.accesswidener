@@ -1,6 +1,14 @@
 accessWidener  v2	named
+accessible class net/minecraft/recipe/Ingredient$TagEntry
+accessible class net/minecraft/recipe/Ingredient$StackEntry
+accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/block/entity/BeehiveBlockEntity$Bee
 # Fields
+accessible field net/minecraft/recipe/Ingredient$TagEntry tag Lnet/minecraft/tag/TagKey;
+accessible field net/minecraft/recipe/Ingredient$StackEntry stack Lnet/minecraft/item/ItemStack;
+accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;
+accessible field net/minecraft/server/ServerAdvancementLoader conditionManager Lnet/minecraft/loot/condition/LootConditionManager;
+accessible field net/minecraft/server/ServerAdvancementLoader manager Lnet/minecraft/advancement/AdvancementManager;
 transitive-accessible field net/minecraft/entity/ItemEntity STACK Lnet/minecraft/entity/data/TrackedData;
 accessible field net/minecraft/block/entity/BeaconBlockEntity level I
 accessible field net/minecraft/block/entity/BeehiveBlockEntity$Bee entityData Lnet/minecraft/nbt/NbtCompound;
@@ -19,6 +27,7 @@ accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/
 accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
+accessible method net/minecraft/recipe/ShapedRecipe readSymbols (Lcom/google/gson/JsonObject;)Ljava/util/Map;
 accessible method net/minecraft/block/entity/BeehiveBlockEntity$Bee <init> (Lnet/minecraft/nbt/NbtCompound;II)V
 accessible method net/minecraft/block/entity/BeehiveBlockEntity removeIrrelevantNbtKeys (Lnet/minecraft/nbt/NbtCompound;)V
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z

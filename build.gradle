@@ -45,6 +45,8 @@ dependencies {
     modImplementation include("com.github.Chocohead:Fabric-ASM:v${project.fabric_asm_version}") {
         exclude (group: "net.fabricmc.fabric-api")
     }
+    implementation include("com.github.LlamaLad7:MixinExtras:0.1.0")
+    annotationProcessor include("com.github.LlamaLad7:MixinExtras:0.1.0")
 }
 
 loom {

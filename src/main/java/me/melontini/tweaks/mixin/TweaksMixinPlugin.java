@@ -1,15 +1,14 @@
 package me.melontini.tweaks.mixin;
 
-import com.google.common.io.Resources;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.LogUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.asm.service.MixinService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,16 +28,12 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
-    @SuppressWarnings({"UnstableApiUsage", "ConstantConditions"})
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (CONFIG.compatMode) {
             try {
                 //"inspired" by https://github.com/unascribed/Fabrication/blob/3.0/1.18/src/main/java/com/unascribed/fabrication/support/MixinConfigPlugin.java
-                ClassReader reader = new ClassReader(Resources.asByteSource(getClass().getClassLoader().getResource(mixinClassName.replace(".", "/") + ".class")).read());
-                ClassNode node = new ClassNode();
-                reader.accept(node, 0);
-
+                ClassNode node = MixinService.getService().getBytecodeProvider().getClassNode(mixinClassName);
                 if (node.visibleAnnotations != null) {
                     for (AnnotationNode node1 : node.visibleAnnotations) {
                         if (node1.desc.equals("Lme/melontini/tweaks/util/annotations/MixinRelatedConfigOption;")) {
@@ -63,7 +58,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                         }
                     }
                 }
-            } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
+            } catch (NoSuchFieldException | IllegalAccessException | IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -77,7 +72,6 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-
     }
 
     @Override

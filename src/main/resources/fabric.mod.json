@@ -13,6 +13,9 @@
   "environment": "*",
   "accessWidener" : "mtweaks.accesswidener",
   "entrypoints": {
+    "preLaunch": [
+      "me.melontini.tweaks.util.TweaksPreLaunch"
+    ],
     "client": [
       "me.melontini.tweaks.client.TweaksClient"
     ],

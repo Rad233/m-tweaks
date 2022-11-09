@@ -31,6 +31,10 @@ public class LogUtil {
         LOGGER.info("[" + MODID + "] " + object);
     }
 
+    public static void importantInfo(String string, Object... params) {
+        LOGGER.info("[" + MODID + "] " + string, params);
+    }
+
 
     public static void warn(String string) {
         LOGGER.warn("[" + MODID + "] " + string);

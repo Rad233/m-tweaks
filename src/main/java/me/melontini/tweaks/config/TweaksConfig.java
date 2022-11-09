@@ -236,6 +236,32 @@ public class TweaksConfig implements ConfigData {
     public boolean properlyAlignedRecipeAlternatives = true;
 
     @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.CollapsibleObject
+    public AutoGenRecipes autoGenRecipes = new AutoGenRecipes();
+
+    public static class AutoGenRecipes {
+        @ConfigEntry.Category("misc")
+        @ConfigEntry.Gui.Tooltip
+        public boolean autogenRecipeAdvancements = true;
+
+        @ConfigEntry.Category("misc")
+        @ConfigEntry.Gui.Tooltip
+        public boolean requireAllItems = true;
+
+        @ConfigEntry.Category("misc")
+        @ConfigEntry.Gui.Tooltip
+        public boolean ignoreRecipesHiddenInTheRecipeBook = true;
+
+        @ConfigEntry.Category("misc")
+        @ConfigEntry.Gui.Tooltip
+        public List<String> blacklistedRecipeNamespaces = Arrays.asList("minecraft");
+
+        @ConfigEntry.Category("misc")
+        @ConfigEntry.Gui.Tooltip
+        public List<String> blacklistedRecipeIds = Arrays.asList();
+    }
+
+    @ConfigEntry.Category("misc")
     @Comment("Enables in-game tooltips for item frames.")
     @ConfigEntry.Gui.Tooltip
     public boolean itemFrameTooltips = true;
@@ -248,7 +274,7 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("misc")
     @Comment("The higher this number is, the faster tooltips move")
     @ConfigEntry.Gui.Tooltip
-    public float tooltipMultiplier = 0.005f;
+    public float tooltipMultiplier = 0.25f;
 
     @ConfigEntry.Category("misc")
     @Comment("makes the player explode after taking any damage")

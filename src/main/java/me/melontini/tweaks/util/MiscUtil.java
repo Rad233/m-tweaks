@@ -36,9 +36,9 @@ public class MiscUtil {
         int i = 0;
         Collection<Recipe<?>> collection = server.getRecipeManager().values();
         for (Recipe<?> recipe : collection) {
-            if (Tweaks.CONFIG.autoGenRecipes.blacklistedRecipeNamespaces.contains(recipe.getId().getNamespace()))
+            if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeNamespaces.contains(recipe.getId().getNamespace()))
                 continue;
-            if (Tweaks.CONFIG.autoGenRecipes.blacklistedRecipeIds.contains(recipe.getId().toString()))
+            if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeIds.contains(recipe.getId().toString()))
                 continue;
 
             if (TYPE_CONSUMER_MAP.get(recipe.getType()) != null) {
@@ -46,7 +46,7 @@ public class MiscUtil {
                 TYPE_CONSUMER_MAP.get(recipe.getType()).accept(map, recipe);
             } else {
                 if (!recipe.getIngredients().isEmpty()) {
-                    if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autoGenRecipes.ignoreRecipesHiddenInTheRecipeBook)
+                    if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
                         continue;
                     i++;
                     map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/generic/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
@@ -55,13 +55,6 @@ public class MiscUtil {
         }
 
         AdvancementManager advManager = server.getAdvancementLoader().manager;
-
-        if (Tweaks.CONFIG.debugMessages) {
-            map.forEach((key, value) -> {
-                LogUtil.info(key);
-                LogUtil.info(value.toJson());
-            });
-        }
         advManager.load(map);
 
         for (Advancement advancement : advManager.getRoots()) {
@@ -103,7 +96,7 @@ public class MiscUtil {
         builder.criterion("has_recipe", new RecipeUnlockedCriterion.Conditions(EntityPredicate.Extended.EMPTY, id));
 
         String[][] reqs;
-        if (Tweaks.CONFIG.autoGenRecipes.requireAllItems) {
+        if (Tweaks.CONFIG.autogenRecipeAdvancements.requireAllItems) {
             reqs = new String[names.size()][2];
             for (int i = 0; i < names.size(); i++) {
                 String s = names.get(i);

@@ -2,10 +2,13 @@ package me.melontini.tweaks.mixin.items.cart_copy;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
+import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.NBTUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
-import net.minecraft.block.*;
-import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.block.dispenser.ItemDispenserBehavior;
+import net.minecraft.block.AbstractRailBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.NoteBlock;
 import net.minecraft.block.entity.*;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,15 +18,13 @@ import net.minecraft.entity.vehicle.FurnaceMinecartEntity;
 import net.minecraft.entity.vehicle.HopperMinecartEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.state.property.Properties;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
-import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -42,183 +42,6 @@ import java.util.Objects;
 @MixinRelatedConfigOption("minecartBlockPicking")
 @Mixin(MinecartItem.class)
 public abstract class MinecartItemMixin extends Item {
-    @Final
-    @Shadow
-    @Mutable
-    private static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
-        private final ItemDispenserBehavior defaultBehavior = new ItemDispenserBehavior();
-
-        public ItemStack dispenseSilently(@NotNull BlockPointer pointer, @NotNull ItemStack stack) {
-            Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-            World world = pointer.getWorld();
-            double d = pointer.getX() + direction.getOffsetX() * 1.125;
-            double e = Math.floor(pointer.getY()) + direction.getOffsetY();
-            double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
-            BlockPos blockPos = pointer.getPos().offset(direction);
-            BlockState blockState = world.getBlockState(blockPos);
-            RailShape railShape = blockState.getBlock() instanceof AbstractRailBlock ? blockState.get(((AbstractRailBlock) blockState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-            double k;
-            if (stack.getItem() == Items.CHEST_MINECART) {
-                if (blockState.isIn(BlockTags.RAILS)) {
-                    if (railShape.isAscending()) {
-                        k = 0.6;
-                    } else {
-                        k = 0.1;
-                    }
-                } else {
-                    if (!blockState.isAir() || !world.getBlockState(blockPos.down()).isIn(BlockTags.RAILS))
-                        return this.defaultBehavior.dispense(pointer, stack);
-
-
-                    BlockState blockState2 = world.getBlockState(blockPos.down());
-                    RailShape railShape2 = blockState2.getBlock() instanceof AbstractRailBlock ? blockState2.get(((AbstractRailBlock) blockState2.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    if (direction != Direction.DOWN && railShape2.isAscending()) {
-                        k = -0.4;
-                    } else {
-                        k = -0.9;
-                    }
-                }
-
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.CHEST);
-                ChestMinecartEntity chestMinecart = (ChestMinecartEntity) abstractMinecartEntity;
-
-                NbtCompound nbt = stack.getNbt();
-                if (nbt != null) if (nbt.getList("Items", 10) != null) {
-                    NbtList nbtList = nbt.getList("Items", 10);
-                    for (int i = 0; i < nbtList.size(); ++i) {
-                        NbtCompound nbtCompound = nbtList.getCompound(i);
-                        int j = nbtCompound.getByte("Slot") & 255;
-                        //noinspection ConstantConditions
-                        if (j >= 0 && j < chestMinecart.size()) {
-                            chestMinecart.setStack(j, ItemStack.fromNbt(nbtCompound));
-                        }
-                    }
-                }
-
-
-                if (stack.hasCustomName()) chestMinecart.setCustomName(stack.getName());
-
-                world.spawnEntity(chestMinecart);
-                stack.decrement(1);
-                return stack;
-            } else if (stack.getItem() == Items.HOPPER_MINECART) {
-                if (blockState.isIn(BlockTags.RAILS)) {
-                    if (railShape.isAscending()) {
-                        k = 0.6;
-                    } else {
-                        k = 0.1;
-                    }
-                } else {
-                    if (!blockState.isAir() || !world.getBlockState(blockPos.down()).isIn(BlockTags.RAILS))
-                        return this.defaultBehavior.dispense(pointer, stack);
-
-
-                    BlockState blockState2 = world.getBlockState(blockPos.down());
-                    RailShape railShape2 = blockState2.getBlock() instanceof AbstractRailBlock ? blockState2.get(((AbstractRailBlock) blockState2.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    if (direction != Direction.DOWN && railShape2.isAscending()) {
-                        k = -0.4;
-                    } else {
-                        k = -0.9;
-                    }
-                }
-
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.HOPPER);
-                HopperMinecartEntity hopperMinecart = (HopperMinecartEntity) abstractMinecartEntity;
-
-                NbtCompound nbt = stack.getNbt();
-                if (nbt != null) if (nbt.getList("Items", 10) != null) {
-                    NbtList nbtList = nbt.getList("Items", 10);
-                    for (int i = 0; i < nbtList.size(); ++i) {
-                        NbtCompound nbtCompound = nbtList.getCompound(i);
-                        int j = nbtCompound.getByte("Slot") & 255;
-                        //noinspection ConstantConditions
-                        if (j >= 0 && j < hopperMinecart.size()) {
-                            hopperMinecart.setStack(j, ItemStack.fromNbt(nbtCompound));
-                        }
-                    }
-                }
-
-
-                if (stack.hasCustomName()) hopperMinecart.setCustomName(stack.getName());
-
-                world.spawnEntity(hopperMinecart);
-                stack.decrement(1);
-                return stack;
-            } else if (stack.getItem() == Items.FURNACE_MINECART) {
-                if (blockState.isIn(BlockTags.RAILS)) {
-                    if (railShape.isAscending()) {
-                        k = 0.6;
-                    } else {
-                        k = 0.1;
-                    }
-                } else {
-                    if (!blockState.isAir() || !world.getBlockState(blockPos.down()).isIn(BlockTags.RAILS))
-                        return this.defaultBehavior.dispense(pointer, stack);
-
-
-                    BlockState blockState2 = world.getBlockState(blockPos.down());
-                    RailShape railShape2 = blockState2.getBlock() instanceof AbstractRailBlock ? blockState2.get(((AbstractRailBlock) blockState2.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    if (direction != Direction.DOWN && railShape2.isAscending()) {
-                        k = -0.4;
-                    } else {
-                        k = -0.9;
-                    }
-                }
-
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.FURNACE);
-                FurnaceMinecartEntity furnaceMinecart = (FurnaceMinecartEntity) abstractMinecartEntity;
-
-                NbtCompound nbt = stack.getNbt();
-                //Just making sure
-                if (nbt != null) if (!(nbt.getInt("Fuel") <= 0)) {
-                    furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), Tweaks.CONFIG.maxFurnaceMinecartFuel);
-                    furnaceMinecart.pushX = furnaceMinecart.getX() - blockPos.getX();
-                    furnaceMinecart.pushZ = furnaceMinecart.getZ() - blockPos.getZ();
-                }
-
-
-                if (stack.hasCustomName()) furnaceMinecart.setCustomName(stack.getName());
-
-
-                world.spawnEntity(furnaceMinecart);
-                stack.decrement(1);
-                return stack;
-            } else if (!(stack.getItem() == ItemRegistry.SPAWNER_MINECART)) {
-                if (blockState.isIn(BlockTags.RAILS)) {
-                    if (railShape.isAscending()) {
-                        k = 0.6;
-                    } else {
-                        k = 0.1;
-                    }
-                } else {
-                    if (!blockState.isAir() || !world.getBlockState(blockPos.down()).isIn(BlockTags.RAILS))
-                        return this.defaultBehavior.dispense(pointer, stack);
-
-
-                    BlockState blockState2 = world.getBlockState(blockPos.down());
-                    RailShape railShape2 = blockState2.getBlock() instanceof AbstractRailBlock ? blockState2.get(((AbstractRailBlock) blockState2.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    if (direction != Direction.DOWN && railShape2.isAscending()) {
-                        k = -0.4;
-                    } else {
-                        k = -0.9;
-                    }
-                }
-
-                AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, ((MinecartItem) stack.getItem()).type);
-                if (stack.hasCustomName()) abstractMinecartEntity.setCustomName(stack.getName());
-
-
-                world.spawnEntity(abstractMinecartEntity);
-                stack.decrement(1);
-                return stack;
-            }
-            return stack;
-        }
-
-        protected void playSound(@NotNull BlockPointer pointer) {
-            pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
-        }
-    };
 
     @Shadow
     @Final
@@ -226,7 +49,6 @@ public abstract class MinecartItemMixin extends Item {
 
     public MinecartItemMixin(Settings settings) {
         super(settings);
-        DispenserBlock.registerBehavior(this, DISPENSER_BEHAVIOR);
     }
 
     @Inject(at = @At("HEAD"), method = "useOnBlock", cancellable = true)
@@ -239,29 +61,15 @@ public abstract class MinecartItemMixin extends Item {
 
         assert player != null;
         if (state.isIn(BlockTags.RAILS)) {
+            RailShape railShape = state.getBlock() instanceof AbstractRailBlock ? state.get(((AbstractRailBlock) state.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
+            double d = 0.0;
+            if (railShape.isAscending()) d = 0.5;
             if (stack.getItem() == Items.CHEST_MINECART) {
                 if (!world.isClient) {
-                    RailShape railShape = state.getBlock() instanceof AbstractRailBlock ? state.get(((AbstractRailBlock) state.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    double d = 0.0;
-                    if (railShape.isAscending()) d = 0.5;
-
-
                     AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.0625 + d, (double) pos.getZ() + 0.5, this.type);
                     ChestMinecartEntity chestMinecart = (ChestMinecartEntity) abstractMinecartEntity;
 
-                    NbtCompound nbt = stack.getNbt();
-                    if (nbt != null) if (nbt.getList("Items", 10) != null) {
-                        NbtList nbtList = nbt.getList("Items", 10);
-                        for (int i = 0; i < nbtList.size(); ++i) {
-                            NbtCompound nbtCompound = nbtList.getCompound(i);
-                            int j = nbtCompound.getByte("Slot") & 255;
-                            //noinspection ConstantConditions
-                            if (j >= 0 && j < chestMinecart.size()) {
-                                chestMinecart.setStack(j, ItemStack.fromNbt(nbtCompound));
-                            }
-                        }
-                    }
-
+                    NBTUtil.readInventoryFromNbt(stack.getNbt(), chestMinecart);
                     if (stack.hasCustomName()) chestMinecart.setCustomName(stack.getName());
 
                     world.spawnEntity(chestMinecart);
@@ -272,26 +80,10 @@ public abstract class MinecartItemMixin extends Item {
             }
             if (stack.getItem() == Items.HOPPER_MINECART) {
                 if (!world.isClient) {
-                    RailShape railShape = state.getBlock() instanceof AbstractRailBlock ? state.get(((AbstractRailBlock) state.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    double d = 0.0;
-                    if (railShape.isAscending()) d = 0.5;
-
                     AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.0625 + d, (double) pos.getZ() + 0.5, this.type);
                     HopperMinecartEntity hopperMinecart = (HopperMinecartEntity) abstractMinecartEntity;
 
-                    NbtCompound nbt = stack.getNbt();
-                    if (nbt != null) if (nbt.getList("Items", 10) != null) {
-                        NbtList nbtList = nbt.getList("Items", 10);
-                        for (int i = 0; i < nbtList.size(); ++i) {
-                            NbtCompound nbtCompound = nbtList.getCompound(i);
-                            int j = nbtCompound.getByte("Slot") & 255;
-                            //noinspection ConstantConditions
-                            if (j >= 0 && j < hopperMinecart.size()) {
-                                hopperMinecart.setStack(j, ItemStack.fromNbt(nbtCompound));
-                            }
-                        }
-                    }
-
+                    NBTUtil.readInventoryFromNbt(stack.getNbt(), hopperMinecart);
                     if (stack.hasCustomName()) hopperMinecart.setCustomName(stack.getName());
 
                     world.spawnEntity(hopperMinecart);
@@ -302,21 +94,11 @@ public abstract class MinecartItemMixin extends Item {
             }
             if (stack.getItem() == Items.FURNACE_MINECART) {
                 if (!world.isClient) {
-                    RailShape railShape = state.getBlock() instanceof AbstractRailBlock ? state.get(((AbstractRailBlock) state.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    double d = 0.0;
-                    if (railShape.isAscending()) d = 0.5;
-
-
                     AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.0625 + d, (double) pos.getZ() + 0.5, this.type);
                     FurnaceMinecartEntity furnaceMinecart = (FurnaceMinecartEntity) abstractMinecartEntity;
 
-                    NbtCompound nbt = stack.getNbt();
-                    //Just making sure
-                    if (nbt != null) if (!(nbt.getInt("Fuel") <= 0)) {
-                        furnaceMinecart.fuel = Math.min(nbt.getInt("Fuel"), Tweaks.CONFIG.maxFurnaceMinecartFuel);
-                        furnaceMinecart.interact(player, player.getActiveHand());
-                    }
-
+                    furnaceMinecart.fuel = NBTUtil.getInt(stack.getNbt(), "Fuel", 0, Tweaks.CONFIG.maxFurnaceMinecartFuel);
+                    furnaceMinecart.interact(player, player.getActiveHand());
                     if (stack.hasCustomName()) furnaceMinecart.setCustomName(stack.getName());
 
                     world.spawnEntity(furnaceMinecart);
@@ -333,20 +115,8 @@ public abstract class MinecartItemMixin extends Item {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack chestMinecart = new ItemStack(Items.CHEST_MINECART, 1);
 
-                    NbtCompound nbt = new NbtCompound();
-                    NbtList nbtList = new NbtList();
                     assert chestBlockEntity != null;
-                    for (int i = 0; i < chestBlockEntity.size(); ++i) {
-                        ItemStack itemStack = chestBlockEntity.getStack(i);
-                        if (!itemStack.isEmpty()) {
-                            NbtCompound nbtCompound = new NbtCompound();
-                            nbtCompound.putByte("Slot", (byte) i);
-                            itemStack.writeNbt(nbtCompound);
-                            nbtList.add(nbtCompound);
-                        }
-                    }
-                    nbt.put("Items", nbtList);
-                    chestMinecart.setNbt(nbt);
+                    chestMinecart.setNbt(NBTUtil.writeInventoryToNbt(new NbtCompound(), chestBlockEntity));
 
                     player.getInventory().offerOrDrop(chestMinecart);
                     chestBlockEntity.inventory.clear();
@@ -429,7 +199,6 @@ public abstract class MinecartItemMixin extends Item {
                     ItemStack jukeboxMinecart = new ItemStack(ItemRegistry.JUKEBOX_MINECART);
 
                     if (!record.isEmpty()) {
-                        //j-jukebox m-more like cringe amiright?
                         world.syncWorldEvent(WorldEvents.MUSIC_DISC_PLAYED, pos, 0);
                         NbtCompound nbt = new NbtCompound();
                         nbt.put("Items", record.writeNbt(new NbtCompound()));
@@ -458,19 +227,8 @@ public abstract class MinecartItemMixin extends Item {
                     ItemStack hopperMinecart = new ItemStack(Items.HOPPER_MINECART, 1);
 
                     NbtCompound nbt = new NbtCompound();
-                    NbtList nbtList = new NbtList();
                     assert hopperBlockEntity != null;
-                    for (int i = 0; i < hopperBlockEntity.size(); ++i) {
-                        ItemStack itemStack = hopperBlockEntity.getStack(i);
-                        if (!itemStack.isEmpty()) {
-                            NbtCompound nbtCompound = new NbtCompound();
-                            nbtCompound.putByte("Slot", (byte) i);
-                            itemStack.writeNbt(nbtCompound);
-                            nbtList.add(nbtCompound);
-                        }
-                    }
-                    nbt.put("Items", nbtList);
-                    hopperMinecart.setNbt(nbt);
+                    hopperMinecart.setNbt(NBTUtil.writeInventoryToNbt(nbt, hopperBlockEntity));
 
                     player.getInventory().offerOrDrop(hopperMinecart);
                     hopperBlockEntity.inventory.clear();
@@ -486,10 +244,11 @@ public abstract class MinecartItemMixin extends Item {
         String identifier = mobSpawnerBlockEntity.getLogic().spawnEntry.getNbt().getString("id");
 
         try {
-            return StringUtils.isEmpty(identifier) ? null : new Identifier(identifier);
+            return StringUtils.isEmpty(identifier) ? Registry.ENTITY_TYPE.getDefaultId() : new Identifier(identifier);
         } catch (InvalidIdentifierException e) {
             BlockPos blockPos = mobSpawnerBlockEntity.getPos();
-            throw new RuntimeException(String.format("Invalid entity id '%s' at spawner %s:[%s,%s,%s]", identifier, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+            LogUtil.error(String.format("Invalid entity id '%s' at spawner %s:[%s,%s,%s]", identifier, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+            return Registry.ENTITY_TYPE.getDefaultId();
         }
     }
 }

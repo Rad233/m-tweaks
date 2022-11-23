@@ -16,6 +16,7 @@
     "entities.flower_duplication.BeeEntityMixin",
     "entities.flower_duplication.BoneMealItemMixin",
     "entities.furnace_minecart.FurnaceMinecartMixin",
+    "items.cart_copy.ItemDispenserBehaviorMixin",
     "items.cart_copy.MinecartItemMixin",
     "items.clock_tooltip.ItemMixin",
     "items.infinite_totem.ItemEntityMixin",

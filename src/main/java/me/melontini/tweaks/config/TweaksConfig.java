@@ -237,7 +237,7 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.CollapsibleObject
-    public AutoGenRecipes autoGenRecipes = new AutoGenRecipes();
+    public AutoGenRecipes autogenRecipeAdvancements = new AutoGenRecipes();
 
     public static class AutoGenRecipes {
         @ConfigEntry.Category("misc")

@@ -105,11 +105,11 @@ public class Tweaks implements ModInitializer {
         });
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            if (Tweaks.CONFIG.autoGenRecipes.autogenRecipeAdvancements) hackAdvancements(server);
+            if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) hackAdvancements(server);
         });
 
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, b) -> {
-            if (b) if (Tweaks.CONFIG.autoGenRecipes.autogenRecipeAdvancements) hackAdvancements(server);
+            if (b) if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) hackAdvancements(server);
         });
     }
 }

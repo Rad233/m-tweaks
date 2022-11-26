@@ -179,6 +179,11 @@ public class TweaksConfig implements ConfigData {
         public boolean isHopperBoatOn = true;
     }
 
+    @ConfigEntry.Category("items")
+    @Comment("Shows item durability (in %) if durability is < 100% or item count if count is > 1")
+    @ConfigEntry.Gui.Tooltip
+    public boolean slightlyBetterItemNames = true;
+
 
     @ConfigEntry.Category("items")
     @Comment("Infinite Totem settings. Pleas see the wiki for proper descriptions")

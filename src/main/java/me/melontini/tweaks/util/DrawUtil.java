@@ -3,6 +3,7 @@ package me.melontini.tweaks.util;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
@@ -46,7 +47,7 @@ public class DrawUtil {
         renderTooltipFromComponents(matrices, lines.stream().map(TooltipComponent::of).collect(Collectors.toList()), x, y);
     }
 
-    public static void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, int x, int y) {
+    public static void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, float x, float y) {
         var itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         var textRenderer = MinecraftClient.getInstance().textRenderer;
         int width = MinecraftClient.getInstance().getWindow().getScaledWidth();
@@ -65,8 +66,8 @@ public class DrawUtil {
                 j += tooltipComponent.getHeight();
             }
 
-            int l = x + 12;
-            int m = y - 12;
+            float l = x + 12;
+            float m = y - 12;
             if (l + i > width) {
                 l -= 28 + i;
             }
@@ -102,11 +103,20 @@ public class DrawUtil {
             RenderSystem.enableTexture();
             VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
             matrices.translate(0.0, 0.0, 400.0);
-            int s = m;
+            float s = m;
 
             for (int t = 0; t < components.size(); ++t) {
                 TooltipComponent tooltipComponent2 = components.get(t);
-                tooltipComponent2.drawText(textRenderer, l, s, matrix4f, immediate);
+                if (tooltipComponent2 instanceof OrderedTextTooltipComponent) {
+                    textRenderer.draw(((OrderedTextTooltipComponent) tooltipComponent2).text, l, s, -1, true, matrix4f, immediate, false, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+                } else {
+                    RenderSystem.getModelViewStack().push();
+                    RenderSystem.getModelViewStack().translate(l - (int) (l), s - (int) (s), 0);
+                    RenderSystem.applyModelViewMatrix();
+                    tooltipComponent2.drawText(textRenderer, (int) l, (int) s, matrix4f, immediate);
+                    RenderSystem.getModelViewStack().pop();
+                    RenderSystem.applyModelViewMatrix();
+                }
                 s += tooltipComponent2.getHeight() + (t == 0 ? 2 : 0);
             }
 
@@ -116,7 +126,14 @@ public class DrawUtil {
 
             for (int t = 0; t < components.size(); ++t) {
                 TooltipComponent tooltipComponent2 = components.get(t);
-                tooltipComponent2.drawItems(textRenderer, l, s, matrices, itemRenderer, 400);
+
+                RenderSystem.getModelViewStack().push();
+                RenderSystem.getModelViewStack().translate(l - (int) (l), s - (int) (s), 0);
+                RenderSystem.applyModelViewMatrix();
+                tooltipComponent2.drawItems(textRenderer, (int) l, (int) s, matrices, itemRenderer, 400);
+                RenderSystem.getModelViewStack().pop();
+                RenderSystem.applyModelViewMatrix();
+
                 s += tooltipComponent2.getHeight() + (t == 0 ? 2 : 0);
             }
 

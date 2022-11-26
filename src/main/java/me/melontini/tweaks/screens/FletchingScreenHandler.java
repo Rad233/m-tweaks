@@ -1,6 +1,7 @@
 package me.melontini.tweaks.screens;
 
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.util.NbtBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ForgingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.MathHelper;
 
 public class FletchingScreenHandler extends ForgingScreenHandler {
 
@@ -53,14 +55,9 @@ public class FletchingScreenHandler extends ForgingScreenHandler {
             if (oldNbt != null)
                 i = oldNbt.getInt("MT-Tightened");
             if (i >= 32) return;
-
             ItemStack newStack = itemStack.copy();
-            NbtCompound nbt;
-            if (oldNbt != null) nbt = oldNbt.copy();
-            else nbt = new NbtCompound();
 
-            nbt.putInt("MT-Tightened", (int) (Math.min(i + Math.floor(Math.random() * (3) + 1), 32)));
-            newStack.setNbt(nbt);
+            newStack.setNbt(NbtBuilder.create(oldNbt).putInt("MT-Tightened", Math.min(i + MathHelper.fastFloor(Math.random() * (3) + 1), 32)).build());
             this.output.setStack(0, newStack);
         }
     }

@@ -48,7 +48,7 @@ public class FurnaceBoatEntity extends BoatEntityWithBlock {
         if (this.getFuel() > 0) {
             this.setFuel(this.getFuel() - 1);
             if (this.world.random.nextInt(4) == 0) {
-                Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+                Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY(-this.getYaw() * PIby180 - PIby2);
                 this.world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() + vec3d.x, this.getY() + 0.8, this.getZ() + vec3d.z, -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
             }
         }

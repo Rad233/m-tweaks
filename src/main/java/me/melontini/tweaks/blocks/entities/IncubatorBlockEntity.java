@@ -3,6 +3,7 @@ package me.melontini.tweaks.blocks.entities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.registries.BlockRegistry;
+import me.melontini.tweaks.util.NBTUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-//make sure to close your eyes before looking here.
 public class IncubatorBlockEntity extends BlockEntity implements SidedInventory {
 
     private final Random jRandom = new Random();
@@ -49,18 +49,10 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
     public void tick() {
         assert world != null;
         if (this.processingTime > 0) {
-            if (world.getBlockState(pos.down().down()).getBlock() instanceof CampfireBlock) {
-                if (world.getBlockState(pos.down().down()).get(CampfireBlock.LIT)) {
-                    if (!world.isClient) this.processingTime--;
-                    if (world.random.nextInt(4) == 0 && world.isClient) {
-                        double i = (jRandom.nextDouble(0.6) - 0.3);
-                        double j = (jRandom.nextDouble(0.6) - 0.3);
-                        world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
-                    }
-                }
-            }
-            if (world.getBlockState(pos.down()).getBlock() instanceof CampfireBlock) {
-                if (world.getBlockState(pos.down()).get(CampfireBlock.LIT)) {
+            BlockState state = world.getBlockState(pos.down().down());
+            if (!(state.getBlock() instanceof CampfireBlock)) state = world.getBlockState(pos.down());
+            if (state.getBlock() instanceof CampfireBlock) {
+                if (state.get(CampfireBlock.LIT)) {
                     if (!world.isClient) this.processingTime--;
                     if (world.random.nextInt(4) == 0 && world.isClient) {
                         double i = (jRandom.nextDouble(0.6) - 0.3);
@@ -113,9 +105,9 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
-        NbtCompound nbtCompound = new NbtCompound();
-        this.writeNbt(nbtCompound);
-        return nbtCompound;
+        NbtCompound nbt = new NbtCompound();
+        this.writeNbt(nbt);
+        return nbt;
     }
 
     public boolean takeEgg(PlayerEntity player, ItemStack stack) {
@@ -166,14 +158,14 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
         super.readNbt(nbt);
         this.processingTime = nbt.getInt("ProcessingTime");
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        Inventories.readNbt(nbt, this.inventory);
+        NBTUtil.readInventoryFromNbt(nbt, this);
     }
 
     @Override
     public void writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         nbt.putInt("ProcessingTime", this.processingTime);
-        Inventories.writeNbt(nbt, this.inventory);
+        NBTUtil.writeInventoryToNbt(nbt, this);
     }
 
     @Override

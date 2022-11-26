@@ -24,6 +24,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class SpawnerMinecartItem extends MinecartItem {
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
-            double e = Math.floor(pointer.getY()) + direction.getOffsetY();
+            double e = MathHelper.fastFloor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
             BlockPos blockPos = pointer.getPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);

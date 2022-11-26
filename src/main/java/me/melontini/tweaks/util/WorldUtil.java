@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -94,14 +93,12 @@ public class WorldUtil {
                 world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                 state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, Boolean.FALSE) : state);
 
-        NbtCompound beeData = new NbtCompound();
-        NbtCompound tileData = new NbtCompound();
-        beeData.put("Bees", beehiveBlockEntity.getBees());
-        beeData.putBoolean("MT-FromFallenBlock", true);
-        tileData.put("TileEntityData", beeData);
-        tileData.put("BlockState", NbtHelper.fromBlockState(state));
         //Thanks AccessWidener!
-        fallingBlock.readCustomDataFromNbt(tileData);
+        fallingBlock.readCustomDataFromNbt(NbtBuilder.create()
+                .put("TileEntityData", NbtBuilder.create()
+                        .put("Bees", beehiveBlockEntity.getBees())
+                        .putBoolean("MT-FromFallenBlock", true).build())
+                .put("BlockState", NbtHelper.fromBlockState(state)).build());
 
         world.setBlockState(pos, state.getFluidState().getBlockState(), Block.NOTIFY_ALL);
         world.spawnEntity(fallingBlock);

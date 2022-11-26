@@ -71,8 +71,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -2; c <= 2; c++) {
                             BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            BlockState state = world.getBlockState(pos);
-                            if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
+                            if (world.getBlockState(pos).getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
                                 if (world.random.nextInt(12) == 0) {
                                     world.setBlockState(pos, flowerState);
                                 }
@@ -86,8 +85,7 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                     for (int b = -2; b <= 2; b++) {
                         for (int c = -1; c <= 1; c++) {
                             BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
-                            BlockState state = world.getBlockState(pos);
-                            if (state.getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
+                            if (world.getBlockState(pos).getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
                                 if (world.random.nextInt(6) == 0) {
                                     TallFlowerBlock.placeAt(world, flowerState, pos, Block.NOTIFY_LISTENERS);
                                 }

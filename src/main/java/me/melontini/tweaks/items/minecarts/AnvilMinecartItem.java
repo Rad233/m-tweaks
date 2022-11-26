@@ -15,6 +15,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
@@ -29,7 +30,7 @@ public class AnvilMinecartItem extends Item {
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
-            double e = Math.floor(pointer.getY()) + direction.getOffsetY();
+            double e = MathHelper.fastFloor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
             BlockPos blockPos = pointer.getPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);

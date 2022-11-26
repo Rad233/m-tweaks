@@ -13,10 +13,7 @@ public class NBTUtil {
         for (int i = 0; i < inventory.size(); ++i) {
             ItemStack itemStack = inventory.getStack(i);
             if (!itemStack.isEmpty()) {
-                NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.putByte("Slot", (byte) i);
-                itemStack.writeNbt(nbtCompound);
-                nbtList.add(nbtCompound);
+                nbtList.add(itemStack.writeNbt(NbtBuilder.create().putByte("Slot", (byte) i).build()));
             }
         }
         nbt.put("Items", nbtList);

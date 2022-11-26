@@ -48,7 +48,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
     public void tick() {
         if (this.fuseTicks > 0) {
             --this.fuseTicks;
-            Vec3d vec3d = new Vec3d(-0.55, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+            Vec3d vec3d = new Vec3d(-0.55, 0.0, 0.0).rotateY(-this.getYaw() * PIby180 - PIby2);
             world.addParticle(ParticleTypes.SMOKE, this.getX() + vec3d.x, this.getY() + 0.8, this.getZ() + vec3d.z, -(this.getVelocity().x * 0.3), 0.08, -(this.getVelocity().z * 0.3));
         } else if (this.fuseTicks == 0) {
             this.explode();

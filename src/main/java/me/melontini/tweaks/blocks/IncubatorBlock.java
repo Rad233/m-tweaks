@@ -78,7 +78,6 @@ public class IncubatorBlock extends BlockWithEntity {
                 if (!world.isClient) {
                     ItemScatterer.spawn(world, pos, incubatorBlockEntity);
                 }
-
                 world.updateComparators(pos, this);
             }
 

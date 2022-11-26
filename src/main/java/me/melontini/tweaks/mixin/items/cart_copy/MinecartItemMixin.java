@@ -4,6 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.NBTUtil;
+import me.melontini.tweaks.util.NbtBuilder;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -131,11 +132,7 @@ public abstract class MinecartItemMixin extends Item {
                         if (!player.isCreative()) stack.decrement(1);
                         ItemStack spawnerMinecart = new ItemStack(ItemRegistry.SPAWNER_MINECART, 1);
 
-                        NbtCompound nbtCompound = new NbtCompound();
-                        //assert mobSpawnerBlockEntity != null : "Somehow, MobSpawnerBlockEntity was null!";
-                        assert mobSpawnerBlockEntity != null;
-                        nbtCompound.putString("Entity", String.valueOf(getEntityId(mobSpawnerBlockEntity)));
-                        spawnerMinecart.setNbt(nbtCompound);
+                        spawnerMinecart.setNbt(NbtBuilder.create().putString("Entity", String.valueOf(getEntityId(mobSpawnerBlockEntity))).build());
 
                         player.getInventory().offerOrDrop(spawnerMinecart);
                         world.breakBlock(pos, false);
@@ -162,12 +159,7 @@ public abstract class MinecartItemMixin extends Item {
                     ItemStack furnaceMinecart = new ItemStack(Items.FURNACE_MINECART, 1);
                     //2.25
                     assert furnaceBlock != null;
-                    int burnTime = furnaceBlock.burnTime;
-                    int fuel = (int) (burnTime * 2.25);
-
-                    NbtCompound nbt = new NbtCompound();
-                    nbt.putInt("Fuel", fuel);
-                    furnaceMinecart.setNbt(nbt);
+                    furnaceMinecart.setNbt(NbtBuilder.create().putInt("Fuel", (int) (furnaceBlock.burnTime * 2.25)).build());
 
                     player.getInventory().offerOrDrop(furnaceMinecart);
                     world.breakBlock(pos, false);
@@ -181,9 +173,7 @@ public abstract class MinecartItemMixin extends Item {
                     int noteProp = noteBlock.getStateWithProperties(state).get(Properties.NOTE);
                     ItemStack noteBlockMinecart = new ItemStack(ItemRegistry.NOTE_BLOCK_MINECART);
 
-                    NbtCompound nbt = new NbtCompound();
-                    nbt.putInt("Note", noteProp);
-                    noteBlockMinecart.setNbt(nbt);
+                    noteBlockMinecart.setNbt(NbtBuilder.create().putInt("Note", noteProp).build());
 
                     player.getInventory().offerOrDrop(noteBlockMinecart);
                     world.breakBlock(pos, false);
@@ -200,9 +190,7 @@ public abstract class MinecartItemMixin extends Item {
 
                     if (!record.isEmpty()) {
                         world.syncWorldEvent(WorldEvents.MUSIC_DISC_PLAYED, pos, 0);
-                        NbtCompound nbt = new NbtCompound();
-                        nbt.put("Items", record.writeNbt(new NbtCompound()));
-                        jukeboxMinecart.setNbt(nbt);
+                        jukeboxMinecart.setNbt(NbtBuilder.create().put("Items", record.writeNbt(new NbtCompound())).build());
                     }
 
                     player.getInventory().offerOrDrop(jukeboxMinecart);
@@ -226,9 +214,8 @@ public abstract class MinecartItemMixin extends Item {
                     if (!player.isCreative()) stack.decrement(1);
                     ItemStack hopperMinecart = new ItemStack(Items.HOPPER_MINECART, 1);
 
-                    NbtCompound nbt = new NbtCompound();
                     assert hopperBlockEntity != null;
-                    hopperMinecart.setNbt(NBTUtil.writeInventoryToNbt(nbt, hopperBlockEntity));
+                    hopperMinecart.setNbt(NBTUtil.writeInventoryToNbt(new NbtCompound(), hopperBlockEntity));
 
                     player.getInventory().offerOrDrop(hopperMinecart);
                     hopperBlockEntity.inventory.clear();

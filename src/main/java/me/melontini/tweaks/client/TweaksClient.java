@@ -9,6 +9,7 @@ import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
+import me.melontini.tweaks.util.DrawUtil;
 import me.melontini.tweaks.util.TextUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -26,7 +27,6 @@ import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static me.melontini.tweaks.util.DrawUtil.getTooltipFromItem;
-import static me.melontini.tweaks.util.DrawUtil.renderTooltipFromComponents;
 
 @Environment(EnvType.CLIENT)
 public class TweaksClient implements ClientModInitializer {
@@ -87,13 +86,7 @@ public class TweaksClient implements ClientModInitializer {
                         j += tooltipComponent.getHeight();
                     }
 
-                    MatrixStack matrixStack1 = RenderSystem.getModelViewStack();
-                    matrixStack1.push();
-                    matrixStack1.translate((((client.getWindow().getScaledWidth() / 2f)) - (tooltipFlow * 15)) + 15, ((client.getWindow().getScaledHeight() - j) / 2f) + 12, 0);
-                    RenderSystem.applyModelViewMatrix();
-                    renderTooltipFromComponents(matrices, list1, 0, 0);
-                    matrixStack1.pop();
-                    RenderSystem.applyModelViewMatrix();
+                    DrawUtil.renderTooltipFromComponents(matrices, list1, (((client.getWindow().getScaledWidth() / 2f)) - (tooltipFlow * 15)) + 15, ((client.getWindow().getScaledHeight() - j) / 2f) + 12);
                     RenderSystem.setShaderColor(1, 1, 1, 1);
                     matrices.pop();
                 } else {

@@ -38,8 +38,8 @@ public abstract class EntityMixin extends Entity {
         if (Tweaks.CONFIG.leafSlowdown) {
             EntityAttributeInstance attributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (!this.world.isClient) {
-                if (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isIn(BlockTags.LEAVES)
-                        || (this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 2, getBlockZ())).isIn(BlockTags.LEAVES) && this.world.getBlockState(new BlockPos(getBlockX(), getBlockY() - 1, getBlockZ())).isOf(Blocks.AIR))) {
+                if (this.world.getBlockState(getBlockPos().down()).isIn(BlockTags.LEAVES)
+                        || (this.world.getBlockState(new BlockPos(getBlockPos().down(2))).isIn(BlockTags.LEAVES) && this.world.getBlockState(new BlockPos(getBlockPos().down())).isOf(Blocks.AIR))) {
                     if (((LivingEntity) (Object) this) instanceof PlayerEntity player && (player.isCreative() || player.isSpectator()))
                         return;
                     if (attributeInstance != null)

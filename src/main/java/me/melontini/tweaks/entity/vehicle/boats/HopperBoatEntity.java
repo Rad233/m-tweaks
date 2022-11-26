@@ -47,7 +47,7 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
 
     @Override
     public double getHopperX() {
-        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY(-this.getYaw() * PIby180 - PIby2);
         return this.getX() + vec3d.x;
     }
 
@@ -58,7 +58,7 @@ public class HopperBoatEntity extends StorageBoatEntity implements Hopper {
 
     @Override
     public double getHopperZ() {
-        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY((float) (-this.getYaw() * (Math.PI / 180.0) - (Math.PI / 2)));
+        Vec3d vec3d = new Vec3d(-0.8, 0.0, 0.0).rotateY(-this.getYaw() * PIby180 - PIby2);
         return this.getZ() + vec3d.z;
     }
 

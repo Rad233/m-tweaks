@@ -26,7 +26,6 @@ import net.minecraft.util.Rarity;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +42,7 @@ public class ItemRegistry {
     public static AnvilMinecartItem ANVIL_MINECART = (AnvilMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn, AnvilMinecartItem.class, "anvil_minecart", ItemGroups.REDSTONE, new FabricItemSettings().maxCount(1));
     public static NoteBlockMinecartItem NOTE_BLOCK_MINECART = (NoteBlockMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn, NoteBlockMinecartItem.class, "note_block_minecart", ItemGroups.REDSTONE, new FabricItemSettings().maxCount(1));
     public static JukeBoxMinecartItem JUKEBOX_MINECART = (JukeBoxMinecartItem) createItem(Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn, JukeBoxMinecartItem.class, "jukebox_minecart", ItemGroups.REDSTONE, new FabricItemSettings().maxCount(1));
-    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class, "incubator", BlockRegistry.INCUBATOR_BLOCK, ItemGroups.FUNCTIONAL, new FabricItemSettings().rarity(Rarity.RARE));
+    public static BlockItem INCUBATOR = (BlockItem) createItem(Tweaks.CONFIG.incubatorSettings.enableIncubator, BlockItem.class, "incubator", ItemGroups.FUNCTIONAL, BlockRegistry.INCUBATOR_BLOCK, new FabricItemSettings().rarity(Rarity.RARE));
     public static Item INFINITE_TOTEM = createItem(Tweaks.CONFIG.totemSettings.enableInfiniteTotem, Item.class, "infinite_totem", ItemGroups.COMBAT, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC));
 
     public static void register() {
@@ -68,16 +67,20 @@ public class ItemRegistry {
         return createItem(shouldRegister, itemClass, identifier, Optional.empty(), params);
     }
 
+    public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, String identifier, ItemGroup group, Object... params) {
+        return createItem(shouldRegister, itemClass, identifier, Optional.of(group), params);
+    }
+
     public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, String identifier, Optional<ItemGroup> group, Object... params) {
         if (shouldRegister) {
-            List<Class> list = new ArrayList<>();
+            List<Class<?>> list = new ArrayList<>();
             for (Object o : params) {
                 list.add(o.getClass());
             }
             Item item;
             try {
-                item = (Item) ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(params);
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                item = (Item)ConstructorUtils.getMatchingAccessibleConstructor(itemClass, list.toArray(Class[]::new)).newInstance(params);
+            } catch (Exception e) {
                 throw new RuntimeException(String.format("[" + MODID + "] couldn't create item. identifier: %s", identifier), e);
             }
 

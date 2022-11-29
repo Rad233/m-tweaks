@@ -1,5 +1,6 @@
 package me.melontini.tweaks.client.render;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -7,8 +8,11 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.BoatEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.model.CompositeEntityModel;
+import net.minecraft.client.render.entity.model.RaftEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import org.joml.Quaternionf;
@@ -39,8 +43,9 @@ public class BoatWithBlockRenderer extends BoatEntityRenderer {
                 matrixStack.multiply(new Quaternionf().setAngleAxis(boatEntity.interpolateBubbleWobble(g) * (float) (Math.PI / 180.0), 1.0F, 0.0F, 1.0F));
             }
 
+            Pair<Identifier, CompositeEntityModel<BoatEntity>> pair = this.texturesAndModels.get(boatEntity.getVariant());
             matrixStack.scale(0.8F, 0.8F, 0.8F);
-            matrixStack.translate(0.5, 4 / 16.0F, 1);
+            matrixStack.translate(0.5, pair.getSecond() instanceof RaftEntityModel ? 0.7 : 0.25, pair.getSecond() instanceof RaftEntityModel ? 1.06 : 1);
             //:sob:
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-180));
             MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(blockState, matrixStack, vertexConsumerProvider, i, OverlayTexture.DEFAULT_UV);

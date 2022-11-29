@@ -47,10 +47,10 @@ public class ItemRegistry {
 
     public static void register() {
         for (BoatEntity.Type value : BoatEntity.Type.values()) {
-            createItem(Tweaks.CONFIG.newBoats.isFurnaceBoatOn, FurnaceBoatItem.class, value.getName().replace(":", "_") + "_boat_with_furnace", ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
-            createItem(Tweaks.CONFIG.newBoats.isJukeboxBoatOn, JukeboxBoatItem.class, value.getName().replace(":", "_") + "_boat_with_jukebox", ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
-            createItem(Tweaks.CONFIG.newBoats.isTNTBoatOn, TNTBoatItem.class, value.getName().replace(":", "_") + "_boat_with_tnt", ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
-            createItem(Tweaks.CONFIG.newBoats.isHopperBoatOn, HopperBoatItem.class, value.getName().replace(":", "_") + "_boat_with_hopper", ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
+            createItem(Tweaks.CONFIG.newBoats.isFurnaceBoatOn, FurnaceBoatItem.class, value.getName().replace(":", "_") + "_boat_with_furnace", ItemGroups.TOOLS, value, new FabricItemSettings().maxCount(1));
+            createItem(Tweaks.CONFIG.newBoats.isJukeboxBoatOn, JukeboxBoatItem.class, value.getName().replace(":", "_") + "_boat_with_jukebox", ItemGroups.TOOLS, value, new FabricItemSettings().maxCount(1));
+            createItem(Tweaks.CONFIG.newBoats.isTNTBoatOn, TNTBoatItem.class, value.getName().replace(":", "_") + "_boat_with_tnt", ItemGroups.TOOLS, value, new FabricItemSettings().maxCount(1));
+            createItem(Tweaks.CONFIG.newBoats.isHopperBoatOn, HopperBoatItem.class, value.getName().replace(":", "_") + "_boat_with_hopper", ItemGroups.TOOLS, value, new FabricItemSettings().maxCount(1));
         }
         LogUtil.info("ItemRegistry init complete!");
     }

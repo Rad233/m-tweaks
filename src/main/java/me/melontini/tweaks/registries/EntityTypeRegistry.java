@@ -13,8 +13,9 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -39,7 +40,7 @@ public class EntityTypeRegistry {
     public static EntityType createEntityType(boolean shouldRegister, String id, FabricEntityTypeBuilder builder) {
         if (shouldRegister) {
             EntityType type = builder.build();
-            Registry.register(Registry.ENTITY_TYPE, new Identifier(MODID, id), type);
+            Registry.register(Registries.ENTITY_TYPE, new Identifier(MODID, id), type);
             return type;
         }
         return null;

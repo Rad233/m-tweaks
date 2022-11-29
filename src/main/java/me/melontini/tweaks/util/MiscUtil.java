@@ -63,7 +63,6 @@ public class MiscUtil {
             }
         }
 
-        server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         LogUtil.importantInfo("finished hacking-in {} recipe advancements", i);
         map.clear();
     }

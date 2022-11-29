@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.client.gui.tooltip.TooltipPositioner;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +31,7 @@ public abstract class ScreenMixin {
     private float mTweaks$smoothX, mTweaks$smoothY;
 
     @Inject(method = "renderTooltipFromComponents", at = @At("HEAD"))
-    private void mTweaks$renderTooltipHead(MatrixStack matrices, List<TooltipComponent> components, int x, int y, CallbackInfo ci) {
+    private void mTweaks$renderTooltipHead(MatrixStack matrices, List<TooltipComponent> components, int x, int y, TooltipPositioner positioner, CallbackInfo ci) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
             int width = MinecraftClient.getInstance().getWindow().getScaledWidth();
             int height = MinecraftClient.getInstance().getWindow().getScaledHeight();
@@ -81,7 +82,7 @@ public abstract class ScreenMixin {
     }
 
     @Inject(method = "renderTooltipFromComponents", at = @At("TAIL"))
-    private void mTweaks$renderTooltipTail(MatrixStack matrices, List<TooltipComponent> components, int x, int y, CallbackInfo ci) {
+    private void mTweaks$renderTooltipTail(MatrixStack matrices, List<TooltipComponent> components, int x, int y, TooltipPositioner positioner, CallbackInfo ci) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
             RenderSystem.getModelViewStack().pop();
             RenderSystem.applyModelViewMatrix();

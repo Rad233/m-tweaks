@@ -4,7 +4,7 @@ import me.melontini.tweaks.Tweaks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.World;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -19,7 +19,7 @@ public class ServerSideNetworking {
                 server.execute(() -> {
                     Entity entity = player.world.getEntityLookup().get(id);
                     Objects.requireNonNull(entity, String.format("Server Received Invalid TNT Boat UUID: %s", id)).discard();
-                    player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), 4.0F, Explosion.DestructionType.DESTROY);
+                    player.world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), 4.0F, World.ExplosionSourceType.TNT);
                 });
             });
     }

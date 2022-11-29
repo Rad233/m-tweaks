@@ -16,7 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MinecartItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
@@ -25,7 +26,6 @@ import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,7 +71,7 @@ public class SpawnerMinecartItem extends MinecartItem {
 
             NbtCompound nbt = stack.getNbt();
             if (nbt != null) if (nbt.getString("Entity") != null) {
-                spawnerMinecartEntity.getLogic().setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
+                spawnerMinecartEntity.getLogic().setEntityId(Registries.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))), world, world.random, blockPos);
             }
 
             if (stack.hasCustomName()) {
@@ -97,7 +97,7 @@ public class SpawnerMinecartItem extends MinecartItem {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound nbt = stack.getNbt();
         if (nbt != null) if (nbt.getString("Entity") != null) {
-            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.spawner_minecart.filled", Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()), Formatting.GRAY));
+            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.spawner_minecart.filled", Registries.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))).getName()), Formatting.GRAY));
         }
     }
 
@@ -123,7 +123,7 @@ public class SpawnerMinecartItem extends MinecartItem {
 
                 NbtCompound nbt = stack.getNbt();
                 if (nbt != null) if (nbt.getString("Entity") != null) {
-                    spawnerMinecartEntity.getLogic().setEntityId(Registry.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))));
+                    spawnerMinecartEntity.getLogic().setEntityId(Registries.ENTITY_TYPE.get(Identifier.tryParse(nbt.getString("Entity"))), world, world.random, blockPos);
                 }
 
                 if (itemStack.hasCustomName()) {

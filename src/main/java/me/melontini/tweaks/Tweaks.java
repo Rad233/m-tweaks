@@ -24,10 +24,11 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -59,11 +60,11 @@ public class Tweaks implements ModInitializer {
 
         if (CONFIG.usefulFletching) {
             FLETCHING_SCREEN_HANDLER = new ScreenHandlerType<>(FletchingScreenHandler::new);
-            Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
+            Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
         }
 
         if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
-            Registry.register(Registry.PARTICLE_TYPE, new Identifier(MODID, "knockoff_totem_particles"), KNOCKOFF_TOTEM_PARTICLE);
+            Registry.register(Registries.PARTICLE_TYPE, new Identifier(MODID, "knockoff_totem_particles"), KNOCKOFF_TOTEM_PARTICLE);
 
         ServerWorldEvents.LOAD.register((server, world) -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)
@@ -106,10 +107,12 @@ public class Tweaks implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) hackAdvancements(server);
+            server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
 
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, manager, b) -> {
             if (b) if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) hackAdvancements(server);
+            server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
     }
 }

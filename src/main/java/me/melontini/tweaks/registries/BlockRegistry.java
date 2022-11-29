@@ -9,9 +9,10 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,11 +25,10 @@ import static me.melontini.tweaks.Tweaks.MODID;
 public class BlockRegistry {
     public static FlowerBlock ROSE_OF_THE_VALLEY = (FlowerBlock) createBlock(Tweaks.CONFIG.unknown, FlowerBlock.class, "rose_of_the_valley", StatusEffects.REGENERATION, 12, AbstractBlock.Settings.copy(Blocks.LILY_OF_THE_VALLEY));
     public static IncubatorBlock INCUBATOR_BLOCK = (IncubatorBlock) createBlock(Tweaks.CONFIG.incubatorSettings.enableIncubator, IncubatorBlock.class, "incubator", FabricBlockSettings.of(Material.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD));
-    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = createBlockEntity(INCUBATOR_BLOCK != null, "incubator", FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK));
 
     public static void register() {
         LogUtil.info("BlockRegistry init complete!");
-    }
+    }    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = createBlockEntity(INCUBATOR_BLOCK != null, "incubator", FabricBlockEntityTypeBuilder.create(IncubatorBlockEntity::new).addBlock(INCUBATOR_BLOCK));
 
     public static Block createBlock(Class<?> blockClass, String id, Object... params) {
         return createBlock(true, blockClass, id, params);
@@ -47,7 +47,7 @@ public class BlockRegistry {
                 throw new RuntimeException(String.format("[" + MODID + "] couldn't create block. identifier: %s", id), e);
             }
 
-            Registry.register(Registry.BLOCK, new Identifier(MODID, id), block);
+            Registry.register(Registries.BLOCK, new Identifier(MODID, id), block);
             return block;
         }
         return null;
@@ -60,11 +60,13 @@ public class BlockRegistry {
     public static BlockEntityType createBlockEntity(boolean shouldRegister, String id, FabricBlockEntityTypeBuilder builder) {
         if (shouldRegister) {
             BlockEntityType type = builder.build();
-            Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, id), type);
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MODID, id), type);
             return type;
         }
         return null;
     }
+
+
 
 
 }

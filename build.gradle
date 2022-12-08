@@ -47,6 +47,8 @@ dependencies {
     }
     implementation include("com.github.LlamaLad7:MixinExtras:0.1.0")
     annotationProcessor include("com.github.LlamaLad7:MixinExtras:0.1.0")
+
+    modImplementation include("com.github.melontini:cracker-util:${project.cracker_util}")
 }
 
 loom {

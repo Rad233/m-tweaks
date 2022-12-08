@@ -1,5 +1,7 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.CrackerLog;
+import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.tweaks.Tweaks;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementManager;
@@ -23,13 +25,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static me.melontini.tweaks.Tweaks.RANDOM;
+
 public class MiscUtil {
     public static final Map<RecipeType<?>, Consumer<Map<Identifier, Advancement.Builder>, Recipe<?>>> TYPE_CONSUMER_MAP = new ConcurrentHashMap<>();
 
     public static <T> T pickRandomEntryFromList(@NotNull List<T> list) {
-        int random = new Random().nextInt(list.size());
-        return list.get(random);
+        MakeSure.notEmpty(list);
+        int index = RANDOM.nextInt(list.size());
+        return list.get(index);
     }
+
 
     public static void hackAdvancements(MinecraftServer server) {
         Map<Identifier, Advancement.Builder> map = new ConcurrentHashMap<>();
@@ -64,11 +70,12 @@ public class MiscUtil {
         }
 
         server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
-        LogUtil.importantInfo("finished hacking-in {} recipe advancements", i);
+        CrackerLog.info("finished hacking-in {} recipe advancements", i);
         map.clear();
     }
 
-    public static Advancement.Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {
+    public static Advancement.@NotNull Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {
+        MakeSure.notEmpty(ingredients);// shouldn't really happen
         //TODO maybe filter identical stacks
         var builder = Advancement.Builder.create();
         builder.parent(Identifier.tryParse("minecraft:recipes/root"));
@@ -88,7 +95,7 @@ public class MiscUtil {
                     names.add(String.valueOf(i));
                     predicates.add(new ItemPredicate(tagEntry.tag, null, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new EnchantmentPredicate[0], new EnchantmentPredicate[0], null, NbtPredicate.ANY));
                 } else {
-                    LogUtil.error("unknown ingredient found in {}", id);
+                    CrackerLog.error("unknown ingredient found in {}", id);
                 }
             }
             builder.criterion(String.valueOf(i), new InventoryChangedCriterion.Conditions(EntityPredicate.Extended.EMPTY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, predicates.toArray(ItemPredicate[]::new)));
@@ -117,6 +124,7 @@ public class MiscUtil {
         return builder;
     }
 
+    @FunctionalInterface
     public interface Consumer<T, U> {
         void accept(T t, U u);
     }

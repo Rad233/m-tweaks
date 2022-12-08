@@ -1,9 +1,9 @@
 package me.melontini.tweaks.mixin.world.falling_beehives;
 
+import me.melontini.crackerutil.world.PlayerUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.LogUtil;
-import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;

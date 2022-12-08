@@ -1,5 +1,6 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.util.MakeSure;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
 import net.minecraft.util.Formatting;
@@ -12,6 +13,7 @@ public class TextUtil {//At the end of the day, just changing 2 lines of Text wo
     private static final boolean DEV_ENV = FabricLoader.getInstance().isDevelopmentEnvironment();
 
     public static <T> T createTranslatable(String namespace, Object... args) {
+        MakeSure.notEmpty(namespace, "[m-tweaks] invalid string namespace provided");
         try {
             return (T) findMethod("class_2561", "method_43469", "(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/class_5250;", String.class, Object[].class).invoke(null, namespace, args);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException |
@@ -26,6 +28,7 @@ public class TextUtil {//At the end of the day, just changing 2 lines of Text wo
     }
 
     public static <T> T createTranslatable(String namespace) {
+        MakeSure.notEmpty(namespace, "[m-tweaks] invalid string namespace provided");
         try {
             return (T) findMethod("class_2561", "method_43471", "(Ljava/lang/String;)Lnet/minecraft/class_5250;", String.class).invoke(null, namespace);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException |
@@ -40,6 +43,7 @@ public class TextUtil {//At the end of the day, just changing 2 lines of Text wo
     }
 
     public static <T> T applyFormatting(T text, Formatting... formattings) {
+        MakeSure.notNull(text, "[m-tweaks] can't apply formatting to null");
         Method method;
         try {
             method = findMethod("class_5250", DEV_ENV ? "method_27695" : "method_27692", "([Lnet/minecraft/class_124;)Lnet/minecraft/class_5250;", findClass("class_124"));

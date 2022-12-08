@@ -1,8 +1,8 @@
 package me.melontini.tweaks.mixin.items.infinite_totem;
 
+import me.melontini.crackerutil.world.PlayerUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
-import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

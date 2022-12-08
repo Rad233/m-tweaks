@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import me.melontini.crackerutil.CrackerLog;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
@@ -62,7 +63,7 @@ public class ResourceConditionRegistry {
 
             for (JsonElement element : array) {
                 if (element.isJsonPrimitive()) {
-                    return Registry.ITEM.get(new Identifier(element.getAsString())) != Items.AIR;
+                    if (Registry.ITEM.get(new Identifier(element.getAsString())) == Items.AIR) return false;
                 }
             }
 
@@ -91,7 +92,7 @@ public class ResourceConditionRegistry {
 
                         Tweaks.PLANT_DATA.putIfAbsent(Registry.BLOCK.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
-                        LogUtil.error(e);
+                        CrackerLog.error("Error while parsing JSON for mt_crop_temperatures", e);
                     }
                 }
             }
@@ -130,7 +131,7 @@ public class ResourceConditionRegistry {
 
                         Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
-                        LogUtil.error(e);
+                        CrackerLog.error("Error while parsing JSON for mt_egg_processing", e);
                     }
                 }
             }

@@ -1,8 +1,8 @@
 package me.melontini.tweaks.mixin.blocks.campfire_effects;
 
+import me.melontini.crackerutil.world.PlayerUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.InvalidConfigEntryException;
-import me.melontini.tweaks.util.PlayerUtil;
 import me.melontini.tweaks.util.PotionUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.Objects;
 
 @MixinRelatedConfigOption("campfireTweaks.campfireEffects")
 @Mixin(CampfireBlockEntity.class)
@@ -36,8 +35,7 @@ public class CampfireBlockEntityMixin {
                     for (PlayerEntity player : players) {
                         if (identifiers.size() == amplifiers.size()) {
                             for (int i = 0; i < identifiers.size(); i++) {
-                                StatusEffectInstance effectInstance = new StatusEffectInstance(
-                                        Objects.requireNonNull(PotionUtil.getStatusEffect(Identifier.tryParse(identifiers.get(i)))),
+                                StatusEffectInstance effectInstance = new StatusEffectInstance(PotionUtil.getStatusEffect(Identifier.tryParse(identifiers.get(i))),
                                         200, amplifiers.get(i), true, false, true);
                                 player.addStatusEffect(effectInstance);
                             }

@@ -1,5 +1,8 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.data.NbtBuilder;
+import me.melontini.crackerutil.util.MakeSure;
+import me.melontini.crackerutil.world.PlayerUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -80,6 +83,7 @@ public class WorldUtil {
     }
 
     public static List<ItemStack> prepareLoot(@NotNull World world, Identifier lootId) {
+        MakeSure.notNulls(world, lootId);
         return ((ServerWorld) world).getServer()
                 .getLootManager()
                 .getTable(lootId)
@@ -88,7 +92,8 @@ public class WorldUtil {
                         .build(LootContextTypes.EMPTY));
     }
 
-    public static void trySpawnFallingBeeNest(World world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BeehiveBlockEntity beehiveBlockEntity) {
+    public static void trySpawnFallingBeeNest(@NotNull World world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull BeehiveBlockEntity beehiveBlockEntity) {
+        MakeSure.notNulls(world, pos, state, beehiveBlockEntity);
         FallingBlockEntity fallingBlock = new FallingBlockEntity(
                 world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                 state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, Boolean.FALSE) : state);
@@ -105,6 +110,9 @@ public class WorldUtil {
     }
 
     public static boolean isClear(World world, BlockPos pos) {
+        if (!world.getBlockState(pos).isAir()) {
+            return false;
+        }
         for (Direction dir : AROUND_BLOCK_DIRECTIONS) {
             if (!world.getBlockState(pos.offset(dir)).isAir()) {
                 return false;
@@ -114,6 +122,8 @@ public class WorldUtil {
     }
 
     public static Optional<BlockPos> pickRandomSpot(World world, BlockPos blockPos, int range, Random random) {
+        MakeSure.notNulls(world, blockPos, random);
+        MakeSure.isTrue(range > 0, "range can't be negative or zero!");
         int i = 0;
         double j = (range * range * range) * 0.75;
         while (true) {

@@ -1,9 +1,9 @@
 package me.melontini.tweaks.blocks.entities;
 
+import me.melontini.crackerutil.data.NBTUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.registries.BlockRegistry;
-import me.melontini.tweaks.util.NBTUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,11 +29,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 public class IncubatorBlockEntity extends BlockEntity implements SidedInventory {
-
-    private final Random jRandom = new Random();
     public DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     public int processingTime = -1;
 
@@ -55,8 +51,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                 if (state.get(CampfireBlock.LIT)) {
                     if (!world.isClient) this.processingTime--;
                     if (world.random.nextInt(4) == 0 && world.isClient) {
-                        double i = (jRandom.nextDouble(0.6) - 0.3);
-                        double j = (jRandom.nextDouble(0.6) - 0.3);
+                        double i = (Tweaks.RANDOM.nextDouble(0.6) - 0.3);
+                        double j = (Tweaks.RANDOM.nextDouble(0.6) - 0.3);
                         world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
                     }
                 }

@@ -1,16 +1,15 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.util.MakeSure;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class PotionUtil {
-    public static @Nullable StatusEffect getStatusEffect(Identifier id) {
-        if (Registry.STATUS_EFFECT.get(id) != null) {
-            return Registry.STATUS_EFFECT.get(id);
-        } else {
-            throw new NullPointerException("[m-tweaks] Couldn't get StatusEffect from identifier: " + id);
-        }
+    public static @NotNull StatusEffect getStatusEffect(Identifier id) {
+        StatusEffect effect = Registry.STATUS_EFFECT.get(id);
+        MakeSure.notNull(effect, "[m-tweaks] Couldn't get StatusEffect from identifier: " + id);
+        return effect;
     }
 }

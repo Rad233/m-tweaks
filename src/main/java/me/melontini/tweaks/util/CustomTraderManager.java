@@ -1,5 +1,6 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.util.MakeSure;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
@@ -26,21 +27,24 @@ public class CustomTraderManager extends PersistentState {
     public int cooldown;
 
     public void readNbt(@NotNull NbtCompound nbt) {
+        MakeSure.notNull(nbt);
         this.cooldown = nbt.getInt("mt-trd-cooldown");
     }
 
     @Override
     public NbtCompound writeNbt(@NotNull NbtCompound nbt) {
+        MakeSure.notNull(nbt);
         nbt.putInt("mt-trd-cooldown", this.cooldown);
         return nbt;
     }
 
     public void tick() {
-        if (this.cooldown > 0) --this.cooldown;
+        if (this.cooldown > 0) this.cooldown--;
     }
 
     public void trySpawn(ServerWorld world, ServerWorldProperties properties, PlayerEntity player) {
-        if (cooldown == 0) if (player != null) {
+        MakeSure.notNulls(world, properties, player);
+        if (cooldown == 0 && player != null) {
             BlockPos blockPos = player.getBlockPos();
 
             PointOfInterestStorage pointOfInterestStorage = world.getPointOfInterestStorage();
@@ -70,6 +74,7 @@ public class CustomTraderManager extends PersistentState {
     }
 
     private void spawnLlama(ServerWorld world, @NotNull WanderingTraderEntity wanderingTrader) {
+        MakeSure.notNulls(world, wanderingTrader);
         BlockPos blockPos = this.getNearbySpawnPos(world, wanderingTrader.getBlockPos(), 4);
         if (blockPos != null) {
             TraderLlamaEntity traderLlamaEntity = EntityType.TRADER_LLAMA.spawn(world, null, null, null, blockPos, SpawnReason.EVENT, false, false);

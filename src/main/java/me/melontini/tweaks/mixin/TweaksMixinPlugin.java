@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin;
 
+import me.melontini.crackerutil.CrackerLog;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.LogUtil;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -24,7 +25,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
         AutoConfig.register(TweaksConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         if (CONFIG.compatMode) {
-            LogUtil.warn("Compat mode is on!");
+            CrackerLog.warn("Compat mode is on!");
         }
     }
 

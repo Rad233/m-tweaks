@@ -16,15 +16,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
 public class ClientSideNetworking {
 
-    public static Map<UUID, SoundInstance> soundInstanceMap = new HashMap<>();
+    public static Map<UUID, SoundInstance> soundInstanceMap = new ConcurrentHashMap<>();
 
     public static void register() {
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
@@ -35,12 +35,12 @@ public class ClientSideNetworking {
                     assert client.world != null;
                     Entity entity = client.world.getEntityLookup().get(id);
                     if (stack.getItem() instanceof MusicDiscItem disc) {
-
                         var discName = disc.getDescription();
-                        SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world, Random.create());
-                        soundInstanceMap.put(id, instance);
-                        client.getSoundManager().play(instance);
-
+                        soundInstanceMap.computeIfAbsent(id, k -> {
+                            SoundInstance instance = new PersistentMovingSoundInstance(disc.getSound(), SoundCategory.RECORDS, id, client.world, Random.create());
+                            client.getSoundManager().play(instance);
+                            return instance;
+                        });
                         if (discName != null)
                             if (client.player != null) if (entity != null) if (entity.distanceTo(client.player) < 76) {
                                 client.inGameHud.setRecordPlayingOverlay(discName);
@@ -51,10 +51,9 @@ public class ClientSideNetworking {
             ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "jukebox_minecart_audio_stop"), (client, handler, buf, responseSender) -> {
                 UUID id = buf.readUuid();
                 client.execute(() -> {
-                    SoundInstance instance = soundInstanceMap.get(id);
+                    SoundInstance instance = soundInstanceMap.remove(id);
                     if (client.getSoundManager().isPlaying(instance)) {
                         client.getSoundManager().stop(instance);
-                        soundInstanceMap.remove(id);
                         LogUtil.info("removed jbmc sound instance");
                     }
                 });
@@ -77,12 +76,8 @@ public class ClientSideNetworking {
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "particles_thing"), (client, handler, packetByteBuf, responseSender) -> {
             DefaultParticleType particle = (DefaultParticleType) packetByteBuf.readRegistryValue(Registry.PARTICLE_TYPE);
-            double x = packetByteBuf.readDouble();
-            double y = packetByteBuf.readDouble();
-            double z = packetByteBuf.readDouble();
-            double velocityX = packetByteBuf.readDouble();
-            double velocityY = packetByteBuf.readDouble();
-            double velocityZ = packetByteBuf.readDouble();
+            double x = packetByteBuf.readDouble(), y = packetByteBuf.readDouble(), z = packetByteBuf.readDouble();
+            double velocityX = packetByteBuf.readDouble(), velocityY = packetByteBuf.readDouble(), velocityZ = packetByteBuf.readDouble();
             client.execute(() -> {
                 assert particle != null;
                 client.worldRenderer.addParticle(particle, particle.shouldAlwaysSpawn(), x, y, z, velocityX, velocityY, velocityZ);

@@ -1,6 +1,7 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.CrackerLog;
+import me.melontini.crackerutil.reflect.ReflectionUtil;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.tweaks.Tweaks;
 import net.minecraft.advancement.Advancement;
@@ -17,9 +18,11 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.function.CommandFunction;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -28,7 +31,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import static me.melontini.tweaks.Tweaks.RANDOM;
 
 public class MiscUtil {
-    public static final Map<RecipeType<?>, Consumer<Map<Identifier, Advancement.Builder>, Recipe<?>>> TYPE_CONSUMER_MAP = new ConcurrentHashMap<>();
+    public static final Map<RecipeType<?>, Consumer<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Util.make(new ConcurrentHashMap<>(), hashMap -> {
+        hashMap.put(RecipeType.BLASTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/blasting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        hashMap.put(RecipeType.SMOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smoking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        hashMap.put(RecipeType.SMELTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smelting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        hashMap.put(RecipeType.CAMPFIRE_COOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/campfire_cooking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        hashMap.put(RecipeType.STONECUTTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/stonecutting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
+        hashMap.put(RecipeType.CRAFTING, (map, recipe) -> {
+            if (!(recipe instanceof SpecialCraftingRecipe)) {
+                if (!recipe.getIngredients().isEmpty()) {
+                    map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/crafting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
+                }
+            }
+        });
+    });
 
     public static <T> T pickRandomEntryFromList(@NotNull List<T> list) {
         MakeSure.notEmpty(list);
@@ -37,41 +53,41 @@ public class MiscUtil {
     }
 
 
-    public static void hackAdvancements(MinecraftServer server) {
-        Map<Identifier, Advancement.Builder> map = new ConcurrentHashMap<>();
-        int i = 0;
-        Collection<Recipe<?>> collection = server.getRecipeManager().values();
-        for (Recipe<?> recipe : collection) {
+    public static void generateRecipeAdvancements(MinecraftServer server) {
+        Map<Identifier, Advancement.Builder> advancementBuilders = new ConcurrentHashMap<>();
+        int count = 0;
+        Collection<Recipe<?>> allRecipes = server.getRecipeManager().values();
+        for (Recipe<?> recipe : allRecipes) {
             if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeNamespaces.contains(recipe.getId().getNamespace()))
                 continue;
             if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeIds.contains(recipe.getId().toString()))
                 continue;
+            if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
+                continue;
 
-            if (TYPE_CONSUMER_MAP.get(recipe.getType()) != null) {
-                i++;
-                TYPE_CONSUMER_MAP.get(recipe.getType()).accept(map, recipe);
+            ReflectionUtil.accessRestrictedClass("jdk.internal.reflect.Reflection");
+            if (RECIPE_TYPE_HANDLERS.get(recipe.getType()) != null) {
+                count++;
+                RECIPE_TYPE_HANDLERS.get(recipe.getType()).accept(advancementBuilders, recipe);
             } else {
                 if (!recipe.getIngredients().isEmpty()) {
-                    if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
-                        continue;
-                    i++;
-                    map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/generic/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
+                    count++;
+                    advancementBuilders.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/generic/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
                 }
             }
         }
 
-        AdvancementManager advManager = server.getAdvancementLoader().manager;
-        advManager.load(map);
+        AdvancementManager advancementManager = server.getAdvancementLoader().manager;
+        advancementManager.load(advancementBuilders);
 
-        for (Advancement advancement : advManager.getRoots()) {
+        for (Advancement advancement : advancementManager.getRoots()) {
             if (advancement.getDisplay() != null) {
                 AdvancementPositioner.arrangeForTree(advancement);
             }
         }
 
-        server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
-        CrackerLog.info("finished hacking-in {} recipe advancements", i);
-        map.clear();
+        CrackerLog.info("finished hacking-in {} recipe advancements", count);
+        advancementBuilders.clear();
     }
 
     public static Advancement.@NotNull Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {

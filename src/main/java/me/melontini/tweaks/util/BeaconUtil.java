@@ -12,21 +12,30 @@ public class BeaconUtil {
         int y = pos.getY();
         int z = pos.getZ();
 
-        for (int j = 1; j <= 4; j++) {
+        int i = 0;
+
+        for (int j = 1; j <= 4; i = j++) {
             int k = y - j;
             if (k < world.getBottomY()) {
-                return j - 1;
+                break;
             }
 
-            for (int l = x - j; l <= x + j; l++) {
-                for (int m = z - j; m <= z + j; m++) {
+            boolean bl = true;
+
+            for (int l = x - j; l <= x + j && bl; ++l) {
+                for (int m = z - j; m <= z + j; ++m) {
                     if (!allowedBlocks.contains(world.getBlockState(new BlockPos(l, k, m)).getBlock())) {
-                        return j - 1;
+                        bl = false;
+                        break;
                     }
                 }
             }
+
+            if (!bl) {
+                break;
+            }
         }
 
-        return 4;
+        return i;
     }
 }

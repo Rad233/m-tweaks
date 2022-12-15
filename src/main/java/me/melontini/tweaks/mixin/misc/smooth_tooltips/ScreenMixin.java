@@ -32,8 +32,8 @@ public abstract class ScreenMixin {
     @Inject(method = "renderTooltipFromComponents", at = @At("HEAD"))
     private void mTweaks$renderTooltipHead(MatrixStack matrices, List<TooltipComponent> components, int x, int y, CallbackInfo ci) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
-            int width = MinecraftClient.getInstance().getWindow().getScaledWidth();
-            int height = MinecraftClient.getInstance().getWindow().getScaledHeight();
+            int width = client.getWindow().getScaledWidth();
+            int height = client.getWindow().getScaledHeight();
             float smoothX = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier * client.getLastFrameDuration(), mTweaks$smoothX, x), x - 30, x + 30);
             float smoothY = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier * client.getLastFrameDuration(), mTweaks$smoothY, y), y - 30, y + 30);
 

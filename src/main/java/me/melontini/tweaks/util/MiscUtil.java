@@ -90,7 +90,7 @@ public class MiscUtil {
         advancementBuilders.clear();
     }
 
-    public static Advancement.@NotNull Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {
+    public static @NotNull Advancement.Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {
         MakeSure.notEmpty(ingredients);// shouldn't really happen
         //TODO maybe filter identical stacks
         var builder = Advancement.Builder.create();

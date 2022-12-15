@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
+import me.melontini.crackerutil.data.NBTUtil;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.NBTUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

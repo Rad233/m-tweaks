@@ -1,7 +1,7 @@
 package me.melontini.tweaks.screens;
 
+import me.melontini.crackerutil.data.NbtBuilder;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.NbtBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;

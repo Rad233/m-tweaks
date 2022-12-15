@@ -1,6 +1,7 @@
 package me.melontini.tweaks.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.melontini.crackerutil.client.util.DrawUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.particles.KnockoffTotemParticle;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
@@ -9,7 +10,6 @@ import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.util.DrawUtil;
 import me.melontini.tweaks.util.TextUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -38,8 +38,6 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static me.melontini.tweaks.util.DrawUtil.getTooltipFromItem;
 
 @Environment(EnvType.CLIENT)
 public class TweaksClient implements ClientModInitializer {
@@ -76,7 +74,7 @@ public class TweaksClient implements ClientModInitializer {
                     matrices.push();
                     matrices.scale(1, 1, 1);
                     RenderSystem.setShaderColor(1, 1, 1, Math.min(tooltipFlow, 0.8f));
-                    var list = getTooltipFromItem(FRAME_STACK);
+                    var list = DrawUtil.getTooltipFromItem(FRAME_STACK);
                     list.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.frameitem"), Formatting.GRAY));
                     List<TooltipComponent> list1 = list.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
                     FRAME_STACK.getTooltipData().ifPresent(datax -> list1.add(1, TooltipComponent.of(datax)));

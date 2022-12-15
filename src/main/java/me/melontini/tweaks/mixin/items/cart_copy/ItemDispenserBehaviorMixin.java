@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.items.cart_copy;
 
+import me.melontini.crackerutil.data.NBTUtil;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.NBTUtil;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;

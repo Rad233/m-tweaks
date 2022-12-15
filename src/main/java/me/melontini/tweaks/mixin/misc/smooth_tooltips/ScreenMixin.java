@@ -33,8 +33,8 @@ public abstract class ScreenMixin {
     @Inject(method = "renderTooltipFromComponents", at = @At("HEAD"))
     private void mTweaks$renderTooltipHead(MatrixStack matrices, List<TooltipComponent> components, int x, int y, TooltipPositioner positioner, CallbackInfo ci) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
-            int width = MinecraftClient.getInstance().getWindow().getScaledWidth();
-            int height = MinecraftClient.getInstance().getWindow().getScaledHeight();
+            int width = client.getWindow().getScaledWidth();
+            int height = client.getWindow().getScaledHeight();
             float smoothX = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier * client.getLastFrameDuration(), mTweaks$smoothX, x), x - 30, x + 30);
             float smoothY = MathHelper.clamp(MathHelper.lerp(Tweaks.CONFIG.tooltipMultiplier * client.getLastFrameDuration(), mTweaks$smoothY, y), y - 30, y + 30);
 
@@ -60,7 +60,9 @@ public abstract class ScreenMixin {
 
 
             RenderSystem.getModelViewStack().push();
-            RenderSystem.getModelViewStack().translate(l - (int) (l), m - (int) (m), 0);
+            RenderSystem.getModelViewStack().translate(
+                    l - (int)l,
+                    m - (int)m, 0);
             RenderSystem.applyModelViewMatrix();
         }
     }
@@ -68,7 +70,7 @@ public abstract class ScreenMixin {
     @ModifyVariable(method = "renderTooltipFromComponents", at = @At(value = "LOAD"), index = 3, argsOnly = true)
     private int mTweaks$setX(int value) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
-            return (int) (mTweaks$smoothX);
+            return (int) mTweaks$smoothX;
         }
         return value;
     }
@@ -76,7 +78,7 @@ public abstract class ScreenMixin {
     @ModifyVariable(method = "renderTooltipFromComponents", at = @At(value = "LOAD"), index = 4, argsOnly = true)
     private int mTweaks$setY(int value) {
         if (Tweaks.CONFIG.enableSmoothTooltips) {
-            return (int) (mTweaks$smoothY);
+            return (int) mTweaks$smoothY;
         }
         return value;
     }

@@ -9,8 +9,6 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 
-import java.util.Random;
-
 public class KnockoffTotemParticle extends AnimatedParticle {
     KnockoffTotemParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(world, x, y, z, spriteProvider, 1.25F);
@@ -19,7 +17,6 @@ public class KnockoffTotemParticle extends AnimatedParticle {
         this.velocityY = velocityY;
         this.velocityZ = velocityZ;
         this.scale *= 0.75F;
-        Random random = new Random();
         this.maxAge = 60 + random.nextInt(12);
         this.setSpriteForAge(spriteProvider);
 

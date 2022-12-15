@@ -1,16 +1,25 @@
 package me.melontini.tweaks.mixin.misc;
 
-import net.minecraft.advancement.PlayerAdvancementTracker;
+import me.melontini.tweaks.Tweaks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.ServerAdvancementLoader;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static me.melontini.tweaks.util.MiscUtil.generateRecipeAdvancements;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/PlayerAdvancementTracker;reload(Lnet/minecraft/server/ServerAdvancementLoader;)V"), method = "onDataPacksReloaded")
-    private void reload(PlayerAdvancementTracker instance, ServerAdvancementLoader advancementLoader) {
+
+    @Shadow @Final private MinecraftServer server;
+
+    @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Map;values()Ljava/util/Collection;", ordinal = 0, shift = At.Shift.BEFORE), method = "onDataPacksReloaded")
+    private void reload(CallbackInfo ci) {
         //we don't sync until our advancements have been generated
+        if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) generateRecipeAdvancements(server);
     }
 }

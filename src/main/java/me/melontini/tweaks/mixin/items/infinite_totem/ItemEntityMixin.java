@@ -39,7 +39,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -54,11 +53,10 @@ public abstract class ItemEntityMixin extends Entity {
     @Shadow
     @Final
     private static TrackedData<ItemStack> STACK;
-    private final Random mTweaks$random = new Random();
+    private final List<Block> beaconBlocks = List.of(Blocks.DIAMOND_BLOCK, Blocks.NETHERITE_BLOCK);
     private int mTweaks$ascensionTicks;
     private ItemEntity mTweaks$itemEntity;
     private Pair<BeaconBlockEntity, Integer> mTweaks$beacon = new Pair<>(null, 0);
-
     private Future<Optional<ItemEntity>> mTweaks$future;
 
     public ItemEntityMixin(EntityType<?> type, World world) {
@@ -72,16 +70,19 @@ public abstract class ItemEntityMixin extends Entity {
     public abstract void setToDefaultPickupDelay();
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V", shift = At.Shift.AFTER), method = "tick")
-    private void mTweaks$tick(CallbackInfo ci) {
+    private void mTweaksTick(CallbackInfo ci) {
         if (Tweaks.CONFIG.totemSettings.enableTotemAscension && Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
             if (this.dataTracker.get(STACK).isOf(Items.TOTEM_OF_UNDYING)) {
                 ItemEntity self = (ItemEntity) (Object) this;
-                if (age % 35 == 0 && mTweaks$ascensionTicks == 0) mTweaks$beaconCheck();
+                if (age % 35 == 0 && mTweaks$ascensionTicks == 0) {
+                    mTweaks$beaconCheck();
+                }
 
                 if (mTweaks$beacon.getLeft() != null && mTweaks$beacon.getRight() >= 4) {
                     if (!world.isClient) {
                         if (mTweaks$itemEntity == null) {
                             if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;
+
 
                             if (age % 10 == 0) {
                                 try {
@@ -150,9 +151,9 @@ public abstract class ItemEntityMixin extends Entity {
                                     WorldUtil.crudeSetVelocity(mTweaks$itemEntity, mTweaks$itemEntity.getVelocity().x * .5, .07, mTweaks$itemEntity.getVelocity().z * .5);
                                     WorldUtil.crudeSetVelocity(self, getVelocity().x * .5, .07, getVelocity().z * .5);
 
-                                    if (mTweaks$random.nextInt(13) == 0)
+                                    if (Tweaks.RANDOM.nextInt(13) == 0)
                                         WorldUtil.addParticle(world, ParticleTypes.END_ROD, self.getX(), self.getY(), self.getZ(), getVelocity().x, -.07, getVelocity().z);
-                                    if (mTweaks$random.nextInt(13) == 0)
+                                    if (Tweaks.RANDOM.nextInt(13) == 0)
                                         WorldUtil.addParticle(world, ParticleTypes.END_ROD, mTweaks$itemEntity.getX(), mTweaks$itemEntity.getY(), mTweaks$itemEntity.getZ(), mTweaks$itemEntity.getVelocity().x, -.07, mTweaks$itemEntity.getVelocity().z);
                                 } else if (mTweaks$ascensionTicks == 180) {
                                     mTweaks$ascensionTicks = 0;
@@ -161,7 +162,7 @@ public abstract class ItemEntityMixin extends Entity {
                                     world.spawnEntity(itemEntity2);
 
                                     if (!world.isClient)
-                                        ((ServerWorld) world).spawnParticles(Tweaks.KNOCKOFF_TOTEM_PARTICLE, itemEntity2.getX(), itemEntity2.getY(), itemEntity2.getZ(), 19, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, mTweaks$random.nextDouble(0.4) - 0.2, 0.5);
+                                        ((ServerWorld) world).spawnParticles(Tweaks.KNOCKOFF_TOTEM_PARTICLE, itemEntity2.getX(), itemEntity2.getY(), itemEntity2.getZ(), 19, Tweaks.RANDOM.nextDouble(0.4) - 0.2, Tweaks.RANDOM.nextDouble(0.4) - 0.2, Tweaks.RANDOM.nextDouble(0.4) - 0.2, 0.5);
 
                                     mTweaks$itemEntity.discard();
                                     self.discard();
@@ -176,8 +177,6 @@ public abstract class ItemEntityMixin extends Entity {
             }
         }
     }
-
-    private final List<Block> beaconBlocks = List.of(Blocks.DIAMOND_BLOCK, Blocks.NETHERITE_BLOCK);
 
     private boolean mTweaks$beaconCheck() {
         BlockEntity entity = world.getBlockEntity(new BlockPos(getX(), world.getTopY(Heightmap.Type.WORLD_SURFACE, getBlockPos().getX(), getBlockPos().getZ()) - 1, getZ()));

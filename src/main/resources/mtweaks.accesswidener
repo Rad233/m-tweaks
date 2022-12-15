@@ -1,24 +1,16 @@
 accessWidener  v2	named
 
 accessible class net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
-accessible class net/minecraft/recipe/Ingredient$TagEntry
-accessible class net/minecraft/recipe/Ingredient$StackEntry
-accessible class net/minecraft/recipe/Ingredient$Entry
 accessible class net/minecraft/block/entity/BeehiveBlockEntity$Bee
 # Fields
 accessible field net/minecraft/client/render/entity/BoatEntityRenderer texturesAndModels Ljava/util/Map;
-accessible field net/minecraft/recipe/Ingredient$TagEntry tag Lnet/minecraft/registry/tag/TagKey;
 accessible field net/minecraft/client/gui/tooltip/OrderedTextTooltipComponent text Lnet/minecraft/text/OrderedText;
-accessible field net/minecraft/recipe/Ingredient$StackEntry stack Lnet/minecraft/item/ItemStack;
-accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;
 accessible field net/minecraft/server/ServerAdvancementLoader conditionManager Lnet/minecraft/loot/condition/LootConditionManager;
 accessible field net/minecraft/server/ServerAdvancementLoader manager Lnet/minecraft/advancement/AdvancementManager;
-transitive-accessible field net/minecraft/entity/ItemEntity STACK Lnet/minecraft/entity/data/TrackedData;
 accessible field net/minecraft/block/entity/BeaconBlockEntity level I
 accessible field net/minecraft/block/entity/BeehiveBlockEntity$Bee entityData Lnet/minecraft/nbt/NbtCompound;
 mutable field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
 accessible field net/minecraft/item/ItemStack item Lnet/minecraft/item/Item;
-accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 accessible field net/minecraft/entity/vehicle/FurnaceMinecartEntity fuel I
 accessible field net/minecraft/entity/vehicle/BoatEntity ticksUnderwater F
 accessible field net/minecraft/entity/vehicle/BoatEntity yawVelocity F
@@ -28,18 +20,11 @@ accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity burnTime 
 accessible field net/minecraft/item/MinecartItem type Lnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;
 accessible field net/minecraft/world/MobSpawnerLogic spawnEntry Lnet/minecraft/world/MobSpawnerEntry;
 accessible field net/minecraft/entity/mob/MobEntity goalSelector Lnet/minecraft/entity/ai/goal/GoalSelector;
-accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
-accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
 # Methods
 accessible method net/minecraft/recipe/ShapedRecipe readSymbols (Lcom/google/gson/JsonObject;)Ljava/util/Map;
 accessible method net/minecraft/block/entity/BeehiveBlockEntity$Bee <init> (Lnet/minecraft/nbt/NbtCompound;II)V
 accessible method net/minecraft/block/entity/BeehiveBlockEntity removeIrrelevantNbtKeys (Lnet/minecraft/nbt/NbtCompound;)V
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal isRunning ()Z
 accessible method net/minecraft/entity/passive/BeeEntity$PollinateGoal completedPollination ()Z
-accessible method net/minecraft/entity/vehicle/AbstractMinecartEntity getItem ()Lnet/minecraft/item/Item;
 accessible method net/minecraft/block/CropBlock getAvailableMoisture (Lnet/minecraft/block/Block;Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)F
-accessible method net/minecraft/client/world/ClientWorld getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
-accessible method net/minecraft/world/World getEntityLookup ()Lnet/minecraft/world/entity/EntityLookup;
-accessible method net/minecraft/entity/projectile/ProjectileEntity <init> (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
-accessible method net/minecraft/entity/FallingBlockEntity <init> (Lnet/minecraft/world/World;DDDLnet/minecraft/block/BlockState;)V
 accessible method net/minecraft/entity/FallingBlockEntity readCustomDataFromNbt (Lnet/minecraft/nbt/NbtCompound;)V

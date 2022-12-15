@@ -1,0 +1,23 @@
+{
+	"fabric:load_conditions": [
+		{
+			"condition": "m-tweaks:items_registered",
+			"values": [
+				"m-tweaks:bamboo_boat_with_jukebox"
+			]
+		}
+	],
+	"type": "minecraft:crafting_shapeless",
+	"group": "jukebox_boat",
+	"ingredients": [
+		{
+			"item": "minecraft:jukebox"
+		},
+		{
+			"item": "minecraft:bamboo_raft"
+		}
+	],
+	"result": {
+		"item": "m-tweaks:bamboo_boat_with_jukebox"
+	}
+}

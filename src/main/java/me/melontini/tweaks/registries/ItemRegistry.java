@@ -24,7 +24,6 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -95,14 +94,10 @@ public class ItemRegistry {
 
     public static void register() {
         for (BoatEntity.Type value : BoatEntity.Type.values()) {
-            if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn)
-                Registry.register(Registries.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_furnace"), new FurnaceBoatItem(value, new FabricItemSettings().maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn)
-                Registry.register(Registries.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_jukebox"), new JukeboxBoatItem(value, new FabricItemSettings().maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isTNTBoatOn)
-                Registry.register(Registries.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_tnt"), new TNTBoatItem(value, new FabricItemSettings().maxCount(1)));
-            if (Tweaks.CONFIG.newBoats.isHopperBoatOn)
-                Registry.register(Registries.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().maxCount(1)));
+            RegistryUtil.createItem(Tweaks.CONFIG.newBoats.isFurnaceBoatOn, FurnaceBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_furnace"), ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
+            RegistryUtil.createItem(Tweaks.CONFIG.newBoats.isJukeboxBoatOn, JukeboxBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_jukebox"), ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
+            RegistryUtil.createItem(Tweaks.CONFIG.newBoats.isTNTBoatOn, TNTBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_tnt"), ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
+            RegistryUtil.createItem(Tweaks.CONFIG.newBoats.isHopperBoatOn, HopperBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper"), ItemGroups.REDSTONE, value, new FabricItemSettings().maxCount(1));
         }
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {

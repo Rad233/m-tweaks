@@ -18,13 +18,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.JsonHelper;
-import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,7 +63,7 @@ public class ResourceConditionRegistry {
 
             for (JsonElement element : array) {
                 if (element.isJsonPrimitive()) {
-                    if (Registry.ITEM.get(new Identifier(element.getAsString())) == Items.AIR) return false;
+                    if (Registries.ITEM.get(new Identifier(element.getAsString())) == Items.AIR) return false;
                 }
             }
 
@@ -86,11 +86,11 @@ public class ResourceConditionRegistry {
                         LogUtil.info(jsonElement);
                         PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
-                        if (Registry.BLOCK.get(Identifier.tryParse(data.identifier)) == Blocks.AIR) {
+                        if (Registries.BLOCK.get(Identifier.tryParse(data.identifier)) == Blocks.AIR) {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid identifier provided! %s", data.identifier));
                         }
 
-                        Tweaks.PLANT_DATA.putIfAbsent(Registry.BLOCK.get(Identifier.tryParse(data.identifier)), data);
+                        Tweaks.PLANT_DATA.putIfAbsent(Registries.BLOCK.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
                         CrackerLog.error("Error while parsing JSON for mt_crop_temperatures", e);
                     }
@@ -109,9 +109,9 @@ public class ResourceConditionRegistry {
             public void reload(ResourceManager manager) {
                 Tweaks.EGG_DATA.clear();
                 //well...
-                for (Item item : Registry.ITEM) {
+                for (Item item : Registries.ITEM) {
                     if (item instanceof SpawnEggItem spawnEggItem) {
-                        Tweaks.EGG_DATA.putIfAbsent(spawnEggItem, new EggProcessingData(Registry.ITEM.getId(spawnEggItem).toString(), Registry.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
+                        Tweaks.EGG_DATA.putIfAbsent(spawnEggItem, new EggProcessingData(Registries.ITEM.getId(spawnEggItem).toString(), Registries.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
                     }
                 }
                 var map = manager.findResources("mt_egg_processing", identifier -> identifier.getPath().endsWith(".json"));
@@ -121,15 +121,15 @@ public class ResourceConditionRegistry {
                         LogUtil.info(jsonElement);
                         EggProcessingData data = GSON.fromJson(jsonElement, EggProcessingData.class);
 
-                        if (Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)) == EntityType.PIG && !Objects.equals(data.entity, "minecraft:pig")) {
+                        if (Registries.ENTITY_TYPE.get(Identifier.tryParse(data.entity)) == EntityType.PIG && !Objects.equals(data.entity, "minecraft:pig")) {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid entity identifier provided! %s", data.entity));
                         }
 
-                        if (Registry.ITEM.get(Identifier.tryParse(data.identifier)) == Items.AIR) {
+                        if (Registries.ITEM.get(Identifier.tryParse(data.identifier)) == Items.AIR) {
                             throw new InvalidIdentifierException(String.format("[m-tweaks] invalid item identifier provided! %s", data.identifier));
                         }
 
-                        Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.identifier)), data);
+                        Tweaks.EGG_DATA.putIfAbsent(Registries.ITEM.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
                         CrackerLog.error("Error while parsing JSON for mt_egg_processing", e);
                     }

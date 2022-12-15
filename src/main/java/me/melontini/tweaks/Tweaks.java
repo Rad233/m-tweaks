@@ -25,7 +25,6 @@ import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -121,7 +120,7 @@ public class Tweaks implements ModInitializer {
 
         @Environment(EnvType.CLIENT)
         @Override
-        public void animateIcon(MatrixStack stack, CreativeInventoryScreen screen, int l, int m) {
+        public void animateIcon(MatrixStack stack, int l, int m) {
             MinecraftClient client = MinecraftClient.getInstance();
 
             float angle = Util.getMeasuringTimeMs() * 0.09f;

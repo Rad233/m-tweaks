@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.blocks.beds_revenge;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -65,7 +65,7 @@ public abstract class BedBlockMixin extends Block {
         if (!world.isClient) {
             if (Tweaks.CONFIG.safeBeds) {
                 if (!isBedWorking(world)) {
-                    player.sendMessage(TextUtil.createTranslatable("m-tweaks.safebeds.action"), true);
+                    player.sendMessage(TweaksTexts.SAFE_BEDS, true);
                     cir.setReturnValue(ActionResult.SUCCESS);
                 }
             }

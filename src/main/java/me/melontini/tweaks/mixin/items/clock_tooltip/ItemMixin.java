@@ -1,14 +1,13 @@
 package me.melontini.tweaks.mixin.items.clock_tooltip;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +28,7 @@ public class ItemMixin {
                 //totally not stolen from here https://bukkit.org/threads/how-can-i-convert-minecraft-long-time-to-real-hours-and-minutes.122912/
                 int i = MathHelper.fastFloor((world.getTimeOfDay() / 1000d + 8) % 24);
                 int j = MathHelper.fastFloor(60 * (world.getTimeOfDay() % 1000d) / 1000);
-                tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.clock", String.format("%02d:%02d", i, j)), Formatting.GRAY));
+                tooltip.add(TweaksTexts.genericGray("tooltip.m-tweaks.clock", String.format("%02d:%02d", i, j)));
             }
         }
     }

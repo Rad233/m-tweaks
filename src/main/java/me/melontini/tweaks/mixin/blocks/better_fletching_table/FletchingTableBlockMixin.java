@@ -2,7 +2,7 @@ package me.melontini.tweaks.mixin.blocks.better_fletching_table;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
-import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -34,7 +34,7 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);
 
-            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), TextUtil.createTranslatable(("gui.m-tweaks.fletching"))));
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), TweaksTexts.FLETCHING_SCREEN));
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }

@@ -10,7 +10,7 @@ import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,7 +30,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
@@ -75,7 +74,7 @@ public class TweaksClient implements ClientModInitializer {
                     matrices.scale(1, 1, 1);
                     RenderSystem.setShaderColor(1, 1, 1, Math.min(tooltipFlow, 0.8f));
                     var list = DrawUtil.getTooltipFromItem(FRAME_STACK);
-                    list.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.frameitem"), Formatting.GRAY));
+                    list.add(TweaksTexts.ITEM_IN_FRAME);
                     List<TooltipComponent> list1 = list.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
                     FRAME_STACK.getTooltipData().ifPresent(datax -> list1.add(1, TooltipComponent.of(datax)));
 

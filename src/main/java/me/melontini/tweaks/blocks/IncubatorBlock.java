@@ -3,7 +3,7 @@ package me.melontini.tweaks.blocks;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
 import me.melontini.tweaks.registries.BlockRegistry;
-import me.melontini.tweaks.util.TextUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -60,9 +60,9 @@ public class IncubatorBlock extends BlockWithEntity {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        tooltip.add(TextUtil.createTranslatable(("tooltip.m-tweaks.incubator[0]")));
+        tooltip.add(TweaksTexts.INCUBATOR_0);
         if (Tweaks.CONFIG.unknown)
-            tooltip.add(TextUtil.applyFormatting(TextUtil.createTranslatable("tooltip.m-tweaks.incubator[1]"), Formatting.GRAY));
+            tooltip.add(TweaksTexts.INCUBATOR_1);
     }
 
     @Override

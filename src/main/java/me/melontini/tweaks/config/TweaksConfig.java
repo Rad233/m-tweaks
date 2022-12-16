@@ -259,7 +259,7 @@ public class TweaksConfig implements ConfigData {
 
         @ConfigEntry.Category("misc")
         @ConfigEntry.Gui.Tooltip
-        public List<String> blacklistedRecipeNamespaces = Arrays.asList("minecraft");
+        public List<String> blacklistedRecipeNamespaces = Arrays.asList("minecraft", "m-tweaks");
 
         @ConfigEntry.Category("misc")
         @ConfigEntry.Gui.Tooltip
@@ -270,16 +270,6 @@ public class TweaksConfig implements ConfigData {
     @Comment("Enables in-game tooltips for item frames.")
     @ConfigEntry.Gui.Tooltip
     public boolean itemFrameTooltips = true;
-
-    @ConfigEntry.Category("misc")
-    @Comment("Enables Smooth Tooltips.")
-    @ConfigEntry.Gui.Tooltip
-    public boolean enableSmoothTooltips = true;
-
-    @ConfigEntry.Category("misc")
-    @Comment("The higher this number is, the faster tooltips move")
-    @ConfigEntry.Gui.Tooltip
-    public float tooltipMultiplier = 0.25f;
 
     @ConfigEntry.Category("misc")
     @Comment("makes the player explode after taking any damage")

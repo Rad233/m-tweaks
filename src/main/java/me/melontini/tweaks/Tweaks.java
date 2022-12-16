@@ -131,14 +131,20 @@ public class Tweaks implements ModInitializer {
             stack.scale(16.0F, 16.0F, 16.0F);
             stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(angle));
             BakedModel model = client.getItemRenderer().getModel(this.getIcon(), null, null, 0);
-            DrawUtil.renderGuiItemModelCustomMatrixNoTransform(stack, getIcon(), model);
+            DrawUtil.renderGuiItemModelCustomMatrixNoTransform(stack, this.getIcon(), model);
             stack.pop();
             //RenderSystem.applyModelViewMatrix();
         }
 
         @Override
         public ItemStack createIcon() {
-            return ItemRegistry.INCUBATOR.getDefaultStack();
+            if (Tweaks.CONFIG.unknown) {
+                return ItemRegistry.ROSE_OF_THE_VALLEY.getDefaultStack();
+            }
+            if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
+                return ItemRegistry.INCUBATOR.getDefaultStack();
+            }
+            return ItemRegistry.SPAWNER_MINECART.getDefaultStack();
         }
 
         @Override

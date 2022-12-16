@@ -53,7 +53,7 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("blocks")
     @Comment("Makes fletching table a little more useful by allowing you to tighten bow string!")
-    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.Tooltip()
     @ConfigEntry.Gui.RequiresRestart
     public boolean usefulFletching = true;
 
@@ -127,7 +127,7 @@ public class TweaksConfig implements ConfigData {
     public boolean betterFurnaceMinecart = true;
     @ConfigEntry.Category("entities")
     @Comment("Set the max allowed fuel for the furnace minecart. default 45000, doesn't work if better furnace minecart is off")
-    @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.Tooltip()
     public int maxFurnaceMinecartFuel = 45000;
 
     @ConfigEntry.Category("entities")

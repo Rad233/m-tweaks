@@ -96,7 +96,7 @@
   "text.autoconfig.m-tweaks.option.bedExplosionPower.@Tooltip": "可调节的床爆炸范围，默认为5.0",
   "text.autoconfig.m-tweaks.option.safeBeds": "安眠之榻",
   "text.autoconfig.m-tweaks.option.safeBeds.@Tooltip[0]": "使得床不会爆炸。",
-  "text.autoconfig.m-tweaks.option.safeBeds.@Tooltip[1]": "与”床无处不炸“不兼容！",
+  "text.autoconfig.m-tweaks.option.safeBeds.@Tooltip[1]": "与“床无处不炸”不兼容！",
   "text.autoconfig.m-tweaks.option.campfireTweaks": "营火设置",
   "text.autoconfig.m-tweaks.option.campfireTweaks.@Tooltip": "与营火相关的一些可配置选项",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffects": "营火效果",

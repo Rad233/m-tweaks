@@ -44,8 +44,8 @@ public abstract class BeeEntityMixin extends AnimalEntity {
             if (pollinateGoal != null) {
                 if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
                     this.mTweaks$growFlower();
-                    LogUtil.info(mTweaks$plantingCoolDown);
-                    LogUtil.info("{} stopped pollinating flower at {}", bee, flowerPos);
+                    LogUtil.devInfo(mTweaks$plantingCoolDown);
+                    LogUtil.devInfo("{} stopped pollinating flower at {}", bee, flowerPos);
                 }
             }
         }

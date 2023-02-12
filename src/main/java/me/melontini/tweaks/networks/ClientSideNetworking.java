@@ -54,7 +54,7 @@ public class ClientSideNetworking {
                     SoundInstance instance = soundInstanceMap.remove(id);
                     if (client.getSoundManager().isPlaying(instance)) {
                         client.getSoundManager().stop(instance);
-                        LogUtil.info("removed jbmc sound instance");
+                        LogUtil.devInfo("removed jbmc sound instance");
                     }
                 });
             });
@@ -92,6 +92,6 @@ public class ClientSideNetworking {
                 entity.getDataTracker().set(ItemEntity.STACK, stack);
             });
         });
-        LogUtil.info("ClientSideNetworking init complete!");
+        LogUtil.devInfo("ClientSideNetworking init complete!");
     }
 }

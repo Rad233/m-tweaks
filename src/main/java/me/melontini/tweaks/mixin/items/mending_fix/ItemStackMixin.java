@@ -20,6 +20,6 @@ public abstract class ItemStackMixin {
         if (Tweaks.CONFIG.balancedMending && cir.getReturnValue() >= 52 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
             cir.setReturnValue(52);
         }
-        LogUtil.info(cir.getReturnValue());
+        LogUtil.devInfo(cir.getReturnValue());
     }
 }

@@ -114,7 +114,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
         for (PlayerEntity player1 : world.getPlayers()) {
             ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio"), buf);
         }
-        LogUtil.info(this.record);
+        LogUtil.devInfo(this.record);
     }
 
     @Override

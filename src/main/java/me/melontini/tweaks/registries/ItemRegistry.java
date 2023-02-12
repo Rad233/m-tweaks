@@ -45,6 +45,6 @@ public class ItemRegistry {
             if (Tweaks.CONFIG.newBoats.isHopperBoatOn)
                 Registry.register(Registry.ITEM, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper"), new HopperBoatItem(value, new FabricItemSettings().group(ItemGroup.TRANSPORTATION).maxCount(1)));
         }
-        LogUtil.info("ItemRegistry init complete!");
+        LogUtil.devInfo("ItemRegistry init complete!");
     }
 }

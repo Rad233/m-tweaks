@@ -26,7 +26,7 @@ public class EntityTypeRegistry {
     public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER = RegistryUtil.createEntityType(Tweaks.CONFIG.newBoats.isHopperBoatOn, new Identifier(MODID, "hopper_boat"), EntityType.Builder.<HopperBoatEntity>create(HopperBoatEntity::new, SpawnGroup.MISC).setDimensions(1.375F, 0.5625F));
 
     public static void register() {
-        LogUtil.info("EntityTypeRegistry init complete!");
+        LogUtil.devInfo("EntityTypeRegistry init complete!");
     }
 
 

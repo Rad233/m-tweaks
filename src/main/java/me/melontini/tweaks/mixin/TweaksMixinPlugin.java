@@ -54,7 +54,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
                                 }
                                 booleans.add(j);
                             }
-                            LogUtil.info("{} : {}", mixinClassName, booleans.stream().allMatch(aBoolean -> aBoolean) ? "loaded" : "not loaded");
+                            LogUtil.devInfo("{} : {}", mixinClassName, booleans.stream().allMatch(aBoolean -> aBoolean) ? "loaded" : "not loaded");
                             return booleans.stream().allMatch(aBoolean -> aBoolean);
                         }
                     }

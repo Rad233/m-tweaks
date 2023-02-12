@@ -4,7 +4,7 @@ import me.melontini.crackerutil.CrackerLog;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.LogUtil;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -22,7 +22,7 @@ public class TweaksMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        AutoConfig.register(TweaksConfig.class, JanksonConfigSerializer::new);
+        AutoConfig.register(TweaksConfig.class, GsonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         if (CONFIG.compatMode) {
             CrackerLog.warn("Compat mode is on!");

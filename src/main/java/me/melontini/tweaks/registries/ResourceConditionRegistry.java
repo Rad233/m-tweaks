@@ -83,7 +83,7 @@ public class ResourceConditionRegistry {
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
                         var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
-                        LogUtil.info(jsonElement);
+                        LogUtil.devInfo(jsonElement);
                         PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
                         if (Registry.BLOCK.get(Identifier.tryParse(data.identifier)) == Blocks.AIR) {
@@ -118,7 +118,7 @@ public class ResourceConditionRegistry {
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
                         var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
-                        LogUtil.info(jsonElement);
+                        LogUtil.devInfo(jsonElement);
                         EggProcessingData data = GSON.fromJson(jsonElement, EggProcessingData.class);
 
                         if (Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)) == EntityType.PIG && !Objects.equals(data.entity, "minecraft:pig")) {
@@ -136,6 +136,6 @@ public class ResourceConditionRegistry {
                 }
             }
         });
-        LogUtil.info("ResourceConditionRegistry init complete");
+        LogUtil.devInfo("ResourceConditionRegistry init complete");
     }
 }

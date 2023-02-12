@@ -22,7 +22,7 @@ public class BlockRegistry {
     public static IncubatorBlock INCUBATOR_BLOCK = (IncubatorBlock) RegistryUtil.createBlock(Tweaks.CONFIG.incubatorSettings.enableIncubator, IncubatorBlock.class, new Identifier(MODID, "incubator"), FabricBlockSettings.of(Material.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD));
 
     public static void register() {
-        LogUtil.info("BlockRegistry init complete!");
+        LogUtil.devInfo("BlockRegistry init complete!");
     }    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = RegistryUtil.createBlockEntity(INCUBATOR_BLOCK != null, new Identifier(MODID, "incubator"), BlockEntityType.Builder.create(IncubatorBlockEntity::new, INCUBATOR_BLOCK));
 
 

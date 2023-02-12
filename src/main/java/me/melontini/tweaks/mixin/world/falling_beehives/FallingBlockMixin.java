@@ -98,7 +98,7 @@ public abstract class FallingBlockMixin extends Entity {
                                 ItemStackUtil.spawnWithRVelocity(this.getPos(), stack, world, 0.3);
                             }
                         }
-                        LogUtil.info("broke Bee Nest generated from Falling Block");
+                        LogUtil.devInfo("broke Bee Nest generated from Falling Block");
                     }
                 }
             }

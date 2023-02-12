@@ -18,7 +18,7 @@ public class TweaksConfig implements ConfigData {
     public boolean canBeeNestsFall = true;
 
     @ConfigEntry.Category("world")
-    @Comment("With this rule on, crops will have to planted in biomes they like, otherwise they won't grow. This rule is data-driven! checkout [link] for more devInfo")
+    @Comment("With this rule on, crops will have to planted in biomes they like, otherwise they won't grow. This rule is data-driven! checkout [link] for more info")
     @ConfigEntry.Gui.Tooltip
     public boolean temperatureBasedCropGrowthSpeed = false;
 
@@ -282,7 +282,7 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Gui.RequiresRestart
     public boolean compatMode = false;
     @ConfigEntry.Category("misc")
-    @Comment("enable additional debug devInfo, this will spam your log into oblivion")
+    @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip
     public boolean debugMessages = false;
 

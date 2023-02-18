@@ -119,7 +119,7 @@
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[1]": "- 燃料现在作为整数保存，你可以在下面改变燃料量上限。",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[2]": "- 你可以使用所有种类的燃料，如岩浆桶，煤炭块等等。",
   "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel": "最大动力矿车载燃料量",
-  "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel.@Tooltip[0]": "为动力矿车设置最大载燃料量。默认45000，最大2147483647",
+  "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel.@Tooltip": "为动力矿车设置最大载燃料量。默认45000，最大2147483647",
   "text.autoconfig.m-tweaks.option.newMinecarts": "额外的矿车种类",
   "text.autoconfig.m-tweaks.option.newMinecarts.@Tooltip": "让你能够启用或禁用特定种类的额外矿车种类",
   "text.autoconfig.m-tweaks.option.newMinecarts.isAnvilMinecartOn": "启用载铁砧的矿车",

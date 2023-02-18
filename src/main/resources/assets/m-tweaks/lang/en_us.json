@@ -119,7 +119,7 @@
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[1]": "- Fuel is now saved as an Integer. You can change the fuel limit below.",
   "text.autoconfig.m-tweaks.option.betterFurnaceMinecart.@Tooltip[2]": "- You can now use any type of fuel, such as lava buckets, coal blocks, etc.",
   "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel": "Max Furnace Minecart Fuel",
-  "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel.@Tooltip[0]": "Set the maximum allowed fuel for the furnace minecart. The default is 45000, and the maximum limit is 2147483647.",
+  "text.autoconfig.m-tweaks.option.maxFurnaceMinecartFuel.@Tooltip": "Set the maximum allowed fuel for the furnace minecart. The default is 45000, and the maximum limit is 2147483647.",
   "text.autoconfig.m-tweaks.option.newMinecarts": "New Minecarts",
   "text.autoconfig.m-tweaks.option.newMinecarts.@Tooltip": "Allows you to enable or disable new minecarts",
   "text.autoconfig.m-tweaks.option.newMinecarts.isAnvilMinecartOn": "Anvil Minecart",

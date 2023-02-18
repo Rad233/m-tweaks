@@ -131,6 +131,14 @@ public class TweaksConfig implements ConfigData {
     public int maxFurnaceMinecartFuel = 45000;
 
     @ConfigEntry.Category("entities")
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    public boolean furnaceMinecartTakeFuelWhenLow = true;
+
+    @ConfigEntry.Category("entities")
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    public boolean simpleMinecartLinking = true;
+
+    @ConfigEntry.Category("entities")
     @Comment("New Minecarts")
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject

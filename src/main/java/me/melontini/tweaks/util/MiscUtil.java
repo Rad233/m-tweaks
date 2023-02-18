@@ -4,12 +4,14 @@ import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.reflect.ReflectionUtil;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.duck.LinkableMinecartsDuck;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementManager;
 import net.minecraft.advancement.AdvancementPositioner;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
+import net.minecraft.entity.Entity;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.entity.EntityPredicate;
@@ -138,6 +140,37 @@ public class MiscUtil {
 
         builder.rewards(new AdvancementRewards(0, new Identifier[0], new Identifier[]{id}, CommandFunction.LazyContainer.EMPTY));
         return builder;
+    }
+
+    public static boolean shouldCollide(Entity source, Entity target) {
+        if (source instanceof LinkableMinecartsDuck) {
+            LinkableMinecartsDuck check = (LinkableMinecartsDuck) source;
+            int i = 0;
+
+            do {
+                if (check == target) {
+                    return false;
+                }
+
+                check = (LinkableMinecartsDuck) check.mTweaks$getFollower();
+                ++i;
+            } while (check != null && i < 8);
+
+            check = (LinkableMinecartsDuck) source;
+            i = 0;
+
+            while (check != target) {
+                check = (LinkableMinecartsDuck) check.mTweaks$getFollowing();
+                ++i;
+                if (check == null || i >= 8) {
+                    return true;
+                }
+            }
+
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @FunctionalInterface

@@ -15,6 +15,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -56,8 +57,10 @@ public class TweaksClient implements ClientModInitializer {
         if (Tweaks.CONFIG.usefulFletching)
             HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
 
-        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
-            ParticleFactoryRegistry.getInstance().register(Tweaks.KNOCKOFF_TOTEM_PARTICLE, KnockoffTotemParticle.Factory::new);
+
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            client.particleManager.registerFactory(Tweaks.KNOCKOFF_TOTEM_PARTICLE, KnockoffTotemParticle.Factory::new);
+        });
     }
 
     private void inGameTooltips() {

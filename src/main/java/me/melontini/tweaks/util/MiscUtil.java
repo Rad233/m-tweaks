@@ -143,8 +143,7 @@ public class MiscUtil {
     }
 
     public static boolean shouldCollide(Entity source, Entity target) {
-        if (source instanceof LinkableMinecartsDuck) {
-            LinkableMinecartsDuck check = (LinkableMinecartsDuck) source;
+        if (source instanceof LinkableMinecartsDuck check) {
             int i = 0;
 
             do {

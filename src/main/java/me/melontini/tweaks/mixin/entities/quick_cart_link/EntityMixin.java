@@ -22,12 +22,14 @@ import java.util.List;
 @MixinRelatedConfigOption("simpleMinecartLinking")
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-    @Shadow public World world;
+    @Shadow
+    public World world;
 
-    @Shadow public abstract Box getBoundingBox();
+    @Shadow
+    public abstract Box getBoundingBox();
 
     @Inject(at = @At("HEAD"), method = "remove")
-    void removeLink(CallbackInfo callbackInformation) {
+    void mTweaks$removeLink(CallbackInfo callbackInformation) {
         if (Tweaks.CONFIG.simpleMinecartLinking) {
             if ((Object) this instanceof AbstractMinecartEntity) {
                 LinkableMinecartsDuck accessor = (LinkableMinecartsDuck) this;
@@ -46,7 +48,7 @@ public abstract class EntityMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", cancellable = true)
-    void onRecalculateVelocity(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
+    void mTweaks$onRecalculateVelocity(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
         if (Tweaks.CONFIG.simpleMinecartLinking) {
             List<Entity> collisions = this.world.getOtherEntities((Entity) (Object) this, getBoundingBox().stretch(movement));
 

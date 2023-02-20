@@ -3,7 +3,6 @@ package me.melontini.tweaks.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.melontini.crackerutil.client.util.DrawUtil;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.client.particles.KnockoffTotemParticle;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
 import me.melontini.tweaks.client.render.block.IncubatorBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
@@ -15,7 +14,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -55,11 +53,6 @@ public class TweaksClient implements ClientModInitializer {
 
         if (Tweaks.CONFIG.usefulFletching)
             HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);
-
-
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-            client.particleManager.registerFactory(Tweaks.KNOCKOFF_TOTEM_PARTICLE, KnockoffTotemParticle.Factory::new);
-        });
     }
 
     private void inGameTooltips() {

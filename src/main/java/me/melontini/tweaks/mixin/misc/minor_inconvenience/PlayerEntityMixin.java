@@ -22,10 +22,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.damage (Lnet/minecraft/entity/damage/DamageSource;F)Z", shift = At.Shift.BEFORE), method = "damage", cancellable = true)
     private void mTweaks$damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (Tweaks.CONFIG.minorInconvenience && !world.isClient) {
-            super.damage(DamageSource.badRespawnPoint(), Float.MAX_VALUE);
-            this.world.createExplosion(null, DamageSource.badRespawnPoint(), null, this.getBlockX() + 0.5, this.getBlockY() + 0.5, this.getBlockZ() + 0.5, 5.0F, true, Explosion.DestructionType.DESTROY);
-            cir.setReturnValue(true);
+        if (Tweaks.CONFIG.minorInconvenience && !world.isClient && source != Tweaks.AGONY) {
+            super.damage(Tweaks.AGONY, Float.MAX_VALUE);
+            this.world.createExplosion(null, Tweaks.AGONY, null, this.getBlockX() + 0.5, this.getBlockY() + 0.5, this.getBlockZ() + 0.5, 5.0F, true, Explosion.DestructionType.DESTROY);
+            cir.setReturnValue(false);
         }
     }
 }

@@ -106,6 +106,8 @@
   "text.autoconfig.m-tweaks.option.campfireTweaks.@Tooltip": "Different campfire-related tweaks",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffects": "Campfire Effects",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffects.@Tooltip": "Makes campfires emit potion effects within a certain range.",
+  "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsPassive": "Apply Effects to Passive Entities?",
+  "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsPassive.@Tooltip": "If off, effects will only apply to players",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList": "List of effects you want the campfire to emit",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList.@Tooltip[0]": "Enter your Potion Identifier here!",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList.@Tooltip[1]": "There can be more than one.",

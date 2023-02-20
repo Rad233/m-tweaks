@@ -90,6 +90,10 @@ public class TweaksConfig implements ConfigData {
         public boolean campfireEffects = true;
 
         @ConfigEntry.Category("blocks")
+        @ConfigEntry.Gui.Tooltip
+        public boolean campfireEffectsPassive = true;
+
+        @ConfigEntry.Category("blocks")
         @Comment("Campfire effects range")
         @ConfigEntry.Gui.Tooltip
         public int campfireEffectsRange = 10;

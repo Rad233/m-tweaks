@@ -106,6 +106,8 @@
   "text.autoconfig.m-tweaks.option.campfireTweaks.@Tooltip": "与营火相关的一些可配置选项",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffects": "营火效果",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffects.@Tooltip": "使营火给予范围内生物药水效果",
+  "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsPassive": "Apply Effects to Passive Entities?",
+  "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsPassive.@Tooltip": "If off, effects will only apply to players",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList": "你想要生效的药水效果列表",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList.@Tooltip[0]": "将药水名称列在此处！",
   "text.autoconfig.m-tweaks.option.campfireTweaks.campfireEffectsList.@Tooltip[1]": "此值可大于1。",

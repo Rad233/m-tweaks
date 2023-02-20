@@ -37,6 +37,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    modImplementation include("com.github.melontini:cracker-util:${project.cracker_util}")
     modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
         exclude(group: "net.fabricmc.fabric-api")
@@ -47,8 +48,6 @@ dependencies {
     }
     implementation include("com.github.LlamaLad7:MixinExtras:0.1.0")
     annotationProcessor include("com.github.LlamaLad7:MixinExtras:0.1.0")
-
-    modImplementation include("com.github.melontini:cracker-util:${project.cracker_util}")
 }
 
 loom {

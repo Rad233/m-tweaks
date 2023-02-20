@@ -43,7 +43,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.Pair;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -52,6 +51,9 @@ public class Tweaks implements ModInitializer {
 
     public static final String MODID = "m-tweaks";
     public static final Random RANDOM = new Random();
+    public static final DamageSource AGONY = new DamageSource("m_tweaks_agony");
+    public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
+    public static final Map<PlayerEntity, AbstractMinecartEntity> UNLINKING_CARTS = new HashMap<>();
     public static EntityAttributeModifier LEAF_SLOWNESS;
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
@@ -62,9 +64,6 @@ public class Tweaks implements ModInitializer {
         ((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
         return new MtGroup(ItemGroup.GROUPS.length - 1, "mt_item_group");
     });
-
-    public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
-    public static final Map<PlayerEntity, AbstractMinecartEntity> UNLINKING_CARTS = new HashMap<>();
 
     @Override
     public void onInitialize() {

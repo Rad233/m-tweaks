@@ -81,8 +81,7 @@ public class Tweaks implements ModInitializer {
             Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "fletching"), FLETCHING_SCREEN_HANDLER);
         }
 
-        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
-            Registry.register(Registry.PARTICLE_TYPE, new Identifier(MODID, "knockoff_totem_particles"), KNOCKOFF_TOTEM_PARTICLE);
+        Registry.register(Registry.PARTICLE_TYPE, new Identifier(MODID, "knockoff_totem_particles"), KNOCKOFF_TOTEM_PARTICLE);
 
         ServerWorldEvents.LOAD.register((server, world) -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)

@@ -17,7 +17,7 @@ body:
   - type: textarea
     attributes:
       label: Logs
-      description: If available, add logs to help identify your problem.
+      description: A crash report without logs is not that useful!
     validations:
       required: true
   - type: input

@@ -15,7 +15,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -33,7 +33,7 @@ public class BlockRegistry {
             .loadCondition(Tweaks.CONFIG.incubatorSettings.enableIncubator)
             .itemBuilder((block, id) -> ContentBuilder.ItemBuilder
                     .create(BlockItem.class, id, block, new FabricItemSettings().rarity(Rarity.RARE))
-                    .itemGroup(ItemGroups.REDSTONE)).build();
+                    .itemGroup(ItemGroup.REDSTONE)).build();
 
     public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = ContentBuilder.BlockEntityBuilder
             .create(new Identifier(MODID, "incubator"), IncubatorBlockEntity::new, INCUBATOR_BLOCK)

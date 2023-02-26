@@ -1,4 +1,5 @@
-## 0.4.11 update
+## 0.4.10 update
 ### What's new:
 
-* Finally fixed IToU particles lol.
+* Fixed crash on startup when Incubator is disabled
+* updated CrackerUtil

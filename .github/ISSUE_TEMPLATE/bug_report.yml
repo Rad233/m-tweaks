@@ -22,6 +22,12 @@ body:
       description: If applicable, add screenshots to help explain your problem.
     validations:
       required: false
+  - type: textarea
+    attributes:
+      label: Logs
+      description: If available, add logs to help identify your problem.
+    validations:
+      required: false
   - type: input
     id: mod-version
     attributes:

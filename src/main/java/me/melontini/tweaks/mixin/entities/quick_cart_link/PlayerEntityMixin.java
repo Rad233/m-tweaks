@@ -3,6 +3,7 @@ package me.melontini.tweaks.mixin.entities.quick_cart_link;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.LinkableMinecartsDuck;
 import me.melontini.tweaks.util.ItemStackUtil;
+import me.melontini.tweaks.util.TweaksTexts;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -16,16 +17,16 @@ import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static me.melontini.tweaks.util.MiscUtil.blockPosAsString;
 
 @MixinRelatedConfigOption("simpleMinecartLinking")
 @Mixin(PlayerEntity.class)
@@ -38,10 +39,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if (!entity.world.isClient()) {
             ((ServerWorld) entity.world).spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.CHAIN.getDefaultState()), entity.getX(), entity.getY() + 0.3, entity.getZ(), 15, 0.5, 0.5, 0.5, 0.5);
         }
-    }
-
-    private static String mTweaks$blockPosAsString(BlockPos pos) {
-        return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
     }
 
     @Inject(at = @At("HEAD"), method = "interact", cancellable = true)
@@ -57,10 +54,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                         if (Tweaks.UNLINKING_CARTS.containsKey(player)) {
                             var unlinking = Tweaks.UNLINKING_CARTS.get(player);
                             if (unlinking == null) {
-                                mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.de_sync"));
+                                mTweaks$failLink(player, TweaksTexts.MINECART_LINK_DE_SYNC);
                                 cir.setReturnValue(ActionResult.FAIL);
                             } else if (unlinking == minecart) {
-                                mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.link_self"));
+                                mTweaks$failLink(player, TweaksTexts.MINECART_LINK_SELF);
                                 cir.setReturnValue(ActionResult.FAIL);
                             } else {
                                 LinkableMinecartsDuck duck1 = (LinkableMinecartsDuck) unlinking;
@@ -74,12 +71,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                                     mTweaks$spawnChainParticles(unlinking);
                                     mTweaks$spawnChainParticles(minecart);
 
-                                    mTweaks$linkSuccess(player, Text.translatable("m-tweaks.simpleMinecartLinking.finished_unlink",
-                                            minecart.hasCustomName() ? minecart.getCustomName() : mTweaks$blockPosAsString(minecart.getBlockPos()),
-                                            unlinking.hasCustomName() ? unlinking.getCustomName() : mTweaks$blockPosAsString(unlinking.getBlockPos())));
+                                    mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.finished_unlink",
+                                            minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos()),
+                                            unlinking.hasCustomName() ? unlinking.getCustomName() : blockPosAsString(unlinking.getBlockPos())));
                                     cir.setReturnValue(ActionResult.SUCCESS);
                                 } else {
-                                    mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.what"));
+                                    mTweaks$failLink(player, TweaksTexts.MINECART_LINK_WHAT);
                                     cir.setReturnValue(ActionResult.FAIL);
                                 }
                             }
@@ -88,13 +85,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                             var linkingTo = Tweaks.LINKING_CARTS.get(player);
 
                             if (linkingTo == null) {
-                                mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.de_sync"));
+                                mTweaks$failLink(player, TweaksTexts.MINECART_LINK_DE_SYNC);
                                 cir.setReturnValue(ActionResult.FAIL);
                             } else if (linkingTo == minecart) {
-                                mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.link_self"));
+                                mTweaks$failLink(player, TweaksTexts.MINECART_LINK_SELF);
                                 cir.setReturnValue(ActionResult.FAIL);
                             } else if (Math.abs(minecart.distanceTo(linkingTo) - 1) > 6) {
-                                mTweaks$failLink(player, Text.translatable("m-tweaks.simpleMinecartLinking.too_far"));
+                                mTweaks$failLink(player, TweaksTexts.MINECART_LINK_TOO_FAR);
                                 cir.setReturnValue(ActionResult.FAIL);
                             } else {
                                 LinkableMinecartsDuck duck1 = (LinkableMinecartsDuck) linkingTo;
@@ -107,23 +104,23 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                                 mTweaks$spawnChainParticles(linkingTo);
                                 mTweaks$spawnChainParticles(minecart);
 
-                                mTweaks$linkSuccess(player, Text.translatable("m-tweaks.simpleMinecartLinking.finished_link",
-                                        minecart.hasCustomName() ? minecart.getCustomName() : mTweaks$blockPosAsString(minecart.getBlockPos()),
-                                        linkingTo.hasCustomName() ? linkingTo.getCustomName() : mTweaks$blockPosAsString(linkingTo.getBlockPos())));
+                                mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.finished_link",
+                                        minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos()),
+                                        linkingTo.hasCustomName() ? linkingTo.getCustomName() : blockPosAsString(linkingTo.getBlockPos())));
                                 cir.setReturnValue(ActionResult.SUCCESS);
                             }
                             Tweaks.LINKING_CARTS.remove(player);
                         } else if (duck.mTweaks$getFollower() != null) {
                             Tweaks.UNLINKING_CARTS.put(player, minecart);
                             ((ServerWorld) entity.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, minecart.getX(), minecart.getY() + 0.2, minecart.getZ(), 10, 0.5, 0.5, 0.5, 0.5);
-                            mTweaks$linkSuccess(player, Text.translatable("m-tweaks.simpleMinecartLinking.start_unlink",
-                                    minecart.hasCustomName() ? minecart.getCustomName() : mTweaks$blockPosAsString(minecart.getBlockPos())));
+                            mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.start_unlink",
+                                    minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos())));
                             cir.setReturnValue(ActionResult.SUCCESS);
                         } else {
                             Tweaks.LINKING_CARTS.put(player, minecart);
                             ((ServerWorld) entity.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, minecart.getX(), minecart.getY() + 0.2, minecart.getZ(), 10, 0.5, 0.5, 0.5, 0.5);
-                            mTweaks$linkSuccess(player, Text.translatable("m-tweaks.simpleMinecartLinking.start_link",
-                                    minecart.hasCustomName() ? minecart.getCustomName() : mTweaks$blockPosAsString(minecart.getBlockPos())));
+                            mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.start_link",
+                                    minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos())));
                             cir.setReturnValue(ActionResult.SUCCESS);
                         }
                     }

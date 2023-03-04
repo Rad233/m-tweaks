@@ -24,6 +24,6 @@ public class DebugHudMixin {
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/DebugHud;getServerWorldDebugString()Ljava/lang/String;", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "getLeftText")
     private void mTweaks$leftText(CallbackInfoReturnable<List<String>> cir, String string, BlockPos blockPos, Entity entity, Direction direction, String string2, ChunkPos chunkPos, World world, LongSet longSet, List<String> list) {
-        if (Tweaks.CONFIG.unknown) if (TweaksClient.TEXT != null) list.add(TweaksClient.TEXT);
+        if (Tweaks.CONFIG.unknown) if (TweaksClient.DEBUG_SPLASH != null) list.add(TweaksClient.DEBUG_SPLASH);
     }
 }

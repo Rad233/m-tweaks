@@ -1,6 +1,7 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.util.MakeSure;
+import me.melontini.tweaks.Tweaks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
@@ -11,7 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.poi.PointOfInterestStorage;
@@ -22,8 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class CustomTraderManager extends PersistentState {
-
-    private final Random random = Random.create();
     public int cooldown;
 
     public void readNbt(@NotNull NbtCompound nbt) {
@@ -89,8 +87,8 @@ public class CustomTraderManager extends PersistentState {
         BlockPos blockPos = null;
 
         for (int i = 0; i < 10; ++i) {
-            int x = pos.getX() + this.random.nextInt(range * 2) - range;
-            int z = pos.getZ() + this.random.nextInt(range * 2) - range;
+            int x = pos.getX() + Tweaks.RANDOM.nextInt(range * 2) - range;
+            int z = pos.getZ() + Tweaks.RANDOM.nextInt(range * 2) - range;
             int y = world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
             BlockPos blockPos2 = new BlockPos(x, y, z);
             if (SpawnHelper.canSpawn(SpawnRestriction.Location.ON_GROUND, world, blockPos2, EntityType.WANDERING_TRADER)) {

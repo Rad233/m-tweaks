@@ -5,6 +5,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class TweaksTexts {
+    public static final MutableText MINECART_LINK_WHAT = generic("m-tweaks.simpleMinecartLinking.what");
+    public static final MutableText MINECART_LINK_TOO_FAR = generic("m-tweaks.simpleMinecartLinking.too_far");
+    public static final MutableText MINECART_LINK_SELF = generic("m-tweaks.simpleMinecartLinking.link_self");
+    public static final MutableText MINECART_LINK_DE_SYNC = generic("m-tweaks.simpleMinecartLinking.de_sync");
     public static final Text FLETCHING_SCREEN = generic("gui.m-tweaks.fletching");
     public static final Text SAFE_BEDS = generic("m-tweaks.safebeds.action");
     public static final Text INCUBATOR_0 = generic("tooltip.m-tweaks.incubator[0]");

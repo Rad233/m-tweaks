@@ -44,8 +44,6 @@ public abstract class BeeEntityMixin extends AnimalEntity {
             if (pollinateGoal != null) {
                 if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
                     this.mTweaks$growFlower();
-                    LogUtil.devInfo(mTweaks$plantingCoolDown);
-                    LogUtil.devInfo("{} stopped pollinating flower at {}", bee, flowerPos);
                 }
             }
         }
@@ -53,12 +51,12 @@ public abstract class BeeEntityMixin extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "writeCustomDataToNbt")
     private void mTweaks$writeNbt(NbtCompound nbt, CallbackInfo ci) {
-        nbt.putInt("MT-plantingCoolDown", this.mTweaks$plantingCoolDown);
+        if (this.mTweaks$plantingCoolDown != 0) nbt.putInt("MT-plantingCoolDown", this.mTweaks$plantingCoolDown);
     }
 
     @Inject(at = @At("TAIL"), method = "readCustomDataFromNbt")
     private void mTweaks$readNbt(NbtCompound nbt, CallbackInfo ci) {
-        this.mTweaks$plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
+        if (nbt.contains("MT-plantingCoolDown")) this.mTweaks$plantingCoolDown = nbt.getInt("MT-plantingCoolDown");
     }
 
     @Unique

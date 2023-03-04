@@ -4,18 +4,15 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.Instrument;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -37,9 +34,7 @@ public class GoatHornMixin {
         LogUtil.devInfo("mixin loaded!");
         if (Tweaks.CONFIG.tradingGoatHorn) if (!world.isClient()) if (nbtCompound != null) {
             if (nbtCompound.getString("instrument") != null) {
-                LogUtil.devInfo("played horn {}", nbtCompound.getString("instrument"));
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {
-                    LogUtil.devInfo("Trader spawn cooldown: {}", WorldUtil.getTraderManager((ServerWorld) world).cooldown);
 
                     MinecraftServer server = world.getServer();
                     if (server != null) {
@@ -47,14 +42,6 @@ public class GoatHornMixin {
                             WorldUtil.getTraderManager((ServerWorld) world).trySpawn((ServerWorld) world, server.getSaveProperties().getMainWorldProperties(), user);
                     }
                 }
-                if (FabricLoader.getInstance().isDevelopmentEnvironment())
-                    if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:yearn_goat_horn")) {
-                        int i = user.getInventory().size();
-                        for (int j = 0; j < i; j++) {
-                            user.getInventory().getStack(j).damage(500, Random.create(), (ServerPlayerEntity) user);
-                        }
-                        cir.setReturnValue(TypedActionResult.pass(itemStack));
-                    }
             }
         }
     }

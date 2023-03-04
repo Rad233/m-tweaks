@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.misc.unknown.wakeup;
 
+import me.melontini.crackerutil.data.NbtBuilder;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
@@ -8,7 +9,6 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -40,9 +40,7 @@ public abstract class PlayerEntityMixin {
                     ArmorStandEntity stand = new ArmorStandEntity(player.world, pos.getX(), pos.getY(), pos.getZ());
                     ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
 
-                    NbtCompound nbt = new NbtCompound();
-                    nbt.putString("SkullOwner", player.getDisplayName().getString());
-                    stack.setNbt(nbt);
+                    stack.setNbt(NbtBuilder.create().putString("SkullOwner", player.getDisplayName().getString()).build());
 
                     stand.equipStack(EquipmentSlot.HEAD, stack);
                     player.world.spawnEntity(stand);

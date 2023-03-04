@@ -1,7 +1,6 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.CrackerLog;
-import me.melontini.crackerutil.reflect.ReflectionUtil;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.LinkableMinecartsDuck;
@@ -25,6 +24,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.function.CommandFunction;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -48,6 +48,10 @@ public class MiscUtil {
         });
     });
 
+    public static String blockPosAsString(BlockPos pos) {
+        return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
+    }
+
     public static <T> T pickRandomEntryFromList(@NotNull List<T> list) {
         MakeSure.notEmpty(list);
         int index = RANDOM.nextInt(list.size());
@@ -67,7 +71,6 @@ public class MiscUtil {
             if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
                 continue;
 
-            ReflectionUtil.accessRestrictedClass("jdk.internal.reflect.Reflection");
             if (RECIPE_TYPE_HANDLERS.get(recipe.getType()) != null) {
                 count++;
                 RECIPE_TYPE_HANDLERS.get(recipe.getType()).accept(advancementBuilders, recipe);

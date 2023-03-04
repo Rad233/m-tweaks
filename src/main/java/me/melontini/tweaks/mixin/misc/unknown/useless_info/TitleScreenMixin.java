@@ -17,6 +17,6 @@ public class TitleScreenMixin extends Screen {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/SplashTextResourceSupplier;get()Ljava/lang/String;"), method = "init")
     private void mTweaks$init(CallbackInfo ci) {
-        TweaksClient.TEXT = this.client.getSplashTextLoader().get();
+        TweaksClient.DEBUG_SPLASH = this.client.getSplashTextLoader().get();
     }
 }

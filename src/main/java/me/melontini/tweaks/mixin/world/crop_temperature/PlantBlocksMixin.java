@@ -26,11 +26,9 @@ public class PlantBlocksMixin {
                 float temp = world.getBiome(pos).value().getTemperature();
                 if ((temp > data.max && temp <= data.aMax) || (temp < data.min && temp >= data.aMin)) {
                     if (random.nextInt(2) == 0) {
-                        LogUtil.devInfo("cancel, {} grows slowly {}", ((Block) (Object) this).getName().toString(), temp);
                         ci.cancel();
                     }
                 } else if ((temp > data.aMax) || (temp < data.aMin)) {
-                    LogUtil.devInfo("cancel, {} won't grow {}", ((Block) (Object) this).getName().toString(), temp);
                     ci.cancel();
                 }
             }

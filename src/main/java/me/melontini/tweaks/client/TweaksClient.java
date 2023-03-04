@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Environment(EnvType.CLIENT)
 public class TweaksClient implements ClientModInitializer {
 
-    public static String TEXT;
+    public static String DEBUG_SPLASH;
     public static ItemStack FRAME_STACK = ItemStack.EMPTY;
     private float tooltipFlow;
 

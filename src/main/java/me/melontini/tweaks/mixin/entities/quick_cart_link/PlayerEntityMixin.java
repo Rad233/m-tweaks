@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.entities.quick_cart_link;
 
+import me.melontini.crackerutil.util.TextUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.LinkableMinecartsDuck;
 import me.melontini.tweaks.util.ItemStackUtil;
@@ -71,7 +72,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                                     mTweaks$spawnChainParticles(unlinking);
                                     mTweaks$spawnChainParticles(minecart);
 
-                                    mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.finished_unlink",
+                                    mTweaks$linkSuccess(player, TextUtil.translatable("m-tweaks.simpleMinecartLinking.finished_unlink",
                                             minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos()),
                                             unlinking.hasCustomName() ? unlinking.getCustomName() : blockPosAsString(unlinking.getBlockPos())));
                                     cir.setReturnValue(ActionResult.SUCCESS);
@@ -104,7 +105,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                                 mTweaks$spawnChainParticles(linkingTo);
                                 mTweaks$spawnChainParticles(minecart);
 
-                                mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.finished_link",
+                                mTweaks$linkSuccess(player, TextUtil.translatable("m-tweaks.simpleMinecartLinking.finished_link",
                                         minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos()),
                                         linkingTo.hasCustomName() ? linkingTo.getCustomName() : blockPosAsString(linkingTo.getBlockPos())));
                                 cir.setReturnValue(ActionResult.SUCCESS);
@@ -113,13 +114,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                         } else if (duck.mTweaks$getFollower() != null) {
                             Tweaks.UNLINKING_CARTS.put(player, minecart);
                             ((ServerWorld) entity.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, minecart.getX(), minecart.getY() + 0.2, minecart.getZ(), 10, 0.5, 0.5, 0.5, 0.5);
-                            mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.start_unlink",
+                            mTweaks$linkSuccess(player, TextUtil.translatable("m-tweaks.simpleMinecartLinking.start_unlink",
                                     minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos())));
                             cir.setReturnValue(ActionResult.SUCCESS);
                         } else {
                             Tweaks.LINKING_CARTS.put(player, minecart);
                             ((ServerWorld) entity.world).spawnParticles(ParticleTypes.HAPPY_VILLAGER, minecart.getX(), minecart.getY() + 0.2, minecart.getZ(), 10, 0.5, 0.5, 0.5, 0.5);
-                            mTweaks$linkSuccess(player, TweaksTexts.generic("m-tweaks.simpleMinecartLinking.start_link",
+                            mTweaks$linkSuccess(player, TextUtil.translatable("m-tweaks.simpleMinecartLinking.start_link",
                                     minecart.hasCustomName() ? minecart.getCustomName() : blockPosAsString(minecart.getBlockPos())));
                             cir.setReturnValue(ActionResult.SUCCESS);
                         }

@@ -1,6 +1,7 @@
 package me.melontini.tweaks.registries;
 
 import me.melontini.crackerutil.content.ContentBuilder;
+import me.melontini.crackerutil.content.RegistryUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
@@ -33,11 +34,11 @@ public class BlockRegistry {
             .loadCondition(Tweaks.CONFIG.incubatorSettings.enableIncubator)
             .itemBuilder((block, id) -> ContentBuilder.ItemBuilder
                     .create(BlockItem.class, id, block, new FabricItemSettings().rarity(Rarity.RARE))
-                    .itemGroup(ItemGroup.REDSTONE)).build();
+                    .itemGroup(ItemGroup.REDSTONE))
+            .blockEntity((block, id) -> ContentBuilder.BlockEntityBuilder
+                    .create(new Identifier(MODID, "incubator"), IncubatorBlockEntity::new, block)).build();
 
-    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = ContentBuilder.BlockEntityBuilder
-            .create(new Identifier(MODID, "incubator"), IncubatorBlockEntity::new, INCUBATOR_BLOCK)
-            .loadCondition(INCUBATOR_BLOCK != null).build();
+    public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = RegistryUtil.getBlockEntityFromBlock(INCUBATOR_BLOCK);
 
     public static void register() {
         LogUtil.info("BlockRegistry init complete!");

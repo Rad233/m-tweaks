@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.items.better_names;
 
+import me.melontini.crackerutil.util.TextUtil;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.TweaksTexts;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,10 +42,10 @@ public abstract class ItemStackMixin {
         if (Tweaks.CONFIG.slightlyBetterItemNames) {
             if (!this.getItem().isDamageable()) {//TODO literal text TextUtil
                 if (this.getCount() > 1)
-                    mutableText.append(TweaksTexts.literal(" x" + this.getCount()).formatted(getRarity().formatting));
+                    mutableText.append(TextUtil.literal(" x" + this.getCount()).formatted(getRarity().formatting));
             } else {
                 if (this.getDamage() > 0)
-                    mutableText.append(TweaksTexts.literal(" " + ((this.getMaxDamage() - this.getDamage()) * 100 / this.getMaxDamage()) + "%").formatted(getRarity().formatting));
+                    mutableText.append(TextUtil.literal(" " + ((this.getMaxDamage() - this.getDamage()) * 100 / this.getMaxDamage()) + "%").formatted(getRarity().formatting));
             }
         }
     }

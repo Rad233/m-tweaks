@@ -8,10 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LogUtil extends CrackerLog {
-    private static final Logger LOGGER = LogManager.getLogger("m-tweaks");//TODO change this in CrackerLog
-
     private static final TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-
     private static final boolean dev = FabricLoader.getInstance().isDevelopmentEnvironment() || CONFIG.debugMessages;
 
     public static void devInfo(String msg) {

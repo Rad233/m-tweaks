@@ -57,7 +57,7 @@ public class FletchingScreenHandler extends ForgingScreenHandler {
             if (i >= 32) return;
             ItemStack newStack = itemStack.copy();
 
-            newStack.setNbt(NbtBuilder.create(oldNbt).putInt("MT-Tightened", Math.min(i + MathHelper.fastFloor(Math.random() * (3) + 1), 32)).build());
+            newStack.setNbt(NbtBuilder.create(oldNbt).putInt("MT-Tightened", Math.min(i + Tweaks.RANDOM.nextInt(1, 3), 32)).build());
             this.output.setStack(0, newStack);
         }
     }

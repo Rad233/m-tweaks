@@ -58,8 +58,8 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
             } catch (NoSuchFieldException | IllegalAccessException | IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            LogUtil.devInfo("{} : {}", mixinClassName, load ? "loaded" : "not loaded");
         }
+        LogUtil.devInfo("{} : {}", mixinClassName, load ? "loaded" : "not loaded");
         return load;
     }
 

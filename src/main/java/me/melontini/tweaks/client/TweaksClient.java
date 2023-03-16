@@ -82,7 +82,7 @@ public class TweaksClient implements ClientModInitializer {
                         j += tooltipComponent.getHeight();
                     }
 
-                    DrawUtil.renderTooltipFromComponents(matrices, list1, (((client.getWindow().getScaledWidth() / 2f)) - (tooltipFlow * 15)) + 15, ((client.getWindow().getScaledHeight() - j) / 2f) + 12);
+                    DrawUtil.renderTooltipFromComponents(matrices, list1, ((client.getWindow().getScaledWidth() / 2f) - (tooltipFlow * 15)) + 15, ((client.getWindow().getScaledHeight() - j) / 2f) + 12);
                     RenderSystem.setShaderColor(1, 1, 1, 1);
                     matrices.pop();
                 } else {
@@ -115,18 +115,18 @@ public class TweaksClient implements ClientModInitializer {
 
     public void registerEntityRenderers() {
         if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_FURNACE, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, Direction.NORTH))));
+            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_FURNACE, ctx -> new BoatWithBlockRenderer(ctx, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, Direction.NORTH)));
         if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_JUKEBOX, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.JUKEBOX.getDefaultState())));
+            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_JUKEBOX, ctx -> new BoatWithBlockRenderer(ctx, Blocks.JUKEBOX.getDefaultState()));
         if (Tweaks.CONFIG.newBoats.isTNTBoatOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_TNT, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.TNT.getDefaultState())));
+            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_TNT, ctx -> new BoatWithBlockRenderer(ctx, Blocks.TNT.getDefaultState()));
         if (Tweaks.CONFIG.newBoats.isHopperBoatOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_HOPPER, (ctx -> new BoatWithBlockRenderer(ctx, Blocks.HOPPER.getDefaultState())));
+            EntityRendererRegistry.register(EntityTypeRegistry.BOAT_WITH_HOPPER, ctx -> new BoatWithBlockRenderer(ctx, Blocks.HOPPER.getDefaultState()));
 
         if (Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.ANVIL_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
+            EntityRendererRegistry.register(EntityTypeRegistry.ANVIL_MINECART_ENTITY, ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART));
         if (Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn)
-            EntityRendererRegistry.register(EntityTypeRegistry.NOTEBLOCK_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
+            EntityRendererRegistry.register(EntityTypeRegistry.NOTEBLOCK_MINECART_ENTITY, ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART));
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
             EntityRendererRegistry.register(EntityTypeRegistry.JUKEBOX_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
     }

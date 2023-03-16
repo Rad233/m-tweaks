@@ -132,7 +132,7 @@ public class NoteBlockMinecartEntity extends AbstractMinecartEntity {
     public void playNote(World world, Vec3d pos) {
         int i = this.note;
         float f = (float) Math.pow(2.0, (i - 12) / 12.0);
-        this.world.playSound(null, new BlockPos(pos), (Instrument.fromBlockState(world.getBlockState(new BlockPos(pos)))).getSound(), SoundCategory.RECORDS, 3.0F, f);
+        this.world.playSound(null, new BlockPos(pos), Instrument.fromBlockState(world.getBlockState(new BlockPos(pos))).getSound(), SoundCategory.RECORDS, 3.0F, f);
         this.world.addParticle(ParticleTypes.NOTE, pos.getX(), pos.getY() + 1.2, pos.getZ(), i / 24.0, 0.0, 0.0);
     }
 }

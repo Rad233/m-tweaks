@@ -39,12 +39,14 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TimeSupplier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class Tweaks implements ModInitializer {
@@ -116,8 +118,7 @@ public class Tweaks implements ModInitializer {
     }
 
     public static class MtGroup extends ItemGroup implements AnimatedItemGroup {
-
-        private final DefaultedList<ItemStack> EMPTY_LIST = DefaultedList.ofSize(9, ItemStack.EMPTY);
+        private final TimeSupplier.Nanoseconds nanoseconds = System::nanoTime;
 
         public MtGroup(int index, String id) {
             super(index, id);
@@ -129,7 +130,7 @@ public class Tweaks implements ModInitializer {
         public void animateIcon(MatrixStack stack, int l, int m, boolean selected, boolean isTopRow) {
             MinecraftClient client = MinecraftClient.getInstance();
 
-            float angle = net.minecraft.util.Util.getMeasuringTimeMs() * 0.09f;
+            float angle = nanoseconds.get(TimeUnit.MILLISECONDS) * 0.09f;
             stack.push();
             stack.translate(l, m, 100.0F + client.getItemRenderer().zOffset);
             stack.translate(8.0, 8.0, 0.0);

@@ -34,7 +34,7 @@ public class FletchingTableBlockMixin extends CraftingTableBlock {
             if (player.world.isClient)
                 cir.setReturnValue(ActionResult.SUCCESS);
 
-            player.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos))), TweaksTexts.FLETCHING_SCREEN));
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, inv, player1) -> new FletchingScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos)), TweaksTexts.FLETCHING_SCREEN));
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }

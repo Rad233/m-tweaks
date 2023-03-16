@@ -141,7 +141,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Items", 10)) {
-            this.record = (ItemStack.fromNbt(nbt.getCompound("Items")));
+            this.record = ItemStack.fromNbt(nbt.getCompound("Items"));
         }
     }
 

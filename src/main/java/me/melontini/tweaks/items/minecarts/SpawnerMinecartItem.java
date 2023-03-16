@@ -37,6 +37,7 @@ public class SpawnerMinecartItem extends MinecartItem {
     public static final DispenserBehavior DISPENSER_BEHAVIOR = new ItemDispenserBehavior() {
         public final ItemDispenserBehavior defaultBehavior = new ItemDispenserBehavior();
 
+        @Override
         public ItemStack dispenseSilently(@NotNull BlockPointer pointer, ItemStack stack) {
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
@@ -83,6 +84,7 @@ public class SpawnerMinecartItem extends MinecartItem {
             return stack;
         }
 
+        @Override
         public void playSound(@NotNull BlockPointer pointer) {
             pointer.getWorld().syncWorldEvent(1000, pointer.getPos(), 0);
         }

@@ -1,5 +1,6 @@
 package me.melontini.tweaks.items.minecarts;
 
+import me.melontini.crackerutil.util.MathStuff;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -30,7 +31,7 @@ public class NoteBlockMinecartItem extends Item {
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
-            double e = MathHelper.fastFloor(pointer.getY()) + direction.getOffsetY();
+            double e = Math.floor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
             BlockPos blockPos = pointer.getPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);

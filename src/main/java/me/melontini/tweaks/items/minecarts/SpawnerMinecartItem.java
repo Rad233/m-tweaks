@@ -42,7 +42,7 @@ public class SpawnerMinecartItem extends MinecartItem {
             Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
             World world = pointer.getWorld();
             double d = pointer.getX() + direction.getOffsetX() * 1.125;
-            double e = MathHelper.fastFloor(pointer.getY()) + direction.getOffsetY();
+            double e = Math.floor(pointer.getY()) + direction.getOffsetY();
             double f = pointer.getZ() + direction.getOffsetZ() * 1.125;
             BlockPos blockPos = pointer.getPos().offset(direction);
             BlockState blockState = world.getBlockState(blockPos);

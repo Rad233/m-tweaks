@@ -1,5 +1,6 @@
 package me.melontini.tweaks.entity.vehicle.minecarts;
 
+import me.melontini.crackerutil.util.MathStuff;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import net.minecraft.block.AnvilBlock;
@@ -42,7 +43,7 @@ public class AnvilMinecartEntity extends AbstractMinecartEntity {
     public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         int i = MathHelper.ceil(fallDistance - 1.0F);
         if (i >= 0) {
-            float f = (float) Math.min(MathHelper.fastFloor(i * 2), 40);
+            float f = (float) Math.min(MathStuff.fastFloor(i * 2), 40);
             for (Entity entity : world.getEntitiesByClass(Entity.class, this.getBoundingBox().expand(0.1), EntityPredicates.EXCEPT_SPECTATOR)) {
                 if (!(entity instanceof AbstractMinecartEntity)) {
                     entity.damage(DamageSource.FALLING_BLOCK, f);

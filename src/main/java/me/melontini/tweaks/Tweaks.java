@@ -2,7 +2,7 @@ package me.melontini.tweaks;
 
 import me.melontini.crackerutil.client.util.DrawUtil;
 import me.melontini.crackerutil.interfaces.AnimatedItemGroup;
-import me.melontini.crackerutil.util.Util;
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -39,15 +39,13 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TimeSupplier;
+import net.minecraft.util.Util;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 public class Tweaks implements ModInitializer {
 
@@ -62,10 +60,10 @@ public class Tweaks implements ModInitializer {
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
-    public static ItemGroup GROUP = ((Supplier<ItemGroup>) () -> {
-            ((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
-            return new MtGroup(ItemGroup.GROUPS.length - 1, "mt_item_group");
-        }).get();
+    public static ItemGroup GROUP = Utilities.supply(() -> {
+        ((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
+        return new MtGroup(ItemGroup.GROUPS.length - 1, "mt_item_group");
+    });
 
     @Override
     public void onInitialize() {
@@ -118,7 +116,6 @@ public class Tweaks implements ModInitializer {
     }
 
     public static class MtGroup extends ItemGroup implements AnimatedItemGroup {
-        private final TimeSupplier.Nanoseconds nanoseconds = System::nanoTime;
 
         public MtGroup(int index, String id) {
             super(index, id);
@@ -130,7 +127,7 @@ public class Tweaks implements ModInitializer {
         public void animateIcon(MatrixStack stack, int l, int m, boolean selected, boolean isTopRow) {
             MinecraftClient client = MinecraftClient.getInstance();
 
-            float angle = nanoseconds.get(TimeUnit.MILLISECONDS) * 0.09f;
+            float angle = Util.getMeasuringTimeMs() * 0.09f;
             stack.push();
             stack.translate(l, m, 100.0F + client.getItemRenderer().zOffset);
             stack.translate(8.0, 8.0, 0.0);
@@ -159,7 +156,7 @@ public class Tweaks implements ModInitializer {
             if (Tweaks.CONFIG.incubatorSettings.enableIncubator) misc.add(ItemRegistry.INCUBATOR.getDefaultStack());
             if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
                 misc.add(ItemRegistry.INFINITE_TOTEM.getDefaultStack());
-            Util.appendStacks(stacks, misc);
+            Utilities.appendStacks(stacks, misc);
 
             List<ItemStack> carts = new ArrayList<>();
             if (Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn) carts.add(ItemRegistry.ANVIL_MINECART.getDefaultStack());
@@ -168,7 +165,7 @@ public class Tweaks implements ModInitializer {
             if (Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn)
                 carts.add(ItemRegistry.NOTE_BLOCK_MINECART.getDefaultStack());
             carts.add(ItemRegistry.SPAWNER_MINECART.getDefaultStack());
-            Util.appendStacks(stacks, carts);
+            Utilities.appendStacks(stacks, carts);
 
             List<ItemStack> boats = new ArrayList<>();
             for (BoatEntity.Type value : BoatEntity.Type.values()) {
@@ -181,7 +178,7 @@ public class Tweaks implements ModInitializer {
                 if (Tweaks.CONFIG.newBoats.isHopperBoatOn)
                     boats.add(Registry.ITEM.get(new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper")).getDefaultStack());
             }
-            Util.appendStacks(stacks, boats, false);
+            Utilities.appendStacks(stacks, boats, false);
         }
     }
 }

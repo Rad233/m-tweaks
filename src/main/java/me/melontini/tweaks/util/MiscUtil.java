@@ -2,6 +2,7 @@ package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.util.MakeSure;
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.LinkableMinecartsDuck;
 import net.minecraft.advancement.Advancement;
@@ -23,17 +24,14 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.function.CommandFunction;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static me.melontini.tweaks.Tweaks.RANDOM;
-
 public class MiscUtil {
-    public static final Map<RecipeType<?>, Consumer<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Util.make(new ConcurrentHashMap<>(), hashMap -> {
+    public static final Map<RecipeType<?>, Utilities.ConsumerTwo<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Utilities.consume(new ConcurrentHashMap<>(), hashMap -> {
         hashMap.put(RecipeType.BLASTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/blasting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
         hashMap.put(RecipeType.SMOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smoking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
         hashMap.put(RecipeType.SMELTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smelting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
@@ -51,13 +49,6 @@ public class MiscUtil {
     public static String blockPosAsString(BlockPos pos) {
         return pos.getX() + ", " + pos.getY() + ", " + pos.getZ();
     }
-
-    public static <T> T pickRandomEntryFromList(@NotNull List<T> list) {
-        MakeSure.notEmpty(list);
-        int index = RANDOM.nextInt(list.size());
-        return list.get(index);
-    }
-
 
     public static void generateRecipeAdvancements(MinecraftServer server) {
         Map<Identifier, Advancement.Builder> advancementBuilders = new ConcurrentHashMap<>();
@@ -173,10 +164,5 @@ public class MiscUtil {
         } else {
             return true;
         }
-    }
-
-    @FunctionalInterface
-    public interface Consumer<T, U> {
-        void accept(T t, U u);
     }
 }

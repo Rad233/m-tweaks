@@ -8,7 +8,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.service.MixinService;
 
 import java.io.IOException;
@@ -19,6 +18,8 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
+        super.onLoad(mixinPackage);
+
         AutoConfig.register(TweaksConfig.class, GsonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
         if (CONFIG.compatMode) {
@@ -61,27 +62,5 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
         }
         LogUtil.devInfo("{} : {}", mixinClassName, load ? "loaded" : "not loaded");
         return load;
-    }
-
-    @Override
-    public String getRefMapperConfig() {
-        return null;
-    }
-
-    @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-    }
-
-    @Override
-    public List<String> getMixins() {
-        return null;
-    }
-
-    @Override
-    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-    }
-
-    @Override
-    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 }

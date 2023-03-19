@@ -2,3 +2,4 @@
 ### What's new:
 
 * Updated CrackerUtil
+* * Updated Chinese translation. Courtesy of [Rad233](https://github.com/Rad233).

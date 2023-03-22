@@ -47,6 +47,15 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-featured: true
           modrinth-unfeature-mode: subset
+          modrinth-dependencies: |
+            fabric-api | depends | *
+            cloth-config | depends | *
+            modmenu | suggests | *
+
 
           curseforge-id: 639198
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-dependencies: |
+            fabric-api | depends | *
+            cloth-config | depends | *
+            modmenu | suggests | *

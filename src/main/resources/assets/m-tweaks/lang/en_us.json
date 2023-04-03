@@ -1,5 +1,5 @@
 {
-  "itemGroup.mt_item_group": "m-tweaks",
+  "itemGroup.m_tweaks.items": "m-tweaks",
   "tooltip.m-tweaks.bow.tight": "Tightened, usages left: %s",
   "tooltip.m-tweaks.spawner_minecart.filled": "Entity inside the minecart: %s",
   "tooltip.m-tweaks.rose_of_the_valley": "The smell reminds you of a valley",

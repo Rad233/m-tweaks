@@ -1,5 +1,5 @@
 {
-  "itemGroup.mt_item_group": "m-tweaks",
+  "itemGroup.m_tweaks.items": "m-tweaks",
   "tooltip.m-tweaks.bow.tight": "强化弓弦剩余次数：%s",
   "tooltip.m-tweaks.spawner_minecart.filled": "内装实体：%s",
   "tooltip.m-tweaks.rose_of_the_valley": "它的芬芳令你如临深谷",

@@ -6,6 +6,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class TweaksTexts {
+    public static final Text ITEM_GROUP_NAME = TextUtil.translatable("itemGroup.m_tweaks.items");
     public static final MutableText MINECART_LINK_WHAT = TextUtil.translatable("m-tweaks.simpleMinecartLinking.what");
     public static final MutableText MINECART_LINK_TOO_FAR = TextUtil.translatable("m-tweaks.simpleMinecartLinking.too_far");
     public static final MutableText MINECART_LINK_SELF = TextUtil.translatable("m-tweaks.simpleMinecartLinking.link_self");

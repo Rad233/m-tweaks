@@ -18,7 +18,7 @@ public class PlayerManagerMixin {
     @Shadow @Final private MinecraftServer server;
 
     @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Map;values()Ljava/util/Collection;", ordinal = 0, shift = At.Shift.BEFORE), method = "onDataPacksReloaded")
-    private void reload(CallbackInfo ci) {
+    private void mTweaks$reload(CallbackInfo ci) {
         //we don't sync until our advancements have been generated
         if (Tweaks.CONFIG.autogenRecipeAdvancements.autogenRecipeAdvancements) generateRecipeAdvancements(server);
     }

@@ -1,8 +1,5 @@
 package me.melontini.tweaks;
 
-import me.melontini.crackerutil.client.util.DrawUtil;
-import me.melontini.crackerutil.interfaces.AnimatedItemGroup;
-import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -11,41 +8,31 @@ import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.melontini.tweaks.util.MiscUtil;
-import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
 import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class Tweaks implements ModInitializer {
 
@@ -60,10 +47,6 @@ public class Tweaks implements ModInitializer {
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
-    public static ItemGroup GROUP = Utilities.supply(() -> {
-        ((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
-        return new MtGroup(ItemGroup.GROUPS.length - 1, "mt_item_group");
-    });
 
     @Override
     public void onInitialize() {
@@ -113,72 +96,5 @@ public class Tweaks implements ModInitializer {
             MiscUtil.generateRecipeAdvancements(server);
             server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
-    }
-
-    public static class MtGroup extends ItemGroup implements AnimatedItemGroup {
-
-        public MtGroup(int index, String id) {
-            super(index, id);
-            setIconAnimation(this);
-        }
-
-        @Environment(EnvType.CLIENT)
-        @Override
-        public void animateIcon(MatrixStack stack, int l, int m, boolean selected, boolean isTopRow) {
-            MinecraftClient client = MinecraftClient.getInstance();
-
-            float angle = Util.getMeasuringTimeMs() * 0.09f;
-            stack.push();
-            stack.translate(l, m, 100.0F + client.getItemRenderer().zOffset);
-            stack.translate(8.0, 8.0, 0.0);
-            stack.scale(1.0F, -1.0F, 1.0F);
-            stack.scale(16.0F, 16.0F, 16.0F);
-            stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(angle));
-            BakedModel model = client.getItemRenderer().getModel(this.getIcon(), null, null, 0);
-            DrawUtil.renderGuiItemModelCustomMatrixNoTransform(stack, this.getIcon(), model);
-            stack.pop();
-        }
-
-        @Override
-        public ItemStack createIcon() {
-            if (Tweaks.CONFIG.unknown) {
-                return ItemRegistry.ROSE_OF_THE_VALLEY.getDefaultStack();
-            }
-            if (Tweaks.CONFIG.incubatorSettings.enableIncubator) {
-                return ItemRegistry.INCUBATOR.getDefaultStack();
-            }
-            return ItemRegistry.SPAWNER_MINECART.getDefaultStack();
-        }
-
-        @Override
-        public void appendStacks(DefaultedList<ItemStack> stacks) {
-            List<ItemStack> misc = new ArrayList<>();
-            if (Tweaks.CONFIG.incubatorSettings.enableIncubator) misc.add(ItemRegistry.INCUBATOR.getDefaultStack());
-            if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
-                misc.add(ItemRegistry.INFINITE_TOTEM.getDefaultStack());
-            Utilities.appendStacks(stacks, misc);
-
-            List<ItemStack> carts = new ArrayList<>();
-            if (Tweaks.CONFIG.newMinecarts.isAnvilMinecartOn) carts.add(ItemRegistry.ANVIL_MINECART.getDefaultStack());
-            if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
-                carts.add(ItemRegistry.JUKEBOX_MINECART.getDefaultStack());
-            if (Tweaks.CONFIG.newMinecarts.isNoteBlockMinecartOn)
-                carts.add(ItemRegistry.NOTE_BLOCK_MINECART.getDefaultStack());
-            carts.add(ItemRegistry.SPAWNER_MINECART.getDefaultStack());
-            Utilities.appendStacks(stacks, carts);
-
-            List<ItemStack> boats = new ArrayList<>();
-            for (BoatEntity.Type value : BoatEntity.Type.values()) {
-                if (Tweaks.CONFIG.newBoats.isFurnaceBoatOn)
-                    boats.add(Registry.ITEM.get(new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_furnace")).getDefaultStack());
-                if (Tweaks.CONFIG.newBoats.isJukeboxBoatOn)
-                    boats.add(Registry.ITEM.get(new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_jukebox")).getDefaultStack());
-                if (Tweaks.CONFIG.newBoats.isTNTBoatOn)
-                    boats.add(Registry.ITEM.get(new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_tnt")).getDefaultStack());
-                if (Tweaks.CONFIG.newBoats.isHopperBoatOn)
-                    boats.add(Registry.ITEM.get(new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper")).getDefaultStack());
-            }
-            Utilities.appendStacks(stacks, boats, false);
-        }
     }
 }

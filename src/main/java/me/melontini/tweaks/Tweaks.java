@@ -8,6 +8,7 @@ import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
 import me.melontini.tweaks.util.MiscUtil;
+import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
 import me.shedaniel.autoconfig.AutoConfig;

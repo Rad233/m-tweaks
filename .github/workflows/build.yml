@@ -36,11 +36,6 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            **/*.gradle*
-            **/gradle-wrapper.properties
-            buildSrc/**/Versions.kt
-            buildSrc/**/Dependencies.kt
-            gradle/*.versions.toml
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew

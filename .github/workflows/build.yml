@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v3.4.0
       - name: Get branch name
         uses: tj-actions/branch-names@v6.5
+        id: extract_branch
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: setup jdk ${{ matrix.java }}

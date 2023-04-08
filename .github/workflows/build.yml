@@ -32,7 +32,7 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
-          key: ${{ runner.os }}_${{ steps.extract_branch.outputs.branch }}
+          key: ${{ runner.os }}-${{ steps.extract_branch.outputs.branch }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper

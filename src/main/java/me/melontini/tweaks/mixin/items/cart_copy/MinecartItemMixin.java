@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -132,7 +133,7 @@ public abstract class MinecartItemMixin extends Item {
                         if (!player.isCreative()) stack.decrement(1);
                         ItemStack spawnerMinecart = new ItemStack(ItemRegistry.SPAWNER_MINECART, 1);
 
-                        spawnerMinecart.setNbt(NbtBuilder.create().putString("Entity", String.valueOf(getEntityId(mobSpawnerBlockEntity))).build());
+                        spawnerMinecart.setNbt(NbtBuilder.create().putString("Entity", String.valueOf(mTweaks$getEntityId(mobSpawnerBlockEntity))).build());
 
                         player.getInventory().offerOrDrop(spawnerMinecart);
                         world.breakBlock(pos, false);
@@ -227,7 +228,8 @@ public abstract class MinecartItemMixin extends Item {
     }
 
     @Nullable
-    private Identifier getEntityId(MobSpawnerBlockEntity mobSpawnerBlockEntity) {
+    @Unique
+    private Identifier mTweaks$getEntityId(MobSpawnerBlockEntity mobSpawnerBlockEntity) {
         String identifier = mobSpawnerBlockEntity.getLogic().spawnEntry.getNbt().getString("id");
 
         try {

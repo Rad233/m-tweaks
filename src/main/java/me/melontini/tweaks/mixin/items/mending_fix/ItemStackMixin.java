@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.items.mending_fix;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
@@ -14,12 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @MixinRelatedConfigOption("balancedMending")
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-
-    @Inject(at = @At("RETURN"), method = "getRepairCost", cancellable = true)
-    private void mTweaks$getRepairCost(CallbackInfoReturnable<Integer> cir) {
-        if (Tweaks.CONFIG.balancedMending && cir.getReturnValue() >= 52 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
-            cir.setReturnValue(52);
+    @ModifyReturnValue(method = "getRepairCost", at = @At("RETURN"))
+    private int mTweaks$getRepairCost(int original) {
+        if (Tweaks.CONFIG.balancedMending && original >= 52 && EnchantmentHelper.get((ItemStack) (Object) this).containsKey(Enchantments.MENDING)) {
+            return 52;
         }
-        LogUtil.devInfo(cir.getReturnValue());
+        return original;
     }
 }

@@ -1,5 +1,8 @@
 package me.melontini.tweaks.mixin.items.infinite_totem;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import me.melontini.crackerutil.world.PlayerUtil;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
@@ -22,7 +25,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -38,19 +40,14 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract ItemStack getStackInHand(Hand hand);
 
-    @SuppressWarnings({"InvalidInjectorMethodSignature", "MixinAnnotationTarget"})
-    @ModifyVariable(method = "tryUseTotem", at = @At(value = "LOAD"), index = 2, ordinal = 0)
-    private ItemStack mTweaks$infiniteFallback(ItemStack itemStack) {
-        if (Tweaks.CONFIG.totemSettings.enableInfiniteTotem) {
-            for (Hand hand : Hand.values()) {
-                ItemStack itemStack1 = this.getStackInHand(hand);
-                if (itemStack1.isOf(ItemRegistry.INFINITE_TOTEM)) {
-                    itemStack = itemStack1.copy();
-                    break;
-                }
-            }
-        }
-        return itemStack;
+    @ModifyExpressionValue(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean mTweaks$infiniteFallback(boolean original, DamageSource source, @Local(index = 3) ItemStack itemStack) {
+        return original || itemStack.isOf(ItemRegistry.INFINITE_TOTEM);
+    }
+
+    @WrapWithCondition(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V"))
+    private boolean mTweaks$infiniteFallback(ItemStack instance, int i) {
+        return !instance.isOf(ItemRegistry.INFINITE_TOTEM);
     }
 
     @SuppressWarnings("InvalidInjectorMethodSignature")

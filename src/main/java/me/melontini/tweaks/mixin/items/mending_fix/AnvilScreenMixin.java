@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.items.mending_fix;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
@@ -11,6 +12,7 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
@@ -21,7 +23,7 @@ public abstract class AnvilScreenMixin extends HandledScreen<AnvilScreenHandler>
         super(handler, inventory, title);
     }
 
-    @ModifyConstant(method = "drawForeground", constant = @Constant(intValue = 40))
+    @ModifyExpressionValue(method = "drawForeground", at = @At(value = "CONSTANT", args = "intValue=40"))
     private int mTweaks$setRepairLimit(int constant) {
         if (Tweaks.CONFIG.balancedMending)
             if (!this.handler.getSlot(1).getStack().isOf(Items.ENCHANTED_BOOK))

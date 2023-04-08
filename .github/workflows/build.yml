@@ -18,6 +18,22 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v3.4.0
+      - name: Extract branch name #https://stackoverflow.com/questions/58033366/how-to-get-the-current-branch-within-github-actions
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: extract_branch
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}_${{ steps.extract_branch.outputs.branch }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            **/*.gradle*
+            **/gradle-wrapper.properties
+            buildSrc/**/Versions.kt
+            buildSrc/**/Dependencies.kt
+            gradle/*.versions.toml
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: setup jdk ${{ matrix.java }}
@@ -28,12 +44,12 @@ jobs:
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
       - name: Retrieve Version #https://stackoverflow.com/questions/71089787/how-to-get-version-name-from-android-gradle-file-in-github-actions
         run: |
           echo "VERSION_INFORMATION=$(${{github.workspace}}/gradlew -q printVersionName)" >> $GITHUB_ENV 
           echo "GIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-      - name: build
-        run: ./gradlew build
       - name: capture build artifacts
         uses: actions/upload-artifact@v3.1.2
         with:

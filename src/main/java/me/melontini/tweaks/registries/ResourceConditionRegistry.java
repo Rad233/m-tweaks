@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import me.melontini.crackerutil.CrackerLog;
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
@@ -39,24 +40,31 @@ public class ResourceConditionRegistry {
     public static void register() {
         ResourceConditions.register(new Identifier(MODID, "config_option"), object -> {
             JsonArray array = JsonHelper.getArray(object, "values");
-            List<Boolean> booleans = new ArrayList<>();
+            boolean load = true;
 
             for (JsonElement element : array) {
                 if (element.isJsonPrimitive()) {
                     try {
-                        String elementString = element.getAsString();
-                        List<String> classes = Arrays.stream(elementString.split("\\.")).toList();
-                        if (classes.size() > 1) {
-                            booleans.add(Tweaks.CONFIG.getClass().getField(classes.get(0)).get(Tweaks.CONFIG).getClass().getField(classes.get(1)).getBoolean(Tweaks.CONFIG.getClass().getField(classes.get(0)).get(Tweaks.CONFIG)));
-                        } else
-                            booleans.add(Tweaks.CONFIG.getClass().getField(elementString).getBoolean(Tweaks.CONFIG));
+                        String configOption = element.getAsString();
+                        List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
+
+                        if (classes.size() > 1) {//🤯🤯🤯
+                            Object obj = TweaksConfig.class.getField(classes.get(0)).get(Tweaks.CONFIG);
+                            for (int i = 1; i < (classes.size() - 1); i++) {
+                                obj = obj.getClass().getField(classes.get(i)).get(obj);
+                            }
+                            load = obj.getClass().getField(classes.get(1)).getBoolean(obj);
+                        } else {
+                            load = Tweaks.CONFIG.getClass().getField(configOption).getBoolean(Tweaks.CONFIG);
+                        }
+                        if (!load) break;
                     } catch (NoSuchFieldException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
 
-            return booleans.stream().allMatch(aBoolean -> aBoolean);
+            return load;
         });
         ResourceConditions.register(new Identifier(MODID, "items_registered"), object -> {
             JsonArray array = JsonHelper.getArray(object, "values");

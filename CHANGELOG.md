@@ -1,5 +1,7 @@
-## 0.4.13 update
 ### What's new:
 
 * Updated CrackerUtil
-* * Updated Chinese translation. Courtesy of [Rad233](https://github.com/Rad233).
+* Updated `mending_fix` and `infinite_totem mixins` to use MixinExtras
+* Updated `m-tweaks:config_option` load condition to use the same parsing mechanism from TweaksMixinPlugin.
+
+Next release will probably include new features.

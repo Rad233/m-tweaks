@@ -22,6 +22,13 @@ jobs:
         shell: bash
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
         id: extract_branch
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: setup jdk ${{ matrix.java }}
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -34,13 +41,6 @@ jobs:
             buildSrc/**/Versions.kt
             buildSrc/**/Dependencies.kt
             gradle/*.versions.toml
-      - name: validate gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
-      - name: setup jdk ${{ matrix.java }}
-        uses: actions/setup-java@v3.10.0
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java }}
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew

@@ -2,11 +2,15 @@ package me.melontini.tweaks.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.melontini.crackerutil.client.util.DrawUtil;
+import me.melontini.crackerutil.client.util.ScreenParticleHelper;
+import me.melontini.crackerutil.util.MathStuff;
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.particles.KnockoffTotemParticle;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
 import me.melontini.tweaks.client.render.block.IncubatorBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
+import me.melontini.tweaks.mixin.misc.gui_particles.accessors.HandledScreenAccessor;
 import me.melontini.tweaks.networks.ClientSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
@@ -19,9 +23,11 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FurnaceBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
@@ -29,6 +35,7 @@ import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -52,6 +59,24 @@ public class TweaksClient implements ClientModInitializer {
         registerBlockRenderers();
 
         inGameTooltips();
+
+        ScreenEvents.BEFORE_INIT.register((client, screen1, scaledWidth, scaledHeight) -> {
+            if (screen1 instanceof AbstractFurnaceScreen<?> abstractFurnaceScreen && Tweaks.CONFIG.guiParticles.furnaceScreenParticles) {
+                ScreenEvents.afterTick(abstractFurnaceScreen).register(screen -> {
+                    AbstractFurnaceScreen<?> furnaceScreen = (AbstractFurnaceScreen<?>) screen;
+                    if (furnaceScreen.getScreenHandler().isBurning() && Utilities.RANDOM.nextInt(10) == 0) {
+                        int x = ((HandledScreenAccessor) furnaceScreen).mTweaks$getX();
+                        int y = ((HandledScreenAccessor) furnaceScreen).mTweaks$getY();
+
+
+                        ScreenParticleHelper.addParticle(ParticleTypes.FLAME,
+                                MathStuff.nextDouble(Utilities.RANDOM, x + 56, x + 56 + 14),
+                                y + 36 + 13, MathStuff.nextDouble(Utilities.RANDOM, -0.01, 0.01),
+                                0.05);
+                    }
+                });
+            }
+        });
 
         if (Tweaks.CONFIG.usefulFletching)
             HandledScreens.register(Tweaks.FLETCHING_SCREEN_HANDLER, FletchingScreen::new);

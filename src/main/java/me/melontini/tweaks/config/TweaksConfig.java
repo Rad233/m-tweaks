@@ -253,6 +253,22 @@ public class TweaksConfig implements ConfigData {
     public boolean properlyAlignedRecipeAlternatives = true;
 
     @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public GuiParticles guiParticles = new GuiParticles();
+
+    public static class GuiParticles {
+        @ConfigEntry.Category("misc")
+        public boolean anvilScreenParticles = true;
+
+        @ConfigEntry.Category("misc")
+        public boolean enchantmentScreenParticles = true;
+
+        @ConfigEntry.Category("misc")
+        public boolean furnaceScreenParticles = true;
+    }
+
+    @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.CollapsibleObject
     public AutoGenRecipes autogenRecipeAdvancements = new AutoGenRecipes();
 
@@ -271,7 +287,7 @@ public class TweaksConfig implements ConfigData {
 
         @ConfigEntry.Category("misc")
         @ConfigEntry.Gui.Tooltip
-        public List<String> blacklistedRecipeNamespaces = Arrays.asList("minecraft", "m-tweaks");
+        public List<String> blacklistedRecipeNamespaces = Arrays.asList("minecraft", "m-tweaks", "extshape");
 
         @ConfigEntry.Category("misc")
         @ConfigEntry.Gui.Tooltip

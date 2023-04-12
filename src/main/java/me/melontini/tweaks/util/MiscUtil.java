@@ -1,5 +1,6 @@
 package me.melontini.tweaks.util;
 
+import com.google.common.collect.Lists;
 import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.crackerutil.util.Utilities;
@@ -24,11 +25,17 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.function.CommandFunction;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MiscUtil {
     public static final Map<RecipeType<?>, Utilities.ConsumerTwo<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Utilities.consume(new ConcurrentHashMap<>(), hashMap -> {
@@ -52,26 +59,37 @@ public class MiscUtil {
 
     public static void generateRecipeAdvancements(MinecraftServer server) {
         Map<Identifier, Advancement.Builder> advancementBuilders = new ConcurrentHashMap<>();
-        int count = 0;
-        Collection<Recipe<?>> allRecipes = server.getRecipeManager().values();
-        for (Recipe<?> recipe : allRecipes) {
-            if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeNamespaces.contains(recipe.getId().getNamespace()))
-                continue;
-            if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeIds.contains(recipe.getId().toString()))
-                continue;
-            if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
-                continue;
+        AtomicInteger count = new AtomicInteger();
 
-            if (RECIPE_TYPE_HANDLERS.get(recipe.getType()) != null) {
-                count++;
-                RECIPE_TYPE_HANDLERS.get(recipe.getType()).accept(advancementBuilders, recipe);
-            } else {
-                if (!recipe.getIngredients().isEmpty()) {
-                    count++;
-                    advancementBuilders.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/generic/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        List<List<Recipe<?>>> lists = Lists.partition(server.getRecipeManager().values().stream().toList(), 1000);
+        for (List<Recipe<?>> list : lists) {
+            futures.add(CompletableFuture.runAsync(() -> {
+                for (Recipe<?> recipe : list) {
+                    if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeNamespaces.contains(recipe.getId().getNamespace()))
+                        continue;
+                    if (Tweaks.CONFIG.autogenRecipeAdvancements.blacklistedRecipeIds.contains(recipe.getId().toString()))
+                        continue;
+                    if (recipe.isIgnoredInRecipeBook() && Tweaks.CONFIG.autogenRecipeAdvancements.ignoreRecipesHiddenInTheRecipeBook)
+                        continue;
+
+                    if (RECIPE_TYPE_HANDLERS.get(recipe.getType()) != null) {
+                        count.getAndIncrement();
+                        RECIPE_TYPE_HANDLERS.get(recipe.getType()).accept(advancementBuilders, recipe);
+                    } else {
+                        if (!recipe.getIngredients().isEmpty()) {
+                            count.getAndIncrement();
+                            advancementBuilders.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/generic/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().toArray(Ingredient[]::new)));
+                        }
+                    }
                 }
-            }
+            }, Util.getMainWorkerExecutor()));
         }
+
+        //and?
+        CompletableFuture<Void> future = CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+
+        server.runTasks(future::isDone);
 
         AdvancementManager advancementManager = server.getAdvancementLoader().manager;
         advancementManager.load(advancementBuilders);
@@ -82,7 +100,7 @@ public class MiscUtil {
             }
         }
 
-        CrackerLog.info("finished hacking-in {} recipe advancements", count);
+        CrackerLog.info("finished hacking-in {} recipe advancements", count.get());
         advancementBuilders.clear();
     }
 
@@ -131,6 +149,7 @@ public class MiscUtil {
             reqs[0][names.size()] = "has_recipe";
         }
         builder.requirements(reqs);
+        names.clear();
 
         builder.rewards(new AdvancementRewards(0, new Identifier[0], new Identifier[]{id}, CommandFunction.LazyContainer.EMPTY));
         return builder;

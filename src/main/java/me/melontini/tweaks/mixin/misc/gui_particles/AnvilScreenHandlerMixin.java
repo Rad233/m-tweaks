@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.AnvilScreenHandler;
@@ -38,7 +39,11 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
                     BlockState state = Blocks.ANVIL.getDefaultState();
                     HandledScreenAccessor accessor = (HandledScreenAccessor) anvilScreen;
                     var slot = this.slots.get(2);
-                    ScreenParticleHelper.addParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, state), accessor.mTweaks$getX() + slot.x + 8, accessor.mTweaks$getY() + slot.y + 8, 0.5, 0.5, 0.5, 5);
+                    boolean enchant = this.slots.get(1).getStack().isOf(Items.ENCHANTED_BOOK);
+                    ScreenParticleHelper.addParticles(
+                            !enchant ? new BlockStateParticleEffect(ParticleTypes.BLOCK, state) : ParticleTypes.END_ROD,
+                            accessor.mTweaks$getX() + slot.x + 8, accessor.mTweaks$getY() + slot.y + 8,
+                            0.5, 0.5, !enchant ? 0.5 : 0.07, 5);
                 }
             } catch (Exception e) {
                 //client-server handling 101

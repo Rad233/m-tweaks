@@ -35,7 +35,6 @@ public class ItemDispenserBehaviorMixin {
             world.spawnEntity(chestMinecart);
             stack.decrement(1);
             cir.setReturnValue(stack);
-            return;
         } else if (stack.getItem() == Items.HOPPER_MINECART) {
             AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.HOPPER);
             HopperMinecartEntity hopperMinecart = (HopperMinecartEntity) abstractMinecartEntity;
@@ -46,7 +45,6 @@ public class ItemDispenserBehaviorMixin {
             world.spawnEntity(hopperMinecart);
             stack.decrement(1);
             cir.setReturnValue(stack);
-            return;
         } else if (stack.getItem() == Items.FURNACE_MINECART) {
             AbstractMinecartEntity abstractMinecartEntity = AbstractMinecartEntity.create(world, d, e + k, f, AbstractMinecartEntity.Type.FURNACE);
             FurnaceMinecartEntity furnaceMinecart = (FurnaceMinecartEntity) abstractMinecartEntity;
@@ -59,8 +57,6 @@ public class ItemDispenserBehaviorMixin {
             world.spawnEntity(furnaceMinecart);
             stack.decrement(1);
             cir.setReturnValue(stack);
-            return;
         }
-        cir.setReturnValue(stack);
     }
 }

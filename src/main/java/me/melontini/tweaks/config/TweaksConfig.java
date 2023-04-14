@@ -266,6 +266,12 @@ public class TweaksConfig implements ConfigData {
 
         @ConfigEntry.Category("misc")
         public boolean furnaceScreenParticles = true;
+
+        @ConfigEntry.Category("misc")
+        public boolean creativeScreenParticles = true;
+
+        @ConfigEntry.Category("misc")
+        public double creativeScreenParticlesVelX = 0.7d;
     }
 
     @ConfigEntry.Category("misc")

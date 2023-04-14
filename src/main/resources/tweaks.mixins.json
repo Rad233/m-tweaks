@@ -45,6 +45,7 @@
     "bugfixes.RecipeAlternativesWidgetMixin",
     "items.mending_fix.AnvilScreenMixin",
     "misc.gui_particles.AnvilScreenHandlerMixin",
+    "misc.gui_particles.CreativeInventoryScreenMixin",
     "misc.gui_particles.EnchantmentScreenMixin",
     "misc.gui_particles.accessors.HandledScreenAccessor",
     "misc.unknown.nice_level.LevelLoadingScreenMixin",

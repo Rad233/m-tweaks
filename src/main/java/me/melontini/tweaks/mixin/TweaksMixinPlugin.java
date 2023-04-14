@@ -11,13 +11,16 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class TweaksMixinPlugin extends ExtendedPlugin {
     private TweaksConfig CONFIG;
 
     @Override
     public void onLoad(String mixinPackage) {
+        CrackerLog.info("Definitely up to a lot of good");
         super.onLoad(mixinPackage);
 
         AutoConfig.register(TweaksConfig.class, GsonConfigSerializer::new);

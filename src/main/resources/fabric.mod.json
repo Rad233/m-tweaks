@@ -24,9 +24,6 @@
     ],
     "modmenu": [
       "me.melontini.tweaks.config.ModMenuIntegration"
-    ],
-    "mm:early_risers": [
-      "me.melontini.tweaks.TweaksEarlyRiser"
     ]
   },
   "mixins": [

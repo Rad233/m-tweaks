@@ -1,7 +1,7 @@
 package me.melontini.tweaks.mixin.entities.flower_duplication;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.registries.BlockRegistry;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
@@ -36,13 +36,10 @@ public abstract class BeeEntityMixin extends AnimalEntity {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/AnimalEntity;tick()V", shift = At.Shift.AFTER), method = "tick")
     private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.beeFlowerDuplication) {
-            BeeEntity bee = (BeeEntity) (Object) this;
-            BeeEntity.PollinateGoal pollinateGoal = this.pollinateGoal;
-            if (mTweaks$plantingCoolDown > 0) {
-                --mTweaks$plantingCoolDown;
-            }
-            if (pollinateGoal != null) {
-                if (pollinateGoal.isRunning() && pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
+            if (this.mTweaks$plantingCoolDown > 0) this.mTweaks$plantingCoolDown--;
+
+            if (this.pollinateGoal != null) {
+                if (this.pollinateGoal.isRunning() && this.pollinateGoal.completedPollination() && this.mTweaks$canPlant()) {
                     this.mTweaks$growFlower();
                 }
             }
@@ -71,7 +68,11 @@ public abstract class BeeEntityMixin extends AnimalEntity {
                             BlockPos pos = new BlockPos(flowerPos.getX() + i, flowerPos.getY() + b, flowerPos.getZ() + c);
                             if (world.getBlockState(pos).getBlock() instanceof AirBlock && flowerBlock.canPlaceAt(flowerState, world, pos)) {
                                 if (world.random.nextInt(12) == 0) {
-                                    world.setBlockState(pos, flowerState);
+                                    if (Tweaks.CONFIG.unknown && world.random.nextInt(100) == 0) {
+                                        world.setBlockState(pos, BlockRegistry.ROSE_OF_THE_VALLEY.getDefaultState());
+                                    } else {
+                                        world.setBlockState(pos, flowerState);
+                                    }
                                 }
                             }
                         }

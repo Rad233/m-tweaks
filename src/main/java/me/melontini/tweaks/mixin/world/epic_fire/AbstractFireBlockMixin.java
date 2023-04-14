@@ -1,8 +1,11 @@
 package me.melontini.tweaks.mixin.world.epic_fire;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractFireBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FireBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -12,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -31,26 +35,14 @@ public abstract class AbstractFireBlockMixin extends AbstractFireBlock {
     @Shadow
     protected abstract void trySpreadingFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge);
 
-    @Inject(at = @At("HEAD"), method = "trySpreadingFire", cancellable = true)
-    public void mTweaks$spreadFire(World world, BlockPos pos, int spreadFactor, Random random, int currentAge, CallbackInfo ci) {
-        if (Tweaks.CONFIG.quickFire) {
-            int i = this.getSpreadChance(world.getBlockState(pos));
-            if (random.nextInt((int) (spreadFactor * 0.8)) < i) {
-                BlockState blockState = world.getBlockState(pos);
-                if (random.nextInt(currentAge + 4) < 5 && !world.hasRain(pos)) {
-                    int j = Math.min(currentAge + random.nextInt(5) / 4, 15);
-                    world.setBlockState(pos, this.getStateWithAge(world, pos, j), Block.NOTIFY_ALL);
-                } else {
-                    world.removeBlock(pos, false);
-                }
+    @ModifyVariable(method = "trySpreadingFire", at = @At(value = "LOAD"), index = 3, argsOnly = true)
+    public int mTweaks$spreadFire0(int value) {
+        return !Tweaks.CONFIG.quickFire ? value : (int) (value * 0.8);
+    }
 
-                Block block = blockState.getBlock();
-                if (block instanceof TntBlock) {
-                    TntBlock.primeTnt(world, pos);
-                }
-            }
-            ci.cancel();
-        }
+    @ModifyExpressionValue(method = "trySpreadingFire", at = @At(value = "CONSTANT", args = "intValue=10"))
+    public int mTweaks$spreadFire01(int value) {
+        return!Tweaks.CONFIG.quickFire ? value : (int) Math.ceil(value / 3d);
     }
 
     @SuppressWarnings("InvalidInjectorMethodSignature")

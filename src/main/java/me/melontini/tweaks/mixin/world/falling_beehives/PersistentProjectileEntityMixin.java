@@ -1,6 +1,5 @@
 package me.melontini.tweaks.mixin.world.falling_beehives;
 
-import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.*;
@@ -13,7 +12,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,8 +28,7 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
     @SuppressWarnings("ConstantConditions")
     @Inject(at = @At("TAIL"), method = "onBlockHit")
-    private void mTweaks$onBeeNestHit(@NotNull BlockHitResult blockHitResult, CallbackInfo ci) {
-        MakeSure.notNull(blockHitResult, "onBlockHit method called with null blockHitResult");
+    private void mTweaks$onBeeNestHit(BlockHitResult blockHitResult, CallbackInfo ci) {
         Entity entity = this;
         BlockPos pos = blockHitResult.getBlockPos();
         BlockState state = world.getBlockState(pos);

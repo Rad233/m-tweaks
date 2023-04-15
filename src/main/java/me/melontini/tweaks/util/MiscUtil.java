@@ -1,6 +1,8 @@
 package me.melontini.tweaks.util;
 
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.crackerutil.util.Utilities;
@@ -13,6 +15,9 @@ import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.NbtPredicate;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.entity.EntityPredicate;
@@ -24,6 +29,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.function.CommandFunction;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +44,24 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MiscUtil {
+    public static final Hash.Strategy<ItemStack> STRATEGY = new Hash.Strategy<>() {//Vanilla ItemStackSet is good, but it uses canCombine() and not areEqual(). It also doesn't exist on 1.18.2-1.19.2
+        @Override
+        public int hashCode(ItemStack itemStack) {
+            if (itemStack != null) {
+                NbtCompound nbtCompound = itemStack.getNbt();
+                int i = 31 + itemStack.getItem().hashCode();
+                return 31 * i + (nbtCompound == null ? 0 : nbtCompound.hashCode());
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public boolean equals(ItemStack itemStack, ItemStack itemStack2) {
+            return itemStack == itemStack2
+                    || itemStack != null && itemStack2 != null && itemStack.isEmpty() == itemStack2.isEmpty() && ItemStack.areEqual(itemStack, itemStack2);
+        }
+    };
     public static final Map<RecipeType<?>, Utilities.ConsumerTwo<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Utilities.consume(new ConcurrentHashMap<>(), hashMap -> {
         hashMap.put(RecipeType.BLASTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/blasting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
         hashMap.put(RecipeType.SMOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smoking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
@@ -106,11 +130,13 @@ public class MiscUtil {
 
     public static @NotNull Advancement.Builder createAdvBuilder(Identifier id, Ingredient... ingredients) {
         MakeSure.notEmpty(ingredients);// shouldn't really happen
-        //TODO maybe filter identical stacks
         var builder = Advancement.Builder.create();
         builder.parent(Identifier.tryParse("minecraft:recipes/root"));
 
         List<String> names = new ArrayList<>();
+        Set<TagKey<Item>> tags = new HashSet<>();
+        Set<ItemStack> stacks = new ObjectLinkedOpenCustomHashSet<>(STRATEGY);
+
         for (int i = 0; i < ingredients.length; i++) {
             Ingredient ingredient = ingredients[i];
             List<ItemPredicate> predicates = new ArrayList<>();
@@ -118,10 +144,14 @@ public class MiscUtil {
                 Ingredient.Entry entry = ingredient.entries[j];
                 if (entry instanceof Ingredient.StackEntry stackEntry) {
                     if (!stackEntry.stack.isEmpty()) {
+                        if (stacks.contains(stackEntry.stack)) continue;
+                        stacks.add(stackEntry.stack);
                         names.add(String.valueOf(i));
                         predicates.add(new ItemPredicate(null, Set.of(stackEntry.stack.getItem()), NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new EnchantmentPredicate[0], new EnchantmentPredicate[0], null, stackEntry.stack.getNbt() != null ? new NbtPredicate(stackEntry.stack.getNbt()) : NbtPredicate.ANY));
                     }
                 } else if (entry instanceof Ingredient.TagEntry tagEntry) {
+                    if (tags.contains(tagEntry.tag)) continue;
+                    tags.add(tagEntry.tag);
                     names.add(String.valueOf(i));
                     predicates.add(new ItemPredicate(tagEntry.tag, null, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new EnchantmentPredicate[0], new EnchantmentPredicate[0], null, NbtPredicate.ANY));
                 } else {
@@ -150,6 +180,8 @@ public class MiscUtil {
         }
         builder.requirements(reqs);
         names.clear();
+        tags.clear();
+        stacks.clear();
 
         builder.rewards(new AdvancementRewards(0, new Identifier[0], new Identifier[]{id}, CommandFunction.LazyContainer.EMPTY));
         return builder;

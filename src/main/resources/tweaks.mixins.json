@@ -44,6 +44,7 @@
     "bugfixes.AdvancementTabMixin",
     "bugfixes.RecipeAlternativesWidgetMixin",
     "items.mending_fix.AnvilScreenMixin",
+    "misc.bye_adventure.GameModeSelectionMixin",
     "misc.bye_adventure.GameModeSelectionScreenMixin",
     "misc.gui_particles.AnvilScreenHandlerMixin",
     "misc.gui_particles.CreativeInventoryScreenMixin",

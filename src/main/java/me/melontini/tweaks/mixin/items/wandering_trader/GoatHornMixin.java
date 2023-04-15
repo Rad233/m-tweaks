@@ -1,7 +1,6 @@
 package me.melontini.tweaks.mixin.items.wandering_trader;
 
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.util.LogUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,10 +27,9 @@ import java.util.Optional;
 @MixinRelatedConfigOption("tradingGoatHorn")
 @Mixin(GoatHornItem.class)
 public class GoatHornMixin {
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "use", cancellable = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "use")
     private void mTweaks$wanderingGoatHorn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, ItemStack itemStack, Optional<RegistryEntry<Instrument>> optional, Instrument instrument) {
         NbtCompound nbtCompound = itemStack.getNbt();
-        LogUtil.devInfo("mixin loaded!");
         if (Tweaks.CONFIG.tradingGoatHorn) if (!world.isClient()) if (nbtCompound != null) {
             if (nbtCompound.getString("instrument") != null) {
                 if (Objects.equals(nbtCompound.getString("instrument"), "minecraft:sing_goat_horn")) {

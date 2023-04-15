@@ -194,7 +194,7 @@
   "text.autoconfig.m-tweaks.option.noMoreAdventure": "No More Adventure",
   "text.autoconfig.m-tweaks.option.noMoreAdventure.@Tooltip": "Removes \"Adventure Mode\" from the gamemode switcher",
   "text.autoconfig.m-tweaks.option.guiParticles": "GUI Particles",
-  "text.autoconfig.m-tweaks.option.guiParticles.Tooltip": "Sprinkle a little particles on your GUIs",
+  "text.autoconfig.m-tweaks.option.guiParticles.@Tooltip": "Sprinkle a little particles on your GUIs",
   "text.autoconfig.m-tweaks.option.guiParticles.anvilScreenParticles": "Anvil Screen Particles",
   "text.autoconfig.m-tweaks.option.guiParticles.enchantmentScreenParticles": "Enchantment Screen Particles",
   "text.autoconfig.m-tweaks.option.guiParticles.furnaceScreenParticles": "Furnace Screen Particles",

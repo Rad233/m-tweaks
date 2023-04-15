@@ -249,11 +249,6 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("bugfixes")
     @ConfigEntry.Gui.Tooltip
     public boolean properlyAlignedRecipeAlternatives = true;
-
-    @ConfigEntry.Category("misc")
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.RequiresRestart
-    public boolean concurrentInvChangedTrigger = false;
     @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.Tooltip
     public boolean noMoreAdventure = false;

@@ -191,8 +191,6 @@
   "text.autoconfig.m-tweaks.option.properlyAlignedRecipeAlternatives.@Tooltip": "Now recipe groups won't look janky when there's a lot of recipes in one group.",
 
   "text.autoconfig.m-tweaks.category.misc": "Misc",
-  "text.autoconfig.m-tweaks.option.concurrentInvChangedTrigger": "Concurrent \"Inventory Changed Criterion\" trigger",
-  "text.autoconfig.m-tweaks.option.concurrentInvChangedTrigger.@Tooltip": "EXPERIMENTAL: Splits the \"Inventory Changed Criterion\" trigger to the worker thread.",
   "text.autoconfig.m-tweaks.option.noMoreAdventure": "No More Adventure",
   "text.autoconfig.m-tweaks.option.noMoreAdventure.@Tooltip": "Removes \"Adventure Mode\" from the gamemode switcher",
   "text.autoconfig.m-tweaks.option.guiParticles": "GUI Particles",

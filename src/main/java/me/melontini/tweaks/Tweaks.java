@@ -25,6 +25,7 @@ import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -39,15 +40,16 @@ public class Tweaks implements ModInitializer {
 
     public static final String MODID = "m-tweaks";
     public static final Random RANDOM = new Random();
-    public static final DamageSource AGONY = new DamageSource("m_tweaks_agony");
-    public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
-    public static final Map<PlayerEntity, AbstractMinecartEntity> UNLINKING_CARTS = new HashMap<>();
     public static EntityAttributeModifier LEAF_SLOWNESS;
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
+    public static final DamageSource AGONY = new DamageSource("m_tweaks_agony");
+    public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
+    public static final Map<PlayerEntity, AbstractMinecartEntity> UNLINKING_CARTS = new HashMap<>();
+    public static MinecraftServer SERVER;
 
     @Override
     public void onInitialize() {
@@ -66,6 +68,10 @@ public class Tweaks implements ModInitializer {
         }
 
         Registry.register(Registry.PARTICLE_TYPE, new Identifier(MODID, "knockoff_totem_particles"), KNOCKOFF_TOTEM_PARTICLE);
+
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            SERVER = server;
+        });
 
         ServerWorldEvents.LOAD.register((server, world) -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD)

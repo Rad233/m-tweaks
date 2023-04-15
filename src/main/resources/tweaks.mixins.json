@@ -31,8 +31,6 @@
     "items.mending_fix.ItemStackMixin",
     "items.wandering_trader.GoatHornMixin",
     "misc.PlayerManagerMixin",
-    "misc.fast_criterion.AbstractCriterionMixin",
-    "misc.fast_criterion.InventoryChangedCriterionMixin",
     "misc.minor_inconvenience.PlayerEntityMixin",
     "misc.unknown.rose_of_the_valley.ItemMixin",
     "misc.unknown.wakeup.PlayerEntityMixin",

@@ -1,7 +1,9 @@
 ### What's new:
 
-* Updated CrackerUtil
-* Updated `mending_fix` and `infinite_totem mixins` to use MixinExtras
-* Updated `m-tweaks:config_option` load condition to use the same parsing mechanism from TweaksMixinPlugin.
-
-Next release will probably include new features.
+* New Tweak: GUI particles! Adds various particles to random GUIs.
+* New Tweak: No More Adventure! Removes "Adventure Mode" from the gamemode switcher.
+* The mod no longer packages FabricASM.
+* The `@MixinRelatedConfigOption` annotation is now stripped from mixin targets.
+* Updated CrackerUtil.
+* Other internal Mixin related changes.
+* ???

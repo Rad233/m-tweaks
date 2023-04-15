@@ -254,6 +254,10 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.Tooltip
+    public boolean noMoreAdventure = false;
+
+    @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
     public GuiParticles guiParticles = new GuiParticles();
 
@@ -272,6 +276,9 @@ public class TweaksConfig implements ConfigData {
 
         @ConfigEntry.Category("misc")
         public double creativeScreenParticlesVelX = 0.7d;
+
+        @ConfigEntry.Category("misc")
+        public boolean gameModeSwitcherParticles = true;
     }
 
     @ConfigEntry.Category("misc")

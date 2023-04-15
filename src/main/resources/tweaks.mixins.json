@@ -11,6 +11,7 @@
     "blocks.better_fletching_table.ItemMixin",
     "blocks.campfire_effects.CampfireBlockEntityMixin",
     "blocks.leaf_tweak.EntityMixin",
+    "bugfixes.InventoryChangedCriterionMixin",
     "entities.baiting_villagers.VillagerEntityMixin",
     "entities.boat_impl.BoatEntityMixin",
     "entities.flower_duplication.BeeEntityMixin",

@@ -72,7 +72,7 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
                 throw new RuntimeException(e);
             }
         }
-        if (log) LOGGER.info("({}) {} : {}", LOGGER.getName(), mixinClassName, load ? "loaded" : "not loaded");
+        if (log) LOGGER.info("({}) {} : {}", LOGGER.getName(), mixinClassName.replaceFirst("me\\.melontini\\.tweaks\\.mixin\\.", ""), load ? "loaded" : "not loaded");
         return load;
     }
 

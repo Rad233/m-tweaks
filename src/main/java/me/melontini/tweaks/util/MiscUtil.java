@@ -3,7 +3,6 @@ package me.melontini.tweaks.util;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
-import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
@@ -121,7 +120,7 @@ public class MiscUtil {
             }
         }
 
-        CrackerLog.info("finished hacking-in {} recipe advancements", count.get());
+        TweaksLog.info("finished hacking-in {} recipe advancements", count.get());
         advancementBuilders.clear();
     }
 
@@ -152,7 +151,7 @@ public class MiscUtil {
                     names.add(String.valueOf(i));
                     predicates.add(new ItemPredicate(tagEntry.tag, null, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, new EnchantmentPredicate[0], new EnchantmentPredicate[0], null, NbtPredicate.ANY));
                 } else {
-                    CrackerLog.error("unknown ingredient found in {}", id);
+                    TweaksLog.error("unknown ingredient found in {}", id);
                 }
             }
             builder.criterion(String.valueOf(i), new InventoryChangedCriterion.Conditions(EntityPredicate.Extended.EMPTY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, NumberRange.IntRange.ANY, predicates.toArray(ItemPredicate[]::new)));

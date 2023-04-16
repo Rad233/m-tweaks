@@ -9,7 +9,7 @@ import me.melontini.tweaks.entity.vehicle.boats.TNTBoatEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.AnvilMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.JukeboxMinecartEntity;
 import me.melontini.tweaks.entity.vehicle.minecarts.NoteBlockMinecartEntity;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
@@ -26,7 +26,7 @@ public class EntityTypeRegistry {
     public static EntityType<HopperBoatEntity> BOAT_WITH_HOPPER = RegistryUtil.createEntityType(Tweaks.CONFIG.newBoats.isHopperBoatOn, new Identifier(MODID, "hopper_boat"), EntityType.Builder.<HopperBoatEntity>create(HopperBoatEntity::new, SpawnGroup.MISC).setDimensions(1.375F, 0.5625F));
 
     public static void register() {
-        LogUtil.devInfo("EntityTypeRegistry init complete!");
+        TweaksLog.info("EntityTypeRegistry init complete!");
     }
 
 

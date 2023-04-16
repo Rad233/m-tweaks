@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import me.melontini.crackerutil.CrackerLog;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.config.TweaksConfig;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -29,7 +28,10 @@ import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -100,7 +102,7 @@ public class ResourceConditionRegistry {
 
                         Tweaks.PLANT_DATA.putIfAbsent(Registry.BLOCK.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
-                        CrackerLog.error("Error while parsing JSON for mt_crop_temperatures", e);
+                        TweaksLog.error("Error while parsing JSON for mt_crop_temperatures", e);
                     }
                 }
             }
@@ -139,11 +141,11 @@ public class ResourceConditionRegistry {
 
                         Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.identifier)), data);
                     } catch (IOException e) {
-                        CrackerLog.error("Error while parsing JSON for mt_egg_processing", e);
+                        TweaksLog.error("Error while parsing JSON for mt_egg_processing", e);
                     }
                 }
             }
         });
-        LogUtil.devInfo("ResourceConditionRegistry init complete");
+        TweaksLog.info("ResourceConditionRegistry init complete");
     }
 }

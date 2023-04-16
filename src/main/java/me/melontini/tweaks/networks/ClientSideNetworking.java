@@ -2,7 +2,7 @@ package me.melontini.tweaks.networks;
 
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.sound.PersistentMovingSoundInstance;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.Entity;
@@ -54,7 +54,7 @@ public class ClientSideNetworking {
                     SoundInstance instance = soundInstanceMap.remove(id);
                     if (client.getSoundManager().isPlaying(instance)) {
                         client.getSoundManager().stop(instance);
-                        LogUtil.devInfo("removed jbmc sound instance");
+                        TweaksLog.devInfo("removed jbmc sound instance");
                     }
                 });
             });
@@ -92,6 +92,6 @@ public class ClientSideNetworking {
                 entity.getDataTracker().set(ItemEntity.STACK, stack);
             });
         });
-        LogUtil.devInfo("ClientSideNetworking init complete!");
+        TweaksLog.devInfo("ClientSideNetworking init complete!");
     }
 }

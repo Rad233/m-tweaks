@@ -6,7 +6,7 @@ import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.blocks.entities.IncubatorBlockEntity;
 import me.melontini.tweaks.items.RoseOfTheValley;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
@@ -41,6 +41,6 @@ public class BlockRegistry {
     public static BlockEntityType<IncubatorBlockEntity> INCUBATOR_BLOCK_ENTITY = RegistryUtil.getBlockEntityFromBlock(INCUBATOR_BLOCK);
 
     public static void register() {
-        LogUtil.info("BlockRegistry init complete!");
+        TweaksLog.info("BlockRegistry init complete!");
     }
 }

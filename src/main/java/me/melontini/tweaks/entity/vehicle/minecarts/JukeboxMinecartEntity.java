@@ -3,7 +3,7 @@ package me.melontini.tweaks.entity.vehicle.minecarts;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.ItemStackUtil;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -134,7 +134,7 @@ public class JukeboxMinecartEntity extends AbstractMinecartEntity implements Cle
         for (PlayerEntity player1 : world.getPlayers()) {
             ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio"), buf);
         }
-        LogUtil.devInfo(this.record);
+        TweaksLog.devInfo(this.record);
     }
 
     @Override

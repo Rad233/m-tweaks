@@ -5,12 +5,15 @@ import me.melontini.crackerutil.content.ContentBuilder;
 import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.items.RoseOfTheValley;
-import me.melontini.tweaks.items.boats.*;
+import me.melontini.tweaks.items.boats.FurnaceBoatItem;
+import me.melontini.tweaks.items.boats.HopperBoatItem;
+import me.melontini.tweaks.items.boats.JukeboxBoatItem;
+import me.melontini.tweaks.items.boats.TNTBoatItem;
 import me.melontini.tweaks.items.minecarts.AnvilMinecartItem;
 import me.melontini.tweaks.items.minecarts.JukeBoxMinecartItem;
 import me.melontini.tweaks.items.minecarts.NoteBlockMinecartItem;
 import me.melontini.tweaks.items.minecarts.SpawnerMinecartItem;
-import me.melontini.tweaks.util.LogUtil;
+import me.melontini.tweaks.util.TweaksLog;
 import me.melontini.tweaks.util.TweaksTexts;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.MinecraftClient;
@@ -106,6 +109,6 @@ public class ItemRegistry {
             createItem(Tweaks.CONFIG.newBoats.isTNTBoatOn, TNTBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_tnt"), value, new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
             createItem(Tweaks.CONFIG.newBoats.isHopperBoatOn, HopperBoatItem.class, new Identifier(MODID, value.getName().replace(":", "_") + "_boat_with_hopper"), value, new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION));
         }
-        LogUtil.devInfo("ItemRegistry init complete!");
+        TweaksLog.info("ItemRegistry init complete!");
     }
 }

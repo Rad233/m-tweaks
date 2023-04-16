@@ -41,6 +41,7 @@
     "world.falling_beehives.PersistentProjectileEntityMixin"
   ],
   "client": [
+    "accessors.ScreenAccessor",
     "bugfixes.AdvancementTabMixin",
     "bugfixes.RecipeAlternativesWidgetMixin",
     "items.mending_fix.AnvilScreenMixin",

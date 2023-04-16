@@ -1,10 +1,10 @@
 package me.melontini.tweaks.mixin.items.cart_copy;
 
-import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.data.NBTUtil;
 import me.melontini.crackerutil.data.NbtBuilder;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
+import me.melontini.tweaks.util.TweaksLog;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
@@ -236,7 +236,7 @@ public abstract class MinecartItemMixin extends Item {
             return StringUtils.isEmpty(identifier) ? Registry.ENTITY_TYPE.getDefaultId() : new Identifier(identifier);
         } catch (InvalidIdentifierException e) {
             BlockPos blockPos = mobSpawnerBlockEntity.getPos();
-            CrackerLog.error(String.format("Invalid entity id '%s' at spawner %s:[%s,%s,%s]", identifier, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+            TweaksLog.error(String.format("Invalid entity id '%s' at spawner %s:[%s,%s,%s]", identifier, Objects.requireNonNull(mobSpawnerBlockEntity.getWorld()).getRegistryKey().getValue(), blockPos.getX(), blockPos.getY(), blockPos.getZ()));
             return Registry.ENTITY_TYPE.getDefaultId();
         }
     }

@@ -1,13 +1,14 @@
 package me.melontini.tweaks.mixin;
 
-import me.melontini.crackerutil.CrackerLog;
 import me.melontini.crackerutil.util.mixin.ExtendedPlugin;
 import me.melontini.tweaks.config.TweaksConfig;
-import me.melontini.tweaks.util.LogUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.service.MixinService;
 
@@ -17,18 +18,24 @@ import java.util.List;
 import java.util.Map;
 
 public class TweaksMixinPlugin extends ExtendedPlugin {
+    private static final Logger LOGGER = LoggerFactory.getLogger("TweaksMixinPlugin");
     private static final String MIXIN_TO_OPTION_ANNOTATION = "Lme/melontini/tweaks/util/annotations/MixinRelatedConfigOption;";
     private TweaksConfig CONFIG;
+    private static boolean log;
+
+    static {
+        LOGGER.info("({}) Definitely up to a lot of good", LOGGER.getName());
+    }
 
     @Override
     public void onLoad(String mixinPackage) {
-        CrackerLog.info("Definitely up to a lot of good");
         super.onLoad(mixinPackage);
-
         AutoConfig.register(TweaksConfig.class, GsonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
+        log = CONFIG.debugMessages || FabricLoader.getInstance().isDevelopmentEnvironment();
+
         if (CONFIG.compatMode) {
-            CrackerLog.warn("Compat mode is on!");
+            LOGGER.warn("({}) Compat mode is on!", LOGGER.getName());
         }
     }
 
@@ -65,7 +72,7 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
                 throw new RuntimeException(e);
             }
         }
-        LogUtil.devInfo("{} : {}", mixinClassName, load ? "loaded" : "not loaded");
+        if (log) LOGGER.info("({}) {} : {}", LOGGER.getName(), mixinClassName, load ? "loaded" : "not loaded");
         return load;
     }
 

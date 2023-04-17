@@ -7,6 +7,7 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
+import me.melontini.tweaks.util.ItemBehaviorAdder;
 import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
@@ -103,5 +104,7 @@ public class Tweaks implements ModInitializer {
             MiscUtil.generateRecipeAdvancements(server);
             server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
+
+        ItemBehaviorAdder.init();
     }
 }

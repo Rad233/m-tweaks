@@ -8,6 +8,7 @@ import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.particles.KnockoffTotemParticle;
 import me.melontini.tweaks.client.render.BoatWithBlockRenderer;
+import me.melontini.tweaks.client.render.FlyingItemEntityRenderer;
 import me.melontini.tweaks.client.render.block.IncubatorBlockRenderer;
 import me.melontini.tweaks.client.screens.FletchingScreen;
 import me.melontini.tweaks.mixin.misc.gui_particles.accessors.HandledScreenAccessor;
@@ -161,5 +162,7 @@ public class TweaksClient implements ClientModInitializer {
             EntityRendererRegistry.register(EntityTypeRegistry.NOTEBLOCK_MINECART_ENTITY, ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART));
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
             EntityRendererRegistry.register(EntityTypeRegistry.JUKEBOX_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
+
+        EntityRendererRegistry.register(EntityTypeRegistry.FLYING_ITEM, FlyingItemEntityRenderer::new);
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
 
 public class FlyingItemEntityRenderer extends EntityRenderer<FlyingItemEntity> {
@@ -40,10 +41,10 @@ public class FlyingItemEntityRenderer extends EntityRenderer<FlyingItemEntity> {
         if (entity.age >= 2 || !(this.dispatcher.camera.getFocusedEntity().squaredDistanceTo(entity) < MIN_DISTANCE)) {
             matrices.push();
             matrices.scale(this.scale, this.scale, this.scale);
-            matrices.multiply(this.dispatcher.getRotation());
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180.0F));
-            float angle = (float) Math.toDegrees(Math.atan2(entity.getVelocity().x, entity.getVelocity().y) * 0.5);
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(angle));
+            var quaternion = new Quaternion(0, 0, 0, 1);
+            quaternion.hamiltonProduct(Vec3f.POSITIVE_Y.getDegreesQuaternion(entity.getYaw(tickDelta)));
+            quaternion.hamiltonProduct(Vec3f.POSITIVE_X.getDegreesQuaternion(entity.getPitch(tickDelta)));
+            matrices.multiply(quaternion);
             this.itemRenderer.renderItem(entity.getStack(), ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getId());
             matrices.pop();
             super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);

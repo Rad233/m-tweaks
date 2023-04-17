@@ -1,6 +1,7 @@
 package me.melontini.tweaks.mixin.items.extended_behavior;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.entity.FlyingItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +26,7 @@ public abstract class ItemStackMixin {
 
     @ModifyReturnValue(at = @At("RETURN"), method = "use")
     private TypedActionResult<ItemStack> mTweaks$throwableBehaviour(TypedActionResult<ItemStack> original, World world, PlayerEntity user, Hand hand) {
-        if (original.getResult() == ActionResult.PASS && ((ThrowableBehaviorDuck)getItem()).mTweaks$hasBehavior()) {
+        if (original.getResult() == ActionResult.PASS && (((ThrowableBehaviorDuck)getItem()).mTweaks$hasBehavior() || Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem()))) {
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
             if (!world.isClient) {
                 var entity = new FlyingItemEntity((ItemStack) (Object) this, user, world);

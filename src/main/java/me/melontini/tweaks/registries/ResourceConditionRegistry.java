@@ -1,13 +1,11 @@
 package me.melontini.tweaks.registries;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.util.TweaksLog;
 import me.melontini.tweaks.util.data.EggProcessingData;
+import me.melontini.tweaks.util.data.ItemBehaviorData;
 import me.melontini.tweaks.util.data.PlantData;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -97,7 +95,7 @@ public class ResourceConditionRegistry {
                         PlantData data = GSON.fromJson(jsonElement, PlantData.class);
 
                         if (Registry.BLOCK.get(Identifier.tryParse(data.identifier)) == Blocks.AIR) {
-                            throw new InvalidIdentifierException(String.format("[m-tweaks] invalid identifier provided! %s", data.identifier));
+                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.identifier));
                         }
 
                         Tweaks.PLANT_DATA.putIfAbsent(Registry.BLOCK.get(Identifier.tryParse(data.identifier)), data);
@@ -124,6 +122,7 @@ public class ResourceConditionRegistry {
                         Tweaks.EGG_DATA.putIfAbsent(spawnEggItem, new EggProcessingData(Registry.ITEM.getId(spawnEggItem).toString(), Registry.ENTITY_TYPE.getId(spawnEggItem.getEntityType(new NbtCompound())).toString(), 8000));
                     }
                 }
+
                 var map = manager.findResources("mt_egg_processing", identifier -> identifier.getPath().endsWith(".json"));
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
@@ -132,11 +131,11 @@ public class ResourceConditionRegistry {
                         EggProcessingData data = GSON.fromJson(jsonElement, EggProcessingData.class);
 
                         if (Registry.ENTITY_TYPE.get(Identifier.tryParse(data.entity)) == EntityType.PIG && !Objects.equals(data.entity, "minecraft:pig")) {
-                            throw new InvalidIdentifierException(String.format("[m-tweaks] invalid entity identifier provided! %s", data.entity));
+                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid entity identifier provided! %s", data.entity));
                         }
 
                         if (Registry.ITEM.get(Identifier.tryParse(data.identifier)) == Items.AIR) {
-                            throw new InvalidIdentifierException(String.format("[m-tweaks] invalid item identifier provided! %s", data.identifier));
+                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid item identifier provided! %s", data.identifier));
                         }
 
                         Tweaks.EGG_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.identifier)), data);
@@ -146,6 +145,50 @@ public class ResourceConditionRegistry {
                 }
             }
         });
+
+        ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+            @Override
+            public Identifier getFabricId() {
+                return new Identifier(MODID, "mt_item_throw_behavior");
+            }
+
+            @Override
+            public void reload(ResourceManager manager) {//datapacks override everything else
+                Tweaks.ITEM_BEHAVIOR_DATA.clear();
+                var map = manager.findResources("mt_item_throw_behavior", identifier -> identifier.getPath().endsWith(".json"));
+                for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
+                    try {
+                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
+                        //LogUtil.devInfo(jsonElement);
+                        JsonObject json = GSON.fromJson(jsonElement, JsonObject.class);
+                        ItemBehaviorData data = new ItemBehaviorData();
+                        data.item_id = JsonHelper.getString(json, "item_id");
+                        data.function_id = JsonHelper.getString(json, "function_id", null);
+
+                        data.effect_id = JsonHelper.getString(json, "effect_id", null);
+                        data.effect_time = JsonHelper.getInt(json, "effect_time", 100);
+                        data.effect_level = JsonHelper.getInt(json, "effect_level", 0);
+
+                        data.particle_id = JsonHelper.getString(json, "particle_id", null);
+                        data.particle_count = JsonHelper.getInt(json, "particle_count", 10);
+                        data.particle_delta_x = JsonHelper.getDouble(json, "particle_delta_x", 0.5);
+                        data.particle_delta_y = JsonHelper.getDouble(json, "particle_delta_y", 0.5);
+                        data.particle_delta_z = JsonHelper.getDouble(json, "particle_delta_z", 0.5);
+                        data.particle_speed = JsonHelper.getDouble(json, "particle_speed", 0.5);
+                        data.particle_force = JsonHelper.getBoolean(json, "particle_force", true);
+
+                        if (Registry.ITEM.get(Identifier.tryParse(data.item_id)) == Items.AIR) {
+                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item_id));
+                        }
+
+                        Tweaks.ITEM_BEHAVIOR_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.item_id)), data);
+                    } catch (IOException e) {
+                        TweaksLog.error("Error while parsing JSON for mt_item_drop_behavior", e);
+                    }
+                }
+            }
+        });
+
         TweaksLog.info("ResourceConditionRegistry init complete");
     }
 }

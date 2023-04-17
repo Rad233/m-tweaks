@@ -71,8 +71,6 @@ public class ItemBehaviorAdder {
                 Vec3d pos = hitResult.getPos();
                 serverWorld.spawnParticles((DefaultParticleType)Registry.PARTICLE_TYPE.get(Identifier.tryParse(data.particle_id)), pos.getX(), pos.getY(), pos.getZ(), data.particle_count, data.particle_delta_x, data.particle_delta_y, data.particle_delta_z, data.particle_speed);
             }
-
-            flyingItemEntity.discard();
         }
     };
 
@@ -93,7 +91,6 @@ public class ItemBehaviorAdder {
                         world.syncWorldEvent(WorldEvents.BONE_MEAL_USED, blockPos2, 0);
                     }
                 }
-                flyingItemEntity.discard();
             }
         });
     }

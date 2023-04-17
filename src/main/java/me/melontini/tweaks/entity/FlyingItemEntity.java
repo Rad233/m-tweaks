@@ -32,14 +32,14 @@ public class FlyingItemEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
+        ThrowableBehaviorDuck duck = (ThrowableBehaviorDuck) getItem().getItem();
         if (Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem().getItem())) {
             ItemBehaviorAdder.DATA_PACK.onCollision(getItem(), this, this.world, getOwner(), hitResult);
-            return;
-        }
-        ThrowableBehaviorDuck duck = (ThrowableBehaviorDuck) getItem().getItem();
-        if (duck.mTweaks$hasBehavior()) {
+        } else if (duck.mTweaks$hasBehavior()) {
             duck.mTweaks$getBehavior().onCollision(getItem(), this, this.world, getOwner(), hitResult);
+
         }
+        this.discard();
     }
 
     @Override

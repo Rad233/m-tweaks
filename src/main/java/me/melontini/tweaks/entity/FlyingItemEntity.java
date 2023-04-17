@@ -1,7 +1,9 @@
 package me.melontini.tweaks.entity;
 
+import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
+import me.melontini.tweaks.util.ItemBehaviorAdder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -30,6 +32,10 @@ public class FlyingItemEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
+        if (Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem().getItem())) {
+            ItemBehaviorAdder.DATA_PACK.onCollision(getItem(), this, this.world, getOwner(), hitResult);
+            return;
+        }
         ThrowableBehaviorDuck duck = (ThrowableBehaviorDuck) getItem().getItem();
         if (duck.mTweaks$hasBehavior()) {
             duck.mTweaks$getBehavior().onCollision(getItem(), this, this.world, getOwner(), hitResult);

@@ -11,6 +11,7 @@ import me.melontini.tweaks.util.ItemBehaviorAdder;
 import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
+import me.melontini.tweaks.util.data.ItemBehaviorData;
 import me.melontini.tweaks.util.data.PlantData;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
@@ -46,6 +47,7 @@ public class Tweaks implements ModInitializer {
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
+    public static Map<Item, ItemBehaviorData> ITEM_BEHAVIOR_DATA = new HashMap<>();//datapack overrides
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
     public static final DamageSource AGONY = new DamageSource("m_tweaks_agony");
     public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();

@@ -9,7 +9,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 public class CustomItemStackParticle extends ItemStackParticle {
-    private int seed;
+    private final int seed;
     public CustomItemStackParticle(double x, double y, double velX, double velY, ItemStack stack) {
         super(x, y, velX, velY, stack);
         this.seed = Utilities.RANDOM.nextInt();

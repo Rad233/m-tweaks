@@ -1,15 +1,21 @@
 package me.melontini.tweaks.networks;
 
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.sound.PersistentMovingSoundInstance;
 import me.melontini.tweaks.util.TweaksLog;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.ParticlesMode;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ItemStackParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -90,6 +96,34 @@ public class ClientSideNetworking {
             client.execute(() -> {
                 ItemEntity entity = (ItemEntity) client.world.getEntityLookup().get(uuid);
                 entity.getDataTracker().set(ItemEntity.STACK, stack);
+            });
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "ink_sac_throw"), (client, handler, packetByteBuf, responseSender) -> {
+            double x = packetByteBuf.readDouble(), y = packetByteBuf.readDouble(), z = packetByteBuf.readDouble();
+            ItemStack stack = packetByteBuf.readItemStack();
+            client.execute(() -> {
+                ParticlesMode particlesMode = MinecraftClient.getInstance().options.getParticles().getValue();
+                if (particlesMode == ParticlesMode.MINIMAL) return;
+
+                float e = Utilities.RANDOM.nextFloat() * 4.0f;
+                for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 15 : 7); i++) {
+                    Particle particle = (MinecraftClient.getInstance()).particleManager.addParticle(ParticleTypes.EFFECT, x, y, z, Utilities.RANDOM.nextGaussian() * 0.15, 0.5, Utilities.RANDOM.nextGaussian() * 0.15);
+                    if (particle != null) {
+                        particle.setColor(0, 0, 0);
+                        particle.move(e);
+                    }
+                }
+
+                for (int i = 0; i < 8; ++i) {
+                    (MinecraftClient.getInstance()).particleManager.addParticle(
+                            new ItemStackParticleEffect(ParticleTypes.ITEM, stack),
+                            x, y, z,
+                            Utilities.RANDOM.nextGaussian() * 0.15,
+                            Utilities.RANDOM.nextDouble() * 0.2,
+                            Utilities.RANDOM.nextGaussian() * 0.15
+                    );
+                }
             });
         });
         TweaksLog.devInfo("ClientSideNetworking init complete!");

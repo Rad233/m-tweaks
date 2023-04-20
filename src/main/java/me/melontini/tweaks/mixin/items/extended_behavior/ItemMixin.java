@@ -2,10 +2,12 @@ package me.melontini.tweaks.mixin.items.extended_behavior;
 
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.util.ItemBehavior;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Item.class)
+@MixinRelatedConfigOption("throwableItems")
 public class ItemMixin implements ThrowableBehaviorDuck {
     private ItemBehavior mTweaks$throwableBehavior;
     @Override

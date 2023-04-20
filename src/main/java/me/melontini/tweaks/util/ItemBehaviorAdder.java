@@ -1,7 +1,11 @@
 package me.melontini.tweaks.util;
 
+import me.melontini.crackerutil.util.ColorUtil;
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
+import me.melontini.tweaks.entity.FlyingItemEntity;
+import me.melontini.tweaks.networks.TweaksPackets;
 import me.melontini.tweaks.util.data.ItemBehaviorData;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -9,21 +13,17 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.function.CommandFunction;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -31,16 +31,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-
-import static me.melontini.tweaks.Tweaks.MODID;
+import java.util.Map;
 
 public class ItemBehaviorAdder {
+    private static final Map<Item, Integer> COLOR_MAP = Utilities.consume(new HashMap<>(), map -> {//TODO do something lol
+        map.put(Items.RED_DYE, ColorUtil.toColor(121, 28, 39));
+        map.put(Items.BLUE_DYE, ColorUtil.toColor(5, 36, 99));
+        map.put(Items.LIGHT_BLUE_DYE, ColorUtil.toColor(30, 65, 115));
+        map.put(Items.BLACK_DYE, ColorUtil.toColor(5, 5, 8));
+    });
 
     public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
         ItemBehaviorData data = Tweaks.ITEM_BEHAVIOR_DATA.get(stack.getItem());
@@ -48,38 +53,29 @@ public class ItemBehaviorAdder {
 
         if (!world.isClient) {
             ServerWorld serverWorld = (ServerWorld) world;
-            if (data.function_id != null) {
-                Optional<CommandFunction> optional = serverWorld.getServer().getCommandFunctionManager().getFunction(Identifier.tryParse(data.function_id));
-                if (optional.isPresent()) {
-                    serverWorld.getServer().getCommandFunctionManager().execute(optional.get(), new ServerCommandSource(
-                            serverWorld.getServer(), flyingItemEntity.getPos(), Vec2f.ZERO, serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity));
-                } else {
-                    TweaksLog.error("Function {} was not found!", data.function_id);
+            if (data.item_commands != null) {
+                ServerCommandSource source = new ServerCommandSource(
+                        serverWorld.getServer(), flyingItemEntity.getPos(), new Vec2f(flyingItemEntity.getPitch(), flyingItemEntity.getYaw()), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity);
+                for (String command : data.item_commands) {
+                    serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
                 }
             }
 
-            if (data.effect_id != null) {
-                StatusEffect effect = PotionUtil.getStatusEffect(Identifier.tryParse(data.effect_id));
-                StatusEffectInstance instance = new StatusEffectInstance(effect, data.effect_time, data.effect_level);
-
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
-                    Vec3d pos = hitResult.getPos();
-                    List<LivingEntity> livingEntities = world.getEntitiesByClass(LivingEntity.class, new Box(((BlockHitResult) hitResult).getBlockPos()).expand(0.5), LivingEntity::isAlive);
-                    livingEntities.stream().min(Comparator.comparingDouble(livingEntity -> livingEntity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
-                            .ifPresent(livingEntity -> livingEntity.addStatusEffect(instance));
-                } else if (hitResult.getType() == HitResult.Type.ENTITY) {
-                    EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-                    Entity entity = entityHitResult.getEntity();
-                    if (entity instanceof LivingEntity livingEntity) {
-                        livingEntity.addStatusEffect(instance, user);
-                    }
+            if (data.user_commands != null && user != null) {
+                ServerCommandSource source = new ServerCommandSource(
+                        serverWorld.getServer(), user.getPos(), new Vec2f(user.getPitch(), user.getYaw()), serverWorld, 4, user.getEntityName(), Text.literal(user.getEntityName()), serverWorld.getServer(), user);
+                for (String command : data.user_commands) {
+                    serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
                 }
             }
 
-            if (data.particle_id != null) {
-                Vec3d pos = hitResult.getPos();
-                serverWorld.spawnParticles((DefaultParticleType) Registry.PARTICLE_TYPE.get(Identifier.tryParse(data.particle_id)), pos.getX(), pos.getY(), pos.getZ(), data.particle_count, data.particle_delta_x, data.particle_delta_y, data.particle_delta_z, data.particle_speed);
+            if (data.server_commands != null) {
+                for (String command : data.server_commands) {
+                    serverWorld.getServer().getCommandManager().executeWithPrefix(serverWorld.getServer().getCommandSource(), command);
+                }
             }
+
+            sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, data.spawn_colored_particles, ColorUtil.toColor(data.particle_colors.red, data.particle_colors.green, data.particle_colors.blue));
         }
     };
 
@@ -104,35 +100,59 @@ public class ItemBehaviorAdder {
         });
         addBehavior(Items.INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
-                StatusEffectInstance instance = new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0);
-
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
-                    Vec3d pos = hitResult.getPos();
-                    List<LivingEntity> livingEntities = world.getEntitiesByClass(LivingEntity.class, new Box(((BlockHitResult) hitResult).getBlockPos()).expand(0.5), LivingEntity::isAlive);
-                    livingEntities.stream().min(Comparator.comparingDouble(livingEntity -> livingEntity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
-                            .ifPresent(livingEntity -> livingEntity.addStatusEffect(instance));
-                } else if (hitResult.getType() == HitResult.Type.ENTITY) {
-                    EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-                    Entity entity = entityHitResult.getEntity();
-                    if (entity instanceof LivingEntity livingEntity) {
-                        livingEntity.addStatusEffect(instance, user);
-                    }
-                }
-
-                Vec3d pos = hitResult.getPos();
-                PacketByteBuf byteBuf = PacketByteBufs.create();
-                byteBuf.writeDouble(pos.getX());
-                byteBuf.writeDouble(pos.getY());
-                byteBuf.writeDouble(pos.getZ());
-                byteBuf.writeItemStack(stack);
-                for (ServerPlayerEntity serverPlayerEntity : PlayerLookup.tracking(flyingItemEntity)) {
-                    ServerPlayNetworking.send(serverPlayerEntity, new Identifier(MODID, "ink_sac_throw"), byteBuf);
-                }
-            }
-            if (user instanceof PlayerEntity player) {
-                player.getItemCooldownManager().set(stack.getItem(), 50);
+                addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0));
+                sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, ColorUtil.toColor(24, 27, 50));
             }
         });
+        addBehavior(Items.GLOW_INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
+            if (!world.isClient) {
+                addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
+                sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, ColorUtil.toColor(25, 49, 49));
+            }
+        });
+
+        for (Map.Entry<Item, Integer> entry : COLOR_MAP.entrySet()) {
+            addBehavior(entry.getKey(), (stack, flyingItemEntity, world, user, hitResult) -> {
+                if (!world.isClient) {
+                    //addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
+                    sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, entry.getValue());
+                }
+            });
+        }
+    }
+
+    public static void addEffects(HitResult hitResult, World world, Entity user, StatusEffectInstance... instances) {
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            Vec3d pos = hitResult.getPos();
+            List<LivingEntity> livingEntities = world.getEntitiesByClass(LivingEntity.class, new Box(((BlockHitResult) hitResult).getBlockPos()).expand(0.5), LivingEntity::isAlive);
+            livingEntities.stream().min(Comparator.comparingDouble(livingEntity -> livingEntity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
+                    .ifPresent(livingEntity -> {
+                        for (StatusEffectInstance instance : instances) {
+                            livingEntity.addStatusEffect(instance);
+                        }
+                    });
+        } else if (hitResult.getType() == HitResult.Type.ENTITY) {
+            EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+            Entity entity = entityHitResult.getEntity();
+            if (entity instanceof LivingEntity livingEntity) {
+                for (StatusEffectInstance instance : instances) {
+                    livingEntity.addStatusEffect(instance, user);
+                }
+            }
+        }
+    }
+
+    public static void sendParticlePacket(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int color) {
+        PacketByteBuf byteBuf = PacketByteBufs.create();
+        byteBuf.writeDouble(pos.getX());
+        byteBuf.writeDouble(pos.getY());
+        byteBuf.writeDouble(pos.getZ());
+        byteBuf.writeItemStack(stack);
+        byteBuf.writeBoolean(colored);
+        byteBuf.writeVarInt(color);
+        for (ServerPlayerEntity serverPlayerEntity : PlayerLookup.tracking(flyingItemEntity)) {
+            ServerPlayNetworking.send(serverPlayerEntity, TweaksPackets.FLYING_STACK_LANDED, byteBuf);
+        }
     }
 
     public static void addBehavior(Item item, ItemBehavior behavior) {

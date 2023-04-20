@@ -3,18 +3,15 @@ package me.melontini.tweaks.networks;
 import me.melontini.tweaks.Tweaks;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.explosion.Explosion;
 
 import java.util.Objects;
 import java.util.UUID;
 
-import static me.melontini.tweaks.Tweaks.MODID;
-
 public class ServerSideNetworking {
     public static void register() {
         if (Tweaks.CONFIG.newBoats.isTNTBoatOn)
-            ServerPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "boat_explosion_server"), (server, player, handler, buf, responseSender) -> {
+            ServerPlayNetworking.registerGlobalReceiver(TweaksPackets.EXPLODE_BOAT_ON_SERVER, (server, player, handler, buf, responseSender) -> {
                 UUID id = buf.readUuid();
                 server.execute(() -> {
                     Entity entity = player.world.getEntityLookup().get(id);

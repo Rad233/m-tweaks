@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@MixinRelatedConfigOption("usefulFletching")
 @Mixin(BowItem.class)
+@MixinRelatedConfigOption("usefulFletching")
 public abstract class BowItemMixin extends RangedWeaponItem {
     public BowItemMixin(Settings settings) {
         super(settings);

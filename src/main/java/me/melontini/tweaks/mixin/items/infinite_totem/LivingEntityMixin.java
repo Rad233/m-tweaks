@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.melontini.crackerutil.world.PlayerUtil;
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.networks.TweaksPackets;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -18,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,10 +28,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import static me.melontini.tweaks.Tweaks.MODID;
-
-@MixinRelatedConfigOption("totemSettings.enableInfiniteTotem")
 @Mixin(LivingEntity.class)
+@MixinRelatedConfigOption("totemSettings.enableInfiniteTotem")
 public abstract class LivingEntityMixin extends Entity {
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -62,7 +60,7 @@ public abstract class LivingEntityMixin extends Entity {
                     buf.writeRegistryValue(Registry.PARTICLE_TYPE, Tweaks.KNOCKOFF_TOTEM_PARTICLE);
 
                     for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, getBlockPos(), 120)) {
-                        ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "custom_totem_use"), buf);
+                        ServerPlayNetworking.send((ServerPlayerEntity) player, TweaksPackets.USED_CUSTOM_TOTEM, buf);
                     }
                 }
                 cir.setReturnValue(true);

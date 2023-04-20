@@ -24,8 +24,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Objects;
 import java.util.Optional;
 
-@MixinRelatedConfigOption("tradingGoatHorn")
 @Mixin(GoatHornItem.class)
+@MixinRelatedConfigOption("tradingGoatHorn")
 public class GoatHornMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ItemCooldownManager;set(Lnet/minecraft/item/Item;I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT, method = "use")
     private void mTweaks$wanderingGoatHorn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir, ItemStack itemStack, Optional<RegistryEntry<Instrument>> optional, Instrument instrument) {

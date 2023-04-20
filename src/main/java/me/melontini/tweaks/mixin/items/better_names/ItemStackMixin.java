@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
-@MixinRelatedConfigOption("slightlyBetterItemNames")
 @Mixin(ItemStack.class)
+@MixinRelatedConfigOption("slightlyBetterItemNames")
 public abstract class ItemStackMixin {
     @Shadow
     public abstract int getMaxDamage();

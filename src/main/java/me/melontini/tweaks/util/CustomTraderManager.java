@@ -1,7 +1,7 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.util.MakeSure;
-import me.melontini.tweaks.Tweaks;
+import me.melontini.crackerutil.util.Utilities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
@@ -87,8 +87,8 @@ public class CustomTraderManager extends PersistentState {
         BlockPos blockPos = null;
 
         for (int i = 0; i < 10; ++i) {
-            int x = pos.getX() + Tweaks.RANDOM.nextInt(range * 2) - range;
-            int z = pos.getZ() + Tweaks.RANDOM.nextInt(range * 2) - range;
+            int x = pos.getX() + Utilities.RANDOM.nextInt(range * 2) - range;
+            int z = pos.getZ() + Utilities.RANDOM.nextInt(range * 2) - range;
             int y = world.getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
             BlockPos blockPos2 = new BlockPos(x, y, z);
             if (SpawnHelper.canSpawn(SpawnRestriction.Location.ON_GROUND, world, blockPos2, EntityType.WANDERING_TRADER)) {

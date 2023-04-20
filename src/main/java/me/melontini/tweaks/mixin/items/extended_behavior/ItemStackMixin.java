@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.entity.FlyingItemEntity;
+import me.melontini.tweaks.util.annotations.MixinRelatedConfigOption;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ItemStack.class)
+@MixinRelatedConfigOption("throwableItems")
 public abstract class ItemStackMixin {
     @Shadow public abstract Item getItem();
 
@@ -39,6 +41,8 @@ public abstract class ItemStackMixin {
             if (!user.getAbilities().creativeMode) {
                 this.decrement(1);
             }
+
+            user.getItemCooldownManager().set(getItem(), 50);
 
             return TypedActionResult.success((ItemStack) (Object) this);
         }

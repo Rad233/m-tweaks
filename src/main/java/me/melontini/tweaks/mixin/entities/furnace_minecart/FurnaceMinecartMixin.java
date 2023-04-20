@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@MixinRelatedConfigOption("betterFurnaceMinecart")
 @Mixin(FurnaceMinecartEntity.class)
+@MixinRelatedConfigOption("betterFurnaceMinecart")
 public class FurnaceMinecartMixin {
     @Shadow
     public int fuel;

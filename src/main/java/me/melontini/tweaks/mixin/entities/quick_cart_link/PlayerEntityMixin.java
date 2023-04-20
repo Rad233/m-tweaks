@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static me.melontini.tweaks.util.MiscUtil.blockPosAsString;
 
-@MixinRelatedConfigOption("simpleMinecartLinking")
 @Mixin(PlayerEntity.class)
+@MixinRelatedConfigOption("simpleMinecartLinking")
 public abstract class PlayerEntityMixin extends LivingEntity {
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);

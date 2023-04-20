@@ -1,6 +1,7 @@
 package me.melontini.tweaks.blocks.entities;
 
 import me.melontini.crackerutil.data.NBTUtil;
+import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.blocks.IncubatorBlock;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -51,8 +52,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                 if (state.get(CampfireBlock.LIT)) {
                     if (!world.isClient) this.processingTime--;
                     if (world.random.nextInt(4) == 0 && world.isClient) {
-                        double i = (Tweaks.RANDOM.nextDouble(0.6) - 0.3);
-                        double j = (Tweaks.RANDOM.nextDouble(0.6) - 0.3);
+                        double i = (Utilities.RANDOM.nextDouble(0.6) - 0.3);
+                        double j = (Utilities.RANDOM.nextDouble(0.6) - 0.3);
                         world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
                     }
                 }

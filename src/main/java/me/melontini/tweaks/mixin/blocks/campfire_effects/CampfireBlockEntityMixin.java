@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-@MixinRelatedConfigOption("campfireTweaks.campfireEffects")
 @Mixin(CampfireBlockEntity.class)
+@MixinRelatedConfigOption("campfireTweaks.campfireEffects")
 public class CampfireBlockEntityMixin {
     @Inject(at = @At("HEAD"), method = "litServerTick")
     private static void mTweaks$litServerTick(World world, BlockPos pos, BlockState state, CampfireBlockEntity campfire, CallbackInfo ci) {

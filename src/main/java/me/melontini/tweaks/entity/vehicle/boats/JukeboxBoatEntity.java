@@ -1,5 +1,6 @@
 package me.melontini.tweaks.entity.vehicle.boats;
 
+import me.melontini.tweaks.networks.TweaksPackets;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.util.ItemStackUtil;
 import me.melontini.tweaks.util.TweaksLog;
@@ -26,8 +27,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-
-import static me.melontini.tweaks.Tweaks.MODID;
 
 public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable {
 
@@ -102,7 +101,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
         buf.writeUuid(this.getUuid());
 
         for (PlayerEntity player1 : world.getPlayers()) {
-            ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio_stop"), buf);
+            ServerPlayNetworking.send((ServerPlayerEntity) player1, TweaksPackets.JUKEBOX_MINECART_STOP_PLAYING, buf);
         }
     }
 
@@ -112,7 +111,7 @@ public class JukeboxBoatEntity extends BoatEntityWithBlock implements Clearable 
         buf.writeItemStack(this.record);
 
         for (PlayerEntity player1 : world.getPlayers()) {
-            ServerPlayNetworking.send((ServerPlayerEntity) player1, new Identifier(MODID, "jukebox_minecart_audio"), buf);
+            ServerPlayNetworking.send((ServerPlayerEntity) player1, TweaksPackets.JUKEBOX_MINECART_START_PLAYING, buf);
         }
         TweaksLog.devInfo(this.record);
     }

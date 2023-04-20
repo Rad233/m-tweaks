@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Objects;
 
-@MixinRelatedConfigOption("unknown")
 @Mixin(LevelLoadingScreen.class)
+@MixinRelatedConfigOption("unknown")
 public class LevelLoadingScreenMixin {
 
     @ModifyReturnValue(at = @At("RETURN"), method = "getPercentage")

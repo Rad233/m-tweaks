@@ -163,6 +163,7 @@ public class TweaksClient implements ClientModInitializer {
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn)
             EntityRendererRegistry.register(EntityTypeRegistry.JUKEBOX_MINECART_ENTITY, (ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.MINECART)));
 
-        EntityRendererRegistry.register(EntityTypeRegistry.FLYING_ITEM, FlyingItemEntityRenderer::new);
+        if (Tweaks.CONFIG.throwableItems)
+            EntityRendererRegistry.register(EntityTypeRegistry.FLYING_ITEM, FlyingItemEntityRenderer::new);
     }
 }

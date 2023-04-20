@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Comparator;
 
-@MixinRelatedConfigOption({"betterFurnaceMinecart", "furnaceMinecartTakeFuelWhenLow"})
 @Mixin(FurnaceMinecartEntity.class)
+@MixinRelatedConfigOption({"betterFurnaceMinecart", "furnaceMinecartTakeFuelWhenLow"})
 public abstract class FurnaceMinecartIntakeMixin extends AbstractMinecartEntity {
     @Shadow
     public int fuel;

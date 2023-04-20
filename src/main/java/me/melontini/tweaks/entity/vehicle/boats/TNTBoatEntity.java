@@ -1,5 +1,6 @@
 package me.melontini.tweaks.entity.vehicle.boats;
 
+import me.melontini.tweaks.networks.TweaksPackets;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -26,8 +27,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
-
-import static me.melontini.tweaks.Tweaks.MODID;
 
 public class TNTBoatEntity extends BoatEntityWithBlock {
     public int fuseTicks = -1;
@@ -58,7 +57,7 @@ public class TNTBoatEntity extends BoatEntityWithBlock {
             if ((this.getFirstPassenger() instanceof PlayerEntity)) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeUuid(this.getUuid());
-                ClientPlayNetworking.send(new Identifier(MODID, "boat_explosion_server"), buf);
+                ClientPlayNetworking.send(TweaksPackets.EXPLODE_BOAT_ON_SERVER, buf);
             } else {
                 this.explode();
             }

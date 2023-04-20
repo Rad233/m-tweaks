@@ -19,8 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@MixinRelatedConfigOption("simpleMinecartLinking")
 @Mixin(Entity.class)
+@MixinRelatedConfigOption("simpleMinecartLinking")
 public abstract class EntityMixin {
     @Shadow
     public World world;

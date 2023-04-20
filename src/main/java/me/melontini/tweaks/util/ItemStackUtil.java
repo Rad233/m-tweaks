@@ -1,7 +1,7 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.util.MakeSure;
-import me.melontini.tweaks.Tweaks;
+import me.melontini.crackerutil.util.Utilities;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -28,9 +28,9 @@ public class ItemStackUtil {
     public static void spawnWithRVelocity(@NotNull BlockPos pos, ItemStack stack, World world, double range) {
         MakeSure.notNulls(pos, stack, world);
         ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack,
-                Tweaks.RANDOM.nextDouble(range + range) - range,
+                Utilities.RANDOM.nextDouble(range + range) - range,
                 0,
-                Tweaks.RANDOM.nextDouble(range + range) - range);
+                Utilities.RANDOM.nextDouble(range + range) - range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }
@@ -38,9 +38,9 @@ public class ItemStackUtil {
     public static void spawnWithRVelocity(@NotNull Vec3d pos, ItemStack stack, World world, double range) {
         MakeSure.notNulls(pos, stack, world);
         ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack,
-                Tweaks.RANDOM.nextDouble(range + range) - range,
+                Utilities.RANDOM.nextDouble(range + range) - range,
                 0,
-                Tweaks.RANDOM.nextDouble(range + range) - range);
+                Utilities.RANDOM.nextDouble(range + range) - range);
         itemEntity.setToDefaultPickupDelay();
         world.spawnEntity(itemEntity);
     }

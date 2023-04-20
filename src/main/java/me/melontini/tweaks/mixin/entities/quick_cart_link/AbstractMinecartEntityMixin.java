@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
 
-@MixinRelatedConfigOption("simpleMinecartLinking")
 @Mixin(AbstractMinecartEntity.class)
+@MixinRelatedConfigOption("simpleMinecartLinking")
 public abstract class AbstractMinecartEntityMixin extends Entity implements LinkableMinecartsDuck {
     @Unique
     private AbstractMinecartEntity mTweaks$following;

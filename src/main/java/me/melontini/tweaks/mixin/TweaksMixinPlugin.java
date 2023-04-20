@@ -1,14 +1,14 @@
 package me.melontini.tweaks.mixin;
 
+import me.melontini.crackerutil.util.PrependingLogger;
 import me.melontini.crackerutil.util.mixin.ExtendedPlugin;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.service.MixinService;
 
@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TweaksMixinPlugin extends ExtendedPlugin {
-    private static final Logger LOGGER = LoggerFactory.getLogger("TweaksMixinPlugin");
+    private static final PrependingLogger LOGGER = new PrependingLogger(LogManager.getLogger("TweaksMixinPlugin"), PrependingLogger.LOGGER_NAME);
     private static final String MIXIN_TO_OPTION_ANNOTATION = "Lme/melontini/tweaks/util/annotations/MixinRelatedConfigOption;";
     private TweaksConfig CONFIG;
     private static boolean log;
 
     static {
-        LOGGER.info("({}) Definitely up to a lot of good", LOGGER.getName());
+        LOGGER.info("Definitely up to a lot of good");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
         log = CONFIG.debugMessages || FabricLoader.getInstance().isDevelopmentEnvironment();
 
         if (CONFIG.compatMode) {
-            LOGGER.warn("({}) Compat mode is on!", LOGGER.getName());
+            LOGGER.warn("Compat mode is on!");
         }
     }
 
@@ -52,14 +52,14 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
                             Map<String, Object> values = mapAnnotationNode(node1);
                             List<String> configOptions = (List<String>) values.get("value");
                             for (String configOption : configOptions) {
-                                List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
+                                List<String> fields = Arrays.stream(configOption.split("\\.")).toList();
 
-                                if (classes.size() > 1) {//🤯🤯🤯
-                                    Object obj = TweaksConfig.class.getField(classes.get(0)).get(CONFIG);
-                                    for (int i = 1; i < (classes.size() - 1); i++) {
-                                        obj = obj.getClass().getField(classes.get(i)).get(obj);
+                                if (fields.size() > 1) {//🤯🤯🤯
+                                    Object obj = TweaksConfig.class.getField(fields.get(0)).get(CONFIG);
+                                    for (int i = 1; i < (fields.size() - 1); i++) {
+                                        obj = obj.getClass().getField(fields.get(i)).get(obj);
                                     }
-                                    load = obj.getClass().getField(classes.get(1)).getBoolean(obj);
+                                    load = obj.getClass().getField(fields.get(1)).getBoolean(obj);
                                 } else {
                                     load = CONFIG.getClass().getField(configOption).getBoolean(CONFIG);
                                 }
@@ -72,7 +72,7 @@ public class TweaksMixinPlugin extends ExtendedPlugin {
                 throw new RuntimeException(e);
             }
         }
-        if (log) LOGGER.info("({}) {} : {}", LOGGER.getName(), mixinClassName.replaceFirst("me\\.melontini\\.tweaks\\.mixin\\.", ""), load ? "loaded" : "not loaded");
+        if (log) LOGGER.info("{} : {}", mixinClassName.replaceFirst("me\\.melontini\\.tweaks\\.mixin\\.", ""), load ? "loaded" : "not loaded");
         return load;
     }
 

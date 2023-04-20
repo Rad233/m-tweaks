@@ -3,6 +3,7 @@ package me.melontini.tweaks.util;
 import me.melontini.crackerutil.data.NbtBuilder;
 import me.melontini.crackerutil.util.MakeSure;
 import me.melontini.crackerutil.world.PlayerUtil;
+import me.melontini.tweaks.networks.TweaksPackets;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -61,7 +62,7 @@ public class WorldUtil {
             packetByteBuf.writeDouble(velocityZ);
 
             for (PlayerEntity player : PlayerUtil.findPlayersInRange(world, new BlockPos(x, y, z), 85)) {
-                ServerPlayNetworking.send((ServerPlayerEntity) player, new Identifier(MODID, "particles_thing"), packetByteBuf);
+                ServerPlayNetworking.send((ServerPlayerEntity) player, TweaksPackets.ADD_ONE_PARTICLE, packetByteBuf);
             }
         } else {
             throw new UnsupportedOperationException("Can't send packets to client unless you're on server.");

@@ -26,10 +26,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static me.melontini.tweaks.Tweaks.MODID;
 
@@ -46,14 +43,14 @@ public class ResourceConditionRegistry {
                 if (element.isJsonPrimitive()) {
                     try {
                         String configOption = element.getAsString();
-                        List<String> classes = Arrays.stream(configOption.split("\\.")).toList();
+                        List<String> fields = Arrays.stream(configOption.split("\\.")).toList();
 
-                        if (classes.size() > 1) {//🤯🤯🤯
-                            Object obj = TweaksConfig.class.getField(classes.get(0)).get(Tweaks.CONFIG);
-                            for (int i = 1; i < (classes.size() - 1); i++) {
-                                obj = obj.getClass().getField(classes.get(i)).get(obj);
+                        if (fields.size() > 1) {//🤯🤯🤯
+                            Object obj = TweaksConfig.class.getField(fields.get(0)).get(Tweaks.CONFIG);
+                            for (int i = 1; i < (fields.size() - 1); i++) {
+                                obj = obj.getClass().getField(fields.get(i)).get(obj);
                             }
-                            load = obj.getClass().getField(classes.get(1)).getBoolean(obj);
+                            load = obj.getClass().getField(fields.get(1)).getBoolean(obj);
                         } else {
                             load = Tweaks.CONFIG.getClass().getField(configOption).getBoolean(Tweaks.CONFIG);
                         }
@@ -163,23 +160,46 @@ public class ResourceConditionRegistry {
                         JsonObject json = GSON.fromJson(jsonElement, JsonObject.class);
                         ItemBehaviorData data = new ItemBehaviorData();
                         data.item_id = JsonHelper.getString(json, "item_id");
-                        data.function_id = JsonHelper.getString(json, "function_id", null);
-
-                        data.effect_id = JsonHelper.getString(json, "effect_id", null);
-                        data.effect_time = JsonHelper.getInt(json, "effect_time", 100);
-                        data.effect_level = JsonHelper.getInt(json, "effect_level", 0);
-
-                        data.particle_id = JsonHelper.getString(json, "particle_id", null);
-                        data.particle_count = JsonHelper.getInt(json, "particle_count", 10);
-                        data.particle_delta_x = JsonHelper.getDouble(json, "particle_delta_x", 0.5);
-                        data.particle_delta_y = JsonHelper.getDouble(json, "particle_delta_y", 0.5);
-                        data.particle_delta_z = JsonHelper.getDouble(json, "particle_delta_z", 0.5);
-                        data.particle_speed = JsonHelper.getDouble(json, "particle_speed", 0.5);
-                        data.particle_force = JsonHelper.getBoolean(json, "particle_force", true);
 
                         if (Registry.ITEM.get(Identifier.tryParse(data.item_id)) == Items.AIR) {
                             throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item_id));
                         }
+
+                        var item_arr = JsonHelper.getArray(json, "item_commands", null);
+                        if (item_arr != null) {
+                            List<String> item_commands = new ArrayList<>(item_arr.size());
+                            for (JsonElement element : item_arr) {
+                                item_commands.add(element.getAsString());
+                            }
+                            data.item_commands = item_commands.toArray(String[]::new);
+                        }
+
+
+                        var user_arr = JsonHelper.getArray(json, "user_commands", null);
+                        if (user_arr != null) {
+                            List<String> user_commands = new ArrayList<>(user_arr.size());
+                            for (JsonElement element : user_arr) {
+                                user_commands.add(element.getAsString());
+                            }
+                            data.user_commands = user_commands.toArray(String[]::new);
+                        }
+
+                        var server_arr = JsonHelper.getArray(json, "server_commands", null);
+                        if (server_arr != null) {
+                            List<String> server_commands = new ArrayList<>(server_arr.size());
+                            for (JsonElement element : server_arr) {
+                                server_commands.add(element.getAsString());
+                            }
+                            data.server_commands = server_commands.toArray(String[]::new);
+                        }
+
+                        data.spawn_colored_particles = JsonHelper.getBoolean(json, "spawn_colored_particles", false);
+
+                        JsonObject colors = JsonHelper.getObject(json, "particle_colors", new JsonObject());
+                        data.particle_colors = new ItemBehaviorData.ParticleColors();
+                        data.particle_colors.red = JsonHelper.getInt(colors, "red", 0);
+                        data.particle_colors.green = JsonHelper.getInt(colors, "green", 0);
+                        data.particle_colors.blue = JsonHelper.getInt(colors, "blue", 0);
 
                         Tweaks.ITEM_BEHAVIOR_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.item_id)), data);
                     } catch (IOException e) {

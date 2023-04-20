@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@MixinRelatedConfigOption("properlyAlignedRecipeAlternatives")
 @Mixin(RecipeAlternativesWidget.class)
+@MixinRelatedConfigOption("properlyAlignedRecipeAlternatives")
 public class RecipeAlternativesWidgetMixin {
     @Shadow
     private int buttonX;

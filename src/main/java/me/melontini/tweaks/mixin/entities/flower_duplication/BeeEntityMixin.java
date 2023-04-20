@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@MixinRelatedConfigOption("beeFlowerDuplication")
 @Mixin(BeeEntity.class)
+@MixinRelatedConfigOption("beeFlowerDuplication")
 public abstract class BeeEntityMixin extends AnimalEntity {
 
     @Shadow

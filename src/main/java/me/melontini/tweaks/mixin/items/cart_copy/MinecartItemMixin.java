@@ -41,8 +41,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
-@MixinRelatedConfigOption("minecartBlockPicking")
 @Mixin(MinecartItem.class)
+@MixinRelatedConfigOption("minecartBlockPicking")
 public abstract class MinecartItemMixin extends Item {
 
     @Shadow

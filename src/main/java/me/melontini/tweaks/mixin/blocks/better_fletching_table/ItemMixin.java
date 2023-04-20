@@ -19,8 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@MixinRelatedConfigOption("usefulFletching")
 @Mixin(Item.class)
+@MixinRelatedConfigOption("usefulFletching")
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "appendTooltip")
     public void mTweaks$tooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {

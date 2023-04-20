@@ -1,5 +1,6 @@
 package me.melontini.tweaks.networks;
 
+import me.melontini.crackerutil.util.ColorUtil;
 import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.client.sound.PersistentMovingSoundInstance;
@@ -34,7 +35,7 @@ public class ClientSideNetworking {
 
     public static void register() {
         if (Tweaks.CONFIG.newMinecarts.isJukeboxMinecartOn) {
-            ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "jukebox_minecart_audio"), (client, handler, buf, responseSender) -> {
+            ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.JUKEBOX_MINECART_START_PLAYING, (client, handler, buf, responseSender) -> {
                 UUID id = buf.readUuid();
                 ItemStack stack = buf.readItemStack();
                 client.execute(() -> {
@@ -54,19 +55,18 @@ public class ClientSideNetworking {
                     }
                 });
             });
-            ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "jukebox_minecart_audio_stop"), (client, handler, buf, responseSender) -> {
+            ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.JUKEBOX_MINECART_STOP_PLAYING, (client, handler, buf, responseSender) -> {
                 UUID id = buf.readUuid();
                 client.execute(() -> {
                     SoundInstance instance = soundInstanceMap.remove(id);
                     if (client.getSoundManager().isPlaying(instance)) {
                         client.getSoundManager().stop(instance);
-                        TweaksLog.devInfo("removed jbmc sound instance");
                     }
                 });
             });
         }
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "custom_totem_use"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.USED_CUSTOM_TOTEM, (client, handler, buf, responseSender) -> {
             UUID id = buf.readUuid();
             ItemStack stack = buf.readItemStack();
             DefaultParticleType particle = (DefaultParticleType) buf.readRegistryValue(Registry.PARTICLE_TYPE);
@@ -80,7 +80,7 @@ public class ClientSideNetworking {
             });
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "particles_thing"), (client, handler, packetByteBuf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.ADD_ONE_PARTICLE, (client, handler, packetByteBuf, responseSender) -> {
             DefaultParticleType particle = (DefaultParticleType) packetByteBuf.readRegistryValue(Registry.PARTICLE_TYPE);
             double x = packetByteBuf.readDouble(), y = packetByteBuf.readDouble(), z = packetByteBuf.readDouble();
             double velocityX = packetByteBuf.readDouble(), velocityY = packetByteBuf.readDouble(), velocityZ = packetByteBuf.readDouble();
@@ -91,31 +91,32 @@ public class ClientSideNetworking {
         });
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "notify_client_about_stuff_please"), (client, handler, packetByteBuf, responseSender) -> {
-            UUID uuid = packetByteBuf.readUuid();
+            int uuid = packetByteBuf.readVarInt();
             ItemStack stack = packetByteBuf.readItemStack();
             client.execute(() -> {
                 ItemEntity entity = (ItemEntity) client.world.getEntityLookup().get(uuid);
-                entity.getDataTracker().set(ItemEntity.STACK, stack);
+                if (entity != null) entity.getDataTracker().set(ItemEntity.STACK, stack);
             });
         });
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(MODID, "ink_sac_throw"), (client, handler, packetByteBuf, responseSender) -> {
-            double x = packetByteBuf.readDouble(), y = packetByteBuf.readDouble(), z = packetByteBuf.readDouble();
-            ItemStack stack = packetByteBuf.readItemStack();
+        ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.FLYING_STACK_LANDED, (client, handler, buf, responseSender) -> {
+            double x = buf.readDouble(), y = buf.readDouble(), z = buf.readDouble();
+            ItemStack stack = buf.readItemStack();
+            boolean spawnColor = buf.readBoolean();
+
+            int color = 0;
+            if (spawnColor) {
+                color = buf.readVarInt();
+            }
+
+            float r = ColorUtil.getRedF(color);
+            float g = ColorUtil.getGreenF(color);
+            float b = ColorUtil.getBlueF(color);
             client.execute(() -> {
                 ParticlesMode particlesMode = MinecraftClient.getInstance().options.getParticles().getValue();
                 if (particlesMode == ParticlesMode.MINIMAL) return;
 
-                float e = Utilities.RANDOM.nextFloat() * 4.0f;
-                for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 15 : 7); i++) {
-                    Particle particle = (MinecraftClient.getInstance()).particleManager.addParticle(ParticleTypes.EFFECT, x, y, z, Utilities.RANDOM.nextGaussian() * 0.15, 0.5, Utilities.RANDOM.nextGaussian() * 0.15);
-                    if (particle != null) {
-                        particle.setColor(0, 0, 0);
-                        particle.move(e);
-                    }
-                }
-
-                for (int i = 0; i < 8; ++i) {
+                for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 8 : 4); ++i) {
                     (MinecraftClient.getInstance()).particleManager.addParticle(
                             new ItemStackParticleEffect(ParticleTypes.ITEM, stack),
                             x, y, z,
@@ -123,6 +124,15 @@ public class ClientSideNetworking {
                             Utilities.RANDOM.nextDouble() * 0.2,
                             Utilities.RANDOM.nextGaussian() * 0.15
                     );
+                }
+
+                if (spawnColor) {
+                    for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 15 : 7); i++) {
+                        Particle particle = (MinecraftClient.getInstance()).particleManager.addParticle(ParticleTypes.EFFECT, x, y, z, Utilities.RANDOM.nextGaussian() * 0.15, 0.5, Utilities.RANDOM.nextGaussian() * 0.15);
+                        if (particle != null) {
+                            particle.setColor(r, g, b);
+                        }
+                    }
                 }
             });
         });

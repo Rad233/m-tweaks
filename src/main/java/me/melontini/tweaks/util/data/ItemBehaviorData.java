@@ -2,15 +2,15 @@ package me.melontini.tweaks.util.data;
 
 public class ItemBehaviorData {
     public String item_id;
-    public String function_id;
-    public String effect_id;
-    public int effect_time;
-    public int effect_level;
-    public String particle_id;
-    public int particle_count;
-    public double particle_delta_x;
-    public double particle_delta_y;
-    public double particle_delta_z;
-    public double particle_speed;
-    public boolean particle_force;
+    public String[] item_commands;
+    public String[] user_commands;
+    public String[] server_commands;
+    public boolean spawn_colored_particles;
+    public ParticleColors particle_colors;
+
+    public static class ParticleColors {
+        public int red;
+        public int green;
+        public int blue;
+    }
 }

@@ -13,11 +13,9 @@ import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@MixinRelatedConfigOption("balancedMending")
 @Mixin(AnvilScreen.class)
+@MixinRelatedConfigOption("balancedMending")
 public abstract class AnvilScreenMixin extends HandledScreen<AnvilScreenHandler> {
     public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

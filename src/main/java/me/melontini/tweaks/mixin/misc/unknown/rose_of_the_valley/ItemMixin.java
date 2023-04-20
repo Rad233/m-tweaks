@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@MixinRelatedConfigOption("unknown")
 @Mixin(Item.class)
+@MixinRelatedConfigOption("unknown")
 public class ItemMixin {
     @Inject(at = @At("HEAD"), method = "onClicked", cancellable = true)
     private void mTweaks$onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference, CallbackInfoReturnable<Boolean> cir) {

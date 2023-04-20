@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@MixinRelatedConfigOption("balancedMending")
 @Mixin(ItemStack.class)
+@MixinRelatedConfigOption("balancedMending")
 public abstract class ItemStackMixin {
     @ModifyReturnValue(method = "getRepairCost", at = @At("RETURN"))
     private int mTweaks$getRepairCost(int original) {

@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@MixinRelatedConfigOption("newBoats.isFurnaceBoatOn")
 @Mixin(BoatEntity.class)
+@MixinRelatedConfigOption("newBoats.isFurnaceBoatOn")
 public abstract class BoatEntityMixin extends Entity {
     @Shadow
     public float yawVelocity;

@@ -22,8 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@MixinRelatedConfigOption("unknown")
 @Mixin(PlayerEntity.class)
+@MixinRelatedConfigOption("unknown")
 public abstract class PlayerEntityMixin {
 
     @Shadow

@@ -38,6 +38,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 public class MiscUtil {
     public static final Hash.Strategy<ItemStack> STRATEGY = new Hash.Strategy<>() {//Vanilla ItemStackSet is good, but it uses canCombine() and not areEqual(). It also doesn't exist on 1.18.2-1.19.2
@@ -58,7 +59,7 @@ public class MiscUtil {
                     || itemStack != null && itemStack2 != null && itemStack.isEmpty() == itemStack2.isEmpty() && ItemStack.areEqual(itemStack, itemStack2);
         }
     };
-    public static final Map<RecipeType<?>, Utilities.ConsumerTwo<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Utilities.consume(new ConcurrentHashMap<>(), hashMap -> {
+    public static final Map<RecipeType<?>, BiConsumer<Map<Identifier, Advancement.Builder>, Recipe<?>>> RECIPE_TYPE_HANDLERS = Utilities.consume(new ConcurrentHashMap<>(), hashMap -> {
         hashMap.put(RecipeType.BLASTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/blasting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
         hashMap.put(RecipeType.SMOKING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smoking/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));
         hashMap.put(RecipeType.SMELTING, (map, recipe) -> map.put(new Identifier(recipe.getId().getNamespace(), "recipes/gen/smelting/" + recipe.getId().toString().replace(":", "_")), MiscUtil.createAdvBuilder(recipe.getId(), recipe.getIngredients().get(0))));

@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -60,10 +61,10 @@ public class ItemBehaviorAdder {
     });
 
     public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
-        ItemBehaviorData data = Tweaks.ITEM_BEHAVIOR_DATA.get(stack.getItem());
-        if (data == null) return;
-
         if (!world.isClient) {
+            ItemBehaviorData data = Tweaks.ITEM_BEHAVIOR_DATA.get(stack.getItem());
+            if (data == null) return;
+
             ServerWorld serverWorld = (ServerWorld) world;
             if (data.item_commands != null) {
                 ServerCommandSource source = new ServerCommandSource(
@@ -100,7 +101,6 @@ public class ItemBehaviorAdder {
 
                 if (BoneMealItem.useOnFertilizable(stack, world, blockPos)) {
                     world.syncWorldEvent(WorldEvents.BONE_MEAL_USED, blockPos, 0);
-
                 } else {
                     BlockState blockState = world.getBlockState(blockPos);
                     boolean bl = blockState.isSideSolidFullSquare(world, blockPos, result.getSide());
@@ -128,6 +128,37 @@ public class ItemBehaviorAdder {
                 if (!world.isClient) {
                     //addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
                     sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, entry.getValue());
+
+                    if (hitResult.getType() == HitResult.Type.ENTITY) {
+                        EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+                        Entity entity = entityHitResult.getEntity();
+                        if (entity instanceof PlayerEntity player) {
+                            PacketByteBuf buf = PacketByteBufs.create();
+                            buf.writeItemStack(stack);
+
+                            ServerPlayNetworking.send((ServerPlayerEntity) player, TweaksPackets.COLORED_FLYING_STACK_LANDED, buf);
+                        } else {
+                            Vec3d pos = hitResult.getPos();
+                            List<PlayerEntity> playerEntities = world.getEntitiesByClass(PlayerEntity.class, new Box(new BlockPos(pos)).expand(0.5), LivingEntity::isAlive);
+                            playerEntities.stream().min(Comparator.comparingDouble(player -> player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
+                                    .ifPresent(player -> {
+                                        PacketByteBuf buf = PacketByteBufs.create();
+                                        buf.writeItemStack(stack);
+
+                                        ServerPlayNetworking.send((ServerPlayerEntity) player, TweaksPackets.COLORED_FLYING_STACK_LANDED, buf);
+                                    });
+                        }
+                    } else if (hitResult.getType() == HitResult.Type.BLOCK) {
+                        Vec3d pos = hitResult.getPos();
+                        List<PlayerEntity> playerEntities = world.getEntitiesByClass(PlayerEntity.class, new Box(((BlockHitResult) hitResult).getBlockPos()).expand(0.5), LivingEntity::isAlive);
+                        playerEntities.stream().min(Comparator.comparingDouble(player -> player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
+                                .ifPresent(player -> {
+                                    PacketByteBuf buf = PacketByteBufs.create();
+                                    buf.writeItemStack(stack);
+
+                                    ServerPlayNetworking.send((ServerPlayerEntity) player, TweaksPackets.COLORED_FLYING_STACK_LANDED, buf);
+                                });
+                    }
                 }
             });
         }
@@ -150,6 +181,15 @@ public class ItemBehaviorAdder {
                 for (StatusEffectInstance instance : instances) {
                     livingEntity.addStatusEffect(instance, user);
                 }
+            } else {
+                Vec3d pos = hitResult.getPos();
+                List<LivingEntity> livingEntities = world.getEntitiesByClass(LivingEntity.class, new Box(new BlockPos(pos)).expand(0.5), LivingEntity::isAlive);
+                livingEntities.stream().min(Comparator.comparingDouble(livingEntity -> livingEntity.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())))
+                        .ifPresent(livingEntity -> {
+                            for (StatusEffectInstance instance : instances) {
+                                livingEntity.addStatusEffect(instance);
+                            }
+                        });
             }
         }
     }

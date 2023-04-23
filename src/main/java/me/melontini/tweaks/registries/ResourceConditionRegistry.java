@@ -193,6 +193,8 @@ public class ResourceConditionRegistry {
                             data.server_commands = server_commands.toArray(String[]::new);
                         }
 
+                        data.complement = JsonHelper.getBoolean(json, "complement",  false);
+
                         data.spawn_colored_particles = JsonHelper.getBoolean(json, "spawn_colored_particles", false);
 
                         JsonObject colors = JsonHelper.getObject(json, "particle_colors", new JsonObject());

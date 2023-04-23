@@ -44,7 +44,19 @@ public class ItemBehaviorAdder {
         map.put(Items.RED_DYE, ColorUtil.toColor(121, 28, 39));
         map.put(Items.BLUE_DYE, ColorUtil.toColor(5, 36, 99));
         map.put(Items.LIGHT_BLUE_DYE, ColorUtil.toColor(30, 65, 115));
+        map.put(Items.CYAN_DYE, ColorUtil.toColor(5, 95, 95));
         map.put(Items.BLACK_DYE, ColorUtil.toColor(5, 5, 8));
+        map.put(Items.BROWN_DYE, ColorUtil.toColor(80, 43, 20));
+        map.put(Items.GREEN_DYE, ColorUtil.toColor(0, 92, 0));
+        map.put(Items.PINK_DYE, ColorUtil.toColor(128, 54, 92));
+        map.put(Items.PURPLE_DYE, ColorUtil.toColor(128, 0, 128));
+        map.put(Items.YELLOW_DYE, ColorUtil.toColor(255, 255, 0));
+        map.put(Items.WHITE_DYE, ColorUtil.toColor(255, 255, 255));
+        map.put(Items.ORANGE_DYE, ColorUtil.toColor(255, 128, 0));
+        map.put(Items.LIME_DYE, ColorUtil.toColor(0, 255, 0));
+        map.put(Items.MAGENTA_DYE, ColorUtil.toColor(255, 0, 255));
+        map.put(Items.LIGHT_GRAY_DYE, ColorUtil.toColor(200, 200, 200));
+        map.put(Items.GRAY_DYE, ColorUtil.toColor(128, 128, 128));
     });
 
     public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks

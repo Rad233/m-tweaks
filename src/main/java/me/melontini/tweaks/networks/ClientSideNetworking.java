@@ -1,8 +1,11 @@
 package me.melontini.tweaks.networks;
 
+import me.melontini.crackerutil.client.util.ScreenParticleHelper;
 import me.melontini.crackerutil.util.ColorUtil;
+import me.melontini.crackerutil.util.MathStuff;
 import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
+import me.melontini.tweaks.client.particles.screen.DyeParticle;
 import me.melontini.tweaks.client.sound.PersistentMovingSoundInstance;
 import me.melontini.tweaks.util.TweaksLog;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -134,6 +137,13 @@ public class ClientSideNetworking {
                         }
                     }
                 }
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.COLORED_FLYING_STACK_LANDED, (client, handler, buf, responseSender) -> {
+            ItemStack dye = buf.readItemStack();
+            client.execute(() -> {
+                int a = client.getWindow().getScaledWidth();
+                ScreenParticleHelper.addParticle(new DyeParticle(MathStuff.nextDouble(Utilities.RANDOM, a/2d - (a/3d), a/2d + a/3d),client.getWindow().getScaledHeight()/2d,0,0, dye));
             });
         });
         TweaksLog.devInfo("ClientSideNetworking init complete!");

@@ -155,9 +155,7 @@ public class ResourceConditionRegistry {
                 var map = manager.findResources("mt_item_throw_behavior", identifier -> identifier.getPath().endsWith(".json"));
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
-                        var jsonElement = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
-                        //LogUtil.devInfo(jsonElement);
-                        JsonObject json = GSON.fromJson(jsonElement, JsonObject.class);
+                        JsonObject json = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
                         ItemBehaviorData data = new ItemBehaviorData();
                         data.item_id = JsonHelper.getString(json, "item_id");
 

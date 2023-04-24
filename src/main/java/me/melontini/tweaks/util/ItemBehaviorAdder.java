@@ -1,7 +1,6 @@
 package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.util.ColorUtil;
-import me.melontini.crackerutil.util.Utilities;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.entity.FlyingItemEntity;
@@ -36,29 +35,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class ItemBehaviorAdder {
-    private static final Map<Item, Integer> COLOR_MAP = Utilities.consume(new HashMap<>(), map -> {//TODO do something lol
-        map.put(Items.RED_DYE, ColorUtil.toColor(121, 28, 39));
-        map.put(Items.BLUE_DYE, ColorUtil.toColor(5, 36, 99));
-        map.put(Items.LIGHT_BLUE_DYE, ColorUtil.toColor(30, 65, 115));
-        map.put(Items.CYAN_DYE, ColorUtil.toColor(5, 95, 95));
-        map.put(Items.BLACK_DYE, ColorUtil.toColor(5, 5, 8));
-        map.put(Items.BROWN_DYE, ColorUtil.toColor(80, 43, 20));
-        map.put(Items.GREEN_DYE, ColorUtil.toColor(0, 92, 0));
-        map.put(Items.PINK_DYE, ColorUtil.toColor(128, 54, 92));
-        map.put(Items.PURPLE_DYE, ColorUtil.toColor(128, 0, 128));
-        map.put(Items.YELLOW_DYE, ColorUtil.toColor(255, 255, 0));
-        map.put(Items.WHITE_DYE, ColorUtil.toColor(255, 255, 255));
-        map.put(Items.ORANGE_DYE, ColorUtil.toColor(255, 128, 0));
-        map.put(Items.LIME_DYE, ColorUtil.toColor(0, 255, 0));
-        map.put(Items.MAGENTA_DYE, ColorUtil.toColor(255, 0, 255));
-        map.put(Items.LIGHT_GRAY_DYE, ColorUtil.toColor(200, 200, 200));
-        map.put(Items.GRAY_DYE, ColorUtil.toColor(128, 128, 128));
-    });
+    private static final Set<Item> DYE_ITEMS = Set.of(
+            Items.RED_DYE, Items.BLUE_DYE, Items.LIGHT_BLUE_DYE,
+            Items.CYAN_DYE, Items.BLACK_DYE, Items.BROWN_DYE,
+            Items.GREEN_DYE, Items.PINK_DYE,  Items.PURPLE_DYE,
+            Items.YELLOW_DYE, Items.WHITE_DYE, Items.ORANGE_DYE,
+            Items.LIME_DYE, Items.MAGENTA_DYE, Items.LIGHT_GRAY_DYE,
+            Items.GRAY_DYE);
 
     public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
         if (!world.isClient) {
@@ -113,22 +100,17 @@ public class ItemBehaviorAdder {
         addBehavior(Items.INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0));
-                sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, ColorUtil.toColor(24, 27, 50));
             }
         });
         addBehavior(Items.GLOW_INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
-                sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, ColorUtil.toColor(25, 49, 49));
             }
         });
 
-        for (Map.Entry<Item, Integer> entry : COLOR_MAP.entrySet()) {
-            addBehavior(entry.getKey(), (stack, flyingItemEntity, world, user, hitResult) -> {
+        for (Item item : DYE_ITEMS) {
+            addBehavior(item, (stack, flyingItemEntity, world, user, hitResult) -> {
                 if (!world.isClient) {
-                    //addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
-                    sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, true, entry.getValue());
-
                     if (hitResult.getType() == HitResult.Type.ENTITY) {
                         EntityHitResult entityHitResult = (EntityHitResult) hitResult;
                         Entity entity = entityHitResult.getEntity();

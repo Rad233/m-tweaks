@@ -14,6 +14,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +29,7 @@ public abstract class ItemStackMixin {
 
     @ModifyReturnValue(at = @At("RETURN"), method = "use")
     private TypedActionResult<ItemStack> mTweaks$throwableBehaviour(TypedActionResult<ItemStack> original, World world, PlayerEntity user, Hand hand) {
-        if (Tweaks.CONFIG.throwableItems && original.getResult() == ActionResult.PASS && (((ThrowableBehaviorDuck)getItem()).mTweaks$hasBehavior() || Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem()))) {
+        if (Tweaks.CONFIG.throwableItems && !Tweaks.CONFIG.throwableItemsBlacklist.contains(Registry.ITEM.getId(getItem()).toString()) && original.getResult() == ActionResult.PASS && (((ThrowableBehaviorDuck)getItem()).mTweaks$hasBehavior() || Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem()))) {
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
             if (!world.isClient) {
                 var entity = new FlyingItemEntity((ItemStack) (Object) this, user, world);

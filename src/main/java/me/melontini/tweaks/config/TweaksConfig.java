@@ -1,5 +1,6 @@
 package me.melontini.tweaks.config;
 
+import com.google.common.collect.Lists;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -194,6 +195,10 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("items")
     @ConfigEntry.Gui.Tooltip
     public boolean throwableItems = true;
+
+    @ConfigEntry.Category("items")
+    @ConfigEntry.Gui.Tooltip
+    public List<String> throwableItemsBlacklist = Lists.newArrayList();
 
     @ConfigEntry.Category("items")
     @Comment("Shows item durability (in %) if durability is < 100% or item count if count is > 1")

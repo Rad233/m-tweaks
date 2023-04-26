@@ -9,7 +9,10 @@ import me.melontini.tweaks.util.data.ItemBehaviorData;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FireBlock;
+import net.minecraft.block.TntBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -35,6 +38,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
+import net.minecraft.world.explosion.Explosion;
 
 import java.util.Comparator;
 import java.util.List;
@@ -163,6 +167,33 @@ public class ItemBehaviorAdder {
                 world.spawnEntity(new ItemEntity(world, flyingItemEntity.getX(), flyingItemEntity.getY(), flyingItemEntity.getZ(), stack));
             }
         }, Items.BRICK, Items.NETHER_BRICK);
+
+        addBehavior(Items.FIRE_CHARGE, (stack, flyingItemEntity, world, user, hitResult) -> {
+            if (!world.isClient) {
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    BlockHitResult result = (BlockHitResult) hitResult;
+                    BlockPos blockPos = result.getBlockPos();
+                    BlockState blockState = world.getBlockState(blockPos);
+
+                    if (blockState.getBlock() instanceof TntBlock) {
+                        TntBlock.primeTnt(world, blockPos);
+                        world.removeBlock(blockPos, false);
+                    } else if (FlammableBlockRegistry.getDefaultInstance().get(blockState.getBlock()) != null) {
+                        world.setBlockState(blockPos.offset(result.getSide()), FireBlock.getState(world, blockPos.offset(result.getSide())));
+                    }
+                } else if (hitResult.getType() == HitResult.Type.ENTITY) {
+                    EntityHitResult result = (EntityHitResult) hitResult;
+                    Entity entity = result.getEntity();
+                    entity.setOnFireFor(8);
+                }
+            }
+        });
+
+        addBehavior(Items.GUNPOWDER, (stack, flyingItemEntity, world, user, hitResult) -> {
+            if (!world.isClient) {
+                world.createExplosion(user, flyingItemEntity.getX(), flyingItemEntity.getY(), flyingItemEntity.getZ(), 1, Explosion.DestructionType.BREAK);
+            }
+        });
     }
 
     public static void addEffects(HitResult hitResult, World world, Entity user, StatusEffectInstance... instances) {

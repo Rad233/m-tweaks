@@ -1,5 +1,6 @@
 package me.melontini.tweaks;
 
+import me.melontini.crackerutil.util.TextUtil;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -20,6 +21,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,9 +32,11 @@ import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +56,10 @@ public class Tweaks implements ModInitializer {
     public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
     public static final Map<PlayerEntity, AbstractMinecartEntity> UNLINKING_CARTS = new HashMap<>();
     public static MinecraftServer SERVER;
+
+    public static DamageSource bricked(@Nullable Entity attacker) {
+        return new BrickedDamageSource(attacker);
+    }
 
     @Override
     public void onInitialize() {
@@ -107,4 +116,19 @@ public class Tweaks implements ModInitializer {
 
         ItemBehaviorAdder.init();
     }
+
+    private static class BrickedDamageSource extends DamageSource {
+        private final Entity attacker;
+        public BrickedDamageSource(Entity attacker) {
+            super("m_tweaks_bricked");
+            this.attacker = attacker;
+        }
+
+        @Override
+        public Text getDeathMessage(LivingEntity entity) {
+            if (attacker != null) return TextUtil.translatable("death.attack.m_tweaks_bricked.entity", entity.getDisplayName(), attacker.getDisplayName());
+            else return TextUtil.translatable("death.attack.m_tweaks_bricked", entity.getDisplayName());
+        }
+    }
+
 }

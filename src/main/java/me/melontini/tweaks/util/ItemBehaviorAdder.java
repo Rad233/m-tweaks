@@ -11,9 +11,11 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Item;
@@ -144,6 +146,23 @@ public class ItemBehaviorAdder {
                 }
             });
         }
+
+        addBehavior((stack, flyingItemEntity, world, user, hitResult) -> {
+            if (!world.isClient) {
+                if (hitResult.getType() == HitResult.Type.ENTITY) {
+                    EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+                    Entity entity = entityHitResult.getEntity();
+                    entity.damage(Tweaks.bricked(user), 2);
+                    if (entity instanceof LivingEntity livingEntity) {
+                        livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0));
+                    }
+                    if (entity instanceof Angerable angerable && user instanceof LivingEntity livingEntity) {
+                        angerable.setTarget(livingEntity);
+                    }
+                }
+                world.spawnEntity(new ItemEntity(world, flyingItemEntity.getX(), flyingItemEntity.getY(), flyingItemEntity.getZ(), stack));
+            }
+        }, Items.BRICK, Items.NETHER_BRICK);
     }
 
     public static void addEffects(HitResult hitResult, World world, Entity user, StatusEffectInstance... instances) {
@@ -191,5 +210,11 @@ public class ItemBehaviorAdder {
 
     public static void addBehavior(Item item, ItemBehavior behavior) {
         ((ThrowableBehaviorDuck) item).mTweaks$setBehavior(behavior);
+    }
+
+    public static void addBehavior(ItemBehavior behavior, Item... items) {
+        for (Item item : items) {
+            addBehavior(item, behavior);
+        }
     }
 }

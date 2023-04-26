@@ -34,9 +34,10 @@ public class DyeParticle extends AbstractScreenParticle {
 
     @Override
     protected void tickLogic() {
+        int window = Math.max(client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
         oldScale = scale;
-        scale = (float) MathHelper.lerp(0.15f, scale, 70 / client.getWindow().getScaleFactor());
-        if (scale > (25 / client.getWindow().getScaleFactor()) * 0.99f) {
+        scale = MathHelper.lerp(0.15f, scale, window / 25f);
+        if (scale > (window / 25f) * 0.99f) {
             oldOffset = offset;
             offset += 1 * (offset * 0.07f);
         }

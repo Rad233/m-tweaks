@@ -52,8 +52,8 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                 if (state.get(CampfireBlock.LIT)) {
                     if (!world.isClient) this.processingTime--;
                     if (world.random.nextInt(4) == 0 && world.isClient) {
-                        double i = (Utilities.RANDOM.nextDouble(0.6) - 0.3);
-                        double j = (Utilities.RANDOM.nextDouble(0.6) - 0.3);
+                        double i = Utilities.RANDOM.nextDouble(0.6) - 0.3;
+                        double j = Utilities.RANDOM.nextDouble(0.6) - 0.3;
                         world.addParticle(ParticleTypes.SMOKE, (pos.getX() + 0.5) + i, pos.getY() + 0.5, (pos.getZ() + 0.5) + j, 0F, 0.07F, 0F);
                     }
                 }
@@ -82,9 +82,7 @@ public class IncubatorBlockEntity extends BlockEntity implements SidedInventory 
                     BlockPos entityPos = pos.offset(state.get(IncubatorBlock.FACING));
                     assert entity != null;
                     entity.setPos(entityPos.getX() + 0.5, entityPos.getY() + 0.5, entityPos.getZ() + 0.5);
-                    if (entity instanceof PassiveEntity) {
-                        ((PassiveEntity) entity).setBaby(true);
-                    }
+                    if (entity instanceof PassiveEntity passive) passive.setBaby(true);
                     stack.decrement(1);
                     world.spawnEntity(entity);
                     this.processingTime = -1;

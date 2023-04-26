@@ -193,7 +193,6 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("items")
     @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.RequiresRestart
     public boolean throwableItems = true;
 
     @ConfigEntry.Category("items")

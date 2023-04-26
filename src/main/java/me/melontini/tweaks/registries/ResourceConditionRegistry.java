@@ -163,33 +163,17 @@ public class ResourceConditionRegistry {
                             throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item_id));
                         }
 
-                        var item_arr = JsonHelper.getArray(json, "item_commands", null);
-                        if (item_arr != null) {
-                            List<String> item_commands = new ArrayList<>(item_arr.size());
-                            for (JsonElement element : item_arr) {
-                                item_commands.add(element.getAsString());
-                            }
-                            data.item_commands = item_commands.toArray(String[]::new);
-                        }
+                        data.on_entity_hit = new ItemBehaviorData.CommandHolder();
+                        readCommands(json, data.on_entity_hit);
 
+                        data.on_block_hit = new ItemBehaviorData.CommandHolder();
+                        readCommands(json, data.on_block_hit);
 
-                        var user_arr = JsonHelper.getArray(json, "user_commands", null);
-                        if (user_arr != null) {
-                            List<String> user_commands = new ArrayList<>(user_arr.size());
-                            for (JsonElement element : user_arr) {
-                                user_commands.add(element.getAsString());
-                            }
-                            data.user_commands = user_commands.toArray(String[]::new);
-                        }
+                        data.on_miss = new ItemBehaviorData.CommandHolder();
+                        readCommands(json, data.on_miss);
 
-                        var server_arr = JsonHelper.getArray(json, "server_commands", null);
-                        if (server_arr != null) {
-                            List<String> server_commands = new ArrayList<>(server_arr.size());
-                            for (JsonElement element : server_arr) {
-                                server_commands.add(element.getAsString());
-                            }
-                            data.server_commands = server_commands.toArray(String[]::new);
-                        }
+                        data.on_any_hit = new ItemBehaviorData.CommandHolder();
+                        readCommands(json, data.on_any_hit);
 
                         data.complement = JsonHelper.getBoolean(json, "complement",  false);
 
@@ -210,5 +194,44 @@ public class ResourceConditionRegistry {
         });
 
         TweaksLog.info("ResourceConditionRegistry init complete");
+    }
+
+    private static void readCommands(JsonObject json, ItemBehaviorData.CommandHolder holder) {
+        var item_arr = JsonHelper.getArray(json, "item_commands", null);
+        if (item_arr != null) {
+            List<String> item_commands = new ArrayList<>(item_arr.size());
+            for (JsonElement element : item_arr) {
+                item_commands.add(element.getAsString());
+            }
+            holder.item_commands = item_commands.toArray(String[]::new);
+        }
+
+
+        var user_arr = JsonHelper.getArray(json, "user_commands", null);
+        if (user_arr != null) {
+            List<String> user_commands = new ArrayList<>(user_arr.size());
+            for (JsonElement element : user_arr) {
+                user_commands.add(element.getAsString());
+            }
+            holder.user_commands = user_commands.toArray(String[]::new);
+        }
+
+        var server_arr = JsonHelper.getArray(json, "server_commands", null);
+        if (server_arr != null) {
+            List<String> server_commands = new ArrayList<>(server_arr.size());
+            for (JsonElement element : server_arr) {
+                server_commands.add(element.getAsString());
+            }
+            holder.server_commands = server_commands.toArray(String[]::new);
+        }
+
+        var hit_entity_arr = JsonHelper.getArray(json, "hit_entity_commands", null);
+        if (hit_entity_arr != null) {
+            List<String> server_commands = new ArrayList<>(hit_entity_arr.size());
+            for (JsonElement element : hit_entity_arr) {
+                server_commands.add(element.getAsString());
+            }
+            holder.hit_entity_commands = server_commands.toArray(String[]::new);
+        }
     }
 }

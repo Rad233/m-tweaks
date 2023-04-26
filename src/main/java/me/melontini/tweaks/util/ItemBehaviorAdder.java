@@ -59,31 +59,55 @@ public class ItemBehaviorAdder {
             if (data == null) return;
 
             ServerWorld serverWorld = (ServerWorld) world;
-            if (data.item_commands != null) {
-                ServerCommandSource source = new ServerCommandSource(
-                        serverWorld.getServer(), flyingItemEntity.getPos(), new Vec2f(flyingItemEntity.getPitch(), flyingItemEntity.getYaw()), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity);
-                for (String command : data.item_commands) {
-                    serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
-                }
-            }
 
-            if (data.user_commands != null && user != null) {
-                ServerCommandSource source = new ServerCommandSource(
-                        serverWorld.getServer(), user.getPos(), new Vec2f(user.getPitch(), user.getYaw()), serverWorld, 4, user.getEntityName(), Text.literal(user.getEntityName()), serverWorld.getServer(), user);
-                for (String command : data.user_commands) {
-                    serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
-                }
-            }
-
-            if (data.server_commands != null) {
-                for (String command : data.server_commands) {
-                    serverWorld.getServer().getCommandManager().executeWithPrefix(serverWorld.getServer().getCommandSource(), command);
-                }
+            executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_any_hit);
+            switch (hitResult.getType()) {
+                case ENTITY -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_entity_hit);
+                case BLOCK -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_block_hit);
+                case MISS -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_miss);
             }
 
             sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, data.spawn_colored_particles, ColorUtil.toColor(data.particle_colors.red, data.particle_colors.green, data.particle_colors.blue));
         }
     };
+
+    private static void executeCommands(ServerWorld serverWorld, FlyingItemEntity flyingItemEntity, Entity user, HitResult hitResult, ItemBehaviorData.CommandHolder data) {
+        if (data.item_commands != null) {
+            ServerCommandSource source = new ServerCommandSource(
+                    serverWorld.getServer(), flyingItemEntity.getPos(), new Vec2f(flyingItemEntity.getPitch(), flyingItemEntity.getYaw()), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity);
+            for (String command : data.item_commands) {
+                serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
+            }
+        }
+
+        if (data.user_commands != null && user != null) {
+            ServerCommandSource source = new ServerCommandSource(
+                    serverWorld.getServer(), user.getPos(), new Vec2f(user.getPitch(), user.getYaw()), serverWorld, 4, user.getEntityName(), Text.literal(user.getEntityName()), serverWorld.getServer(), user);
+            for (String command : data.user_commands) {
+                serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
+            }
+        }
+
+        if (data.server_commands != null) {
+            for (String command : data.server_commands) {
+                serverWorld.getServer().getCommandManager().executeWithPrefix(serverWorld.getServer().getCommandSource(), command);
+            }
+        }
+
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
+            EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+            Entity entity = entityHitResult.getEntity();
+            if (entity instanceof LivingEntity) {
+                if (data.hit_entity_commands != null) {
+                    ServerCommandSource source = new ServerCommandSource(
+                            serverWorld.getServer(), entity.getPos(), new Vec2f(entity.getPitch(), entity.getYaw()), serverWorld, 4, entity.getEntityName(), Text.literal(entity.getEntityName()), serverWorld.getServer(), entity);
+                    for (String command : data.hit_entity_commands) {
+                        serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
+                    }
+                }
+            }
+        }
+    }
 
     public static void init() {
         addBehavior(Items.BONE_MEAL, (stack, flyingItemEntity, world, user, hitResult) -> {

@@ -1,5 +1,6 @@
 package me.melontini.tweaks.mixin.items.infinite_totem;
 
+import me.melontini.crackerutil.util.classes.Tuple;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.util.BeaconUtil;
@@ -24,7 +25,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -46,6 +46,7 @@ import static me.melontini.tweaks.Tweaks.MODID;
 @MixinRelatedConfigOption({"totemSettings.enableInfiniteTotem", "totemSettings.enableTotemAscension"})
 public abstract class ItemEntityMixin extends Entity {
     private static final Set<ItemEntity> MTWEAKS$ITEMS = new HashSet<>();
+    private static final Tuple<BeaconBlockEntity, Integer> MTWEAKS$NULL_BEACON = new Tuple<>(null, 0);
     @Shadow
     @Final
     private static TrackedData<ItemStack> STACK;
@@ -53,7 +54,8 @@ public abstract class ItemEntityMixin extends Entity {
     private final List<Block> beaconBlocks = List.of(Blocks.DIAMOND_BLOCK, Blocks.NETHERITE_BLOCK);
     private int mTweaks$ascensionTicks;
     private ItemEntity mTweaks$itemEntity;
-    private Pair<BeaconBlockEntity, Integer> mTweaks$beacon = new Pair<>(null, 0);
+    private Tuple<BeaconBlockEntity, Integer> mTweaks$beacon = MTWEAKS$NULL_BEACON;
+
 
     public ItemEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -65,15 +67,12 @@ public abstract class ItemEntityMixin extends Entity {
     @Shadow
     public abstract void setToDefaultPickupDelay();
 
-    @Shadow private int itemAge;
-
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V", shift = At.Shift.BEFORE), method = "tick")
     private void mTweaksTick(CallbackInfo ci) {
         if (!Tweaks.CONFIG.totemSettings.enableTotemAscension || !Tweaks.CONFIG.totemSettings.enableInfiniteTotem)
             return;
         if (!this.dataTracker.get(STACK).isOf(Items.TOTEM_OF_UNDYING)) return;
 
-        ItemEntity self = (ItemEntity) (Object) this;
         if (age % 35 == 0 && mTweaks$ascensionTicks == 0) {
             if (!mTweaks$beaconCheck()) {
                 this.setToDefaultPickupDelay();
@@ -81,7 +80,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
         }
 
-        if (mTweaks$beacon.getLeft() != null && mTweaks$beacon.getRight() >= 4) {
+        if (mTweaks$beacon.left() != null && mTweaks$beacon.right() >= 4) {
             if (!world.isClient) {
                 if (mTweaks$itemEntity == null) {
                     if (mTweaks$ascensionTicks > 0) --mTweaks$ascensionTicks;
@@ -125,8 +124,8 @@ public abstract class ItemEntityMixin extends Entity {
                     if (mTweaks$beaconCheck()) {
                         mTweaks$ascensionTicks++;
 
-                        WorldUtil.crudeSetVelocity(this,0, 0.07, 0);
-                        WorldUtil.crudeSetVelocity(mTweaks$itemEntity,0, 0.07, 0);
+                        WorldUtil.crudeSetVelocity(this, 0, 0.07, 0);
+                        WorldUtil.crudeSetVelocity(mTweaks$itemEntity, 0, 0.07, 0);
 
                         if (mTweaks$ascensionTicks == 180) {
                             mTweaks$ascensionTicks = 0;
@@ -145,8 +144,6 @@ public abstract class ItemEntityMixin extends Entity {
                         mTweaks$itemEntity = null;
                     }
                 }
-            } else {
-
             }
         }
     }
@@ -154,10 +151,10 @@ public abstract class ItemEntityMixin extends Entity {
     private boolean mTweaks$beaconCheck() {
         BlockEntity entity = world.getBlockEntity(new BlockPos(getX(), world.getTopY(Heightmap.Type.WORLD_SURFACE, getBlockPos().getX(), getBlockPos().getZ()) - 1, getZ()));
         if (entity instanceof BeaconBlockEntity beaconBlock) {
-            this.mTweaks$beacon = new Pair<>(beaconBlock, BeaconUtil.getLevelFromBlocks(world, beaconBlock.getPos(), beaconBlocks));
+            this.mTweaks$beacon = new Tuple<>(beaconBlock, BeaconUtil.getLevelFromBlocks(world, beaconBlock.getPos(), beaconBlocks));
             return true;
         } else {
-            this.mTweaks$beacon = new Pair<>(null, 0);
+            this.mTweaks$beacon = MTWEAKS$NULL_BEACON;
             return false;
         }
     }

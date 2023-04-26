@@ -161,6 +161,10 @@
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "Quickly pulls items inside itself.",
 
   "text.autoconfig.m-tweaks.category.items": "Items",
+  "text.autoconfig.m-tweaks.option.throwableItems": "Throwable Items",
+  "text.autoconfig.m-tweaks.option.throwableItems.@Tooltip": "Allows throwing certain items, which would otherwise be useless*",
+  "text.autoconfig.m-tweaks.option.throwableItemsBlacklist": "Throwable Items Blacklist",
+  "text.autoconfig.m-tweaks.option.throwableItemsBlacklist.@Tooltip": "Block all behaviors of items with following IDs",
   "text.autoconfig.m-tweaks.option.slightlyBetterItemNames": "Slightly Better Item Names",
   "text.autoconfig.m-tweaks.option.slightlyBetterItemNames.@Tooltip": "Shows item durability (in %) if durability is less than 100%, or item count if count is more than 1.",
   "text.autoconfig.m-tweaks.option.totemSettings": "Infinite Totem of Undying",

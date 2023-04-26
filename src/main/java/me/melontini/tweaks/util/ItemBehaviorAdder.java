@@ -54,18 +54,18 @@ public class ItemBehaviorAdder {
             Items.GRAY_DYE);
 
     public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
-        if (!world.isClient) {
+        if (!world.isClient()) {
             ItemBehaviorData data = Tweaks.ITEM_BEHAVIOR_DATA.get(stack.getItem());
             if (data == null) return;
 
             ServerWorld serverWorld = (ServerWorld) world;
 
-            executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_any_hit);
             switch (hitResult.getType()) {
                 case ENTITY -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_entity_hit);
                 case BLOCK -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_block_hit);
                 case MISS -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_miss);
             }
+            executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_any_hit);
 
             sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, data.spawn_colored_particles, ColorUtil.toColor(data.particle_colors.red, data.particle_colors.green, data.particle_colors.blue));
         }
@@ -74,7 +74,7 @@ public class ItemBehaviorAdder {
     private static void executeCommands(ServerWorld serverWorld, FlyingItemEntity flyingItemEntity, Entity user, HitResult hitResult, ItemBehaviorData.CommandHolder data) {
         if (data.item_commands != null) {
             ServerCommandSource source = new ServerCommandSource(
-                    serverWorld.getServer(), flyingItemEntity.getPos(), new Vec2f(flyingItemEntity.getPitch(), flyingItemEntity.getYaw()), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity);
+                    serverWorld.getServer(), flyingItemEntity.getPos(), new Vec2f(flyingItemEntity.getPitch(), flyingItemEntity.getYaw()), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity).withSilent();
             for (String command : data.item_commands) {
                 serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
             }
@@ -82,7 +82,7 @@ public class ItemBehaviorAdder {
 
         if (data.user_commands != null && user != null) {
             ServerCommandSource source = new ServerCommandSource(
-                    serverWorld.getServer(), user.getPos(), new Vec2f(user.getPitch(), user.getYaw()), serverWorld, 4, user.getEntityName(), Text.literal(user.getEntityName()), serverWorld.getServer(), user);
+                    serverWorld.getServer(), user.getPos(), new Vec2f(user.getPitch(), user.getYaw()), serverWorld, 4, user.getEntityName(), Text.literal(user.getEntityName()), serverWorld.getServer(), user).withSilent();
             for (String command : data.user_commands) {
                 serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
             }
@@ -90,7 +90,7 @@ public class ItemBehaviorAdder {
 
         if (data.server_commands != null) {
             for (String command : data.server_commands) {
-                serverWorld.getServer().getCommandManager().executeWithPrefix(serverWorld.getServer().getCommandSource(), command);
+                serverWorld.getServer().getCommandManager().executeWithPrefix(serverWorld.getServer().getCommandSource().withSilent(), command);
             }
         }
 
@@ -100,7 +100,7 @@ public class ItemBehaviorAdder {
             if (entity instanceof LivingEntity) {
                 if (data.hit_entity_commands != null) {
                     ServerCommandSource source = new ServerCommandSource(
-                            serverWorld.getServer(), entity.getPos(), new Vec2f(entity.getPitch(), entity.getYaw()), serverWorld, 4, entity.getEntityName(), Text.literal(entity.getEntityName()), serverWorld.getServer(), entity);
+                            serverWorld.getServer(), entity.getPos(), new Vec2f(entity.getPitch(), entity.getYaw()), serverWorld, 4, entity.getEntityName(), Text.literal(entity.getEntityName()), serverWorld.getServer(), entity).withSilent();
                     for (String command : data.hit_entity_commands) {
                         serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
                     }
@@ -248,6 +248,10 @@ public class ItemBehaviorAdder {
                         });
             }
         }
+    }
+
+    public static void sendParticlePacketInt(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int red, int green, int blue) {
+        sendParticlePacket(flyingItemEntity, pos, stack, colored, ColorUtil.toColor(red, green, blue));
     }
 
     public static void sendParticlePacket(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int color) {

@@ -161,6 +161,10 @@
   "text.autoconfig.m-tweaks.option.newBoats.isHopperBoatOn.@Tooltip": "快速装入物品",
 
   "text.autoconfig.m-tweaks.category.items": "物品",
+  "text.autoconfig.m-tweaks.option.throwableItems": "Throwable Items",
+  "text.autoconfig.m-tweaks.option.throwableItems.@Tooltip": "Allows throwing certain items, which would otherwise be useless*",
+  "text.autoconfig.m-tweaks.option.throwableItemsBlacklist": "Throwable Items Blacklist",
+  "text.autoconfig.m-tweaks.option.throwableItemsBlacklist.@Tooltip": "Block all behaviors of items with following IDs",
   "text.autoconfig.m-tweaks.option.slightlyBetterItemNames": "更好的物品名显示",
   "text.autoconfig.m-tweaks.option.slightlyBetterItemNames.@Tooltip": "只在物品耐久未满时显示其耐久度百分比，只在物品数量大于一时显示其数量",
   "text.autoconfig.m-tweaks.option.totemSettings": "创生图腾",

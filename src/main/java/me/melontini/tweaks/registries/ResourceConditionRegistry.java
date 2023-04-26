@@ -164,16 +164,16 @@ public class ResourceConditionRegistry {
                         }
 
                         data.on_entity_hit = new ItemBehaviorData.CommandHolder();
-                        readCommands(json, data.on_entity_hit);
+                        readCommands(JsonHelper.getObject(json, "on_entity_hit",  new JsonObject()), data.on_entity_hit);
 
                         data.on_block_hit = new ItemBehaviorData.CommandHolder();
-                        readCommands(json, data.on_block_hit);
+                        readCommands(JsonHelper.getObject(json, "on_block_hit",  new JsonObject()), data.on_block_hit);
 
                         data.on_miss = new ItemBehaviorData.CommandHolder();
-                        readCommands(json, data.on_miss);
+                        readCommands(JsonHelper.getObject(json, "on_miss",  new JsonObject()), data.on_miss);
 
                         data.on_any_hit = new ItemBehaviorData.CommandHolder();
-                        readCommands(json, data.on_any_hit);
+                        readCommands(JsonHelper.getObject(json, "on_any_hit",  new JsonObject()), data.on_any_hit);
 
                         data.complement = JsonHelper.getBoolean(json, "complement",  false);
 

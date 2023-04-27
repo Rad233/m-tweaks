@@ -21,6 +21,7 @@ public class ItemBehaviorData {
         public String[] user_commands;
         public String[] server_commands;
         public String[] hit_entity_commands;
+        public String[] hit_block_commands;
     }
 
 }

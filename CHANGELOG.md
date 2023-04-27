@@ -1,10 +1,6 @@
 ### What's new:
 
-* New Tweak: GUI particles! Adds various particles to random GUIs.
-* New Tweak: No More Adventure! Removes "Adventure Mode" from the gamemode switcher.
-* Added a link to the wiki in the config screen.
-* The mod no longer packages FabricASM.
-* The `@MixinRelatedConfigOption` annotation is now stripped from mixin targets.
+* New Tweak: Throwable Items! Allows throwing certain items, which would otherwise be useless*. [See the wiki for info about custom behaviors](https://github.com/melontini/m-tweaks/wiki/4.Item-tweaks#throwable-items--050)
+* Tweaked minecarts velocity when linked.
+* Updated Chinese translation. Courtesy of [Rad233](https://github.com/Rad233).
 * Updated CrackerUtil.
-* Other internal Mixin related changes.
-* ???

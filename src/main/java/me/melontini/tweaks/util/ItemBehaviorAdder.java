@@ -106,6 +106,16 @@ public class ItemBehaviorAdder {
                     }
                 }
             }
+        } else if (hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+            if (data.hit_block_commands != null) {
+                Vec3d vec3d = new Vec3d(blockHitResult.getBlockPos().getX(), blockHitResult.getBlockPos().getY(), blockHitResult.getBlockPos().getZ());
+                ServerCommandSource source = new ServerCommandSource(
+                        serverWorld.getServer(), vec3d, new Vec2f(0, 0), serverWorld, 4, "MTFlyingItem", Text.literal("MTFlyingItem"), serverWorld.getServer(), flyingItemEntity).withSilent();
+                for (String command : data.hit_block_commands) {
+                    serverWorld.getServer().getCommandManager().executeWithPrefix(source, command);
+                }
+            }
         }
     }
 

@@ -233,5 +233,14 @@ public class ResourceConditionRegistry {
             }
             holder.hit_entity_commands = server_commands.toArray(String[]::new);
         }
+
+        var hit_block_arr = JsonHelper.getArray(json, "hit_block_commands", null);
+        if (hit_block_arr != null) {
+            List<String> server_commands = new ArrayList<>(hit_block_arr.size());
+            for (JsonElement element : hit_block_arr) {
+                server_commands.add(element.getAsString());
+            }
+            holder.hit_block_commands = server_commands.toArray(String[]::new);
+        }
     }
 }

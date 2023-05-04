@@ -3,6 +3,8 @@ package me.melontini.tweaks.registries;
 import com.google.gson.*;
 import me.melontini.tweaks.Tweaks;
 import me.melontini.tweaks.config.TweaksConfig;
+import me.melontini.tweaks.util.ItemBehaviorAdder;
+import me.melontini.tweaks.util.ItemBehaviorManager;
 import me.melontini.tweaks.util.TweaksLog;
 import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.ItemBehaviorData;
@@ -150,17 +152,18 @@ public class ResourceConditionRegistry {
             }
 
             @Override
-            public void reload(ResourceManager manager) {//datapacks override everything else
-                Tweaks.ITEM_BEHAVIOR_DATA.clear();
+            public void reload(ResourceManager manager) {
+                ItemBehaviorManager.clear();
+                ItemBehaviorAdder.addDefaults();
                 var map = manager.findResources("mt_item_throw_behavior", identifier -> identifier.getPath().endsWith(".json"));
                 for (Map.Entry<Identifier, Resource> entry : map.entrySet()) {
                     try {
                         JsonObject json = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
                         ItemBehaviorData data = new ItemBehaviorData();
-                        data.item_id = JsonHelper.getString(json, "item_id");
+                        data.item = Registry.ITEM.get(Identifier.tryParse(JsonHelper.getString(json, "item_id")));
 
-                        if (Registry.ITEM.get(Identifier.tryParse(data.item_id)) == Items.AIR) {
-                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item_id));
+                        if (data.item == Items.AIR) {
+                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item));
                         }
 
                         data.on_entity_hit = new ItemBehaviorData.CommandHolder();
@@ -175,7 +178,7 @@ public class ResourceConditionRegistry {
                         data.on_any_hit = new ItemBehaviorData.CommandHolder();
                         readCommands(JsonHelper.getObject(json, "on_any_hit",  new JsonObject()), data.on_any_hit);
 
-                        data.complement = JsonHelper.getBoolean(json, "complement",  false);
+                        data.spawn_item_particles = JsonHelper.getBoolean(json, "spawn_item_particles", true);
 
                         data.spawn_colored_particles = JsonHelper.getBoolean(json, "spawn_colored_particles", false);
 
@@ -185,11 +188,18 @@ public class ResourceConditionRegistry {
                         data.particle_colors.green = JsonHelper.getInt(colors, "green", 0);
                         data.particle_colors.blue = JsonHelper.getInt(colors, "blue", 0);
 
-                        Tweaks.ITEM_BEHAVIOR_DATA.putIfAbsent(Registry.ITEM.get(Identifier.tryParse(data.item_id)), data);
+                        //Tweaks.ITEM_BEHAVIOR_DATA.putIfAbsent(Registries.ITEM.get(Identifier.tryParse(data.item_id)), data);
+                        ItemBehaviorManager.addBehavior(data.item, ItemBehaviorAdder.dataPack(data), JsonHelper.getBoolean(json, "complement",  true));
+                        if (JsonHelper.getBoolean(json, "override_vanilla",  false)) ItemBehaviorManager.overrideVanilla(data.item);
+
+                        if (json.has("cooldown")) {
+                            ItemBehaviorManager.addCustomCooldown(data.item, JsonHelper.getInt(json, "cooldown", 50));
+                        }
                     } catch (IOException e) {
                         TweaksLog.error("Error while parsing JSON for mt_item_drop_behavior", e);
                     }
                 }
+                TweaksLog.devInfo("Successfully loaded mt_item_throw_behavior");
             }
         });
 

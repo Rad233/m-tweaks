@@ -104,6 +104,7 @@ public class ClientSideNetworking {
 
         ClientPlayNetworking.registerGlobalReceiver(TweaksPackets.FLYING_STACK_LANDED, (client, handler, buf, responseSender) -> {
             double x = buf.readDouble(), y = buf.readDouble(), z = buf.readDouble();
+            boolean spawnItem = buf.readBoolean();
             ItemStack stack = buf.readItemStack();
             boolean spawnColor = buf.readBoolean();
 
@@ -119,14 +120,16 @@ public class ClientSideNetworking {
                 ParticlesMode particlesMode = MinecraftClient.getInstance().options.getParticles().getValue();
                 if (particlesMode == ParticlesMode.MINIMAL) return;
 
-                for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 8 : 4); ++i) {
-                    (MinecraftClient.getInstance()).particleManager.addParticle(
-                            new ItemStackParticleEffect(ParticleTypes.ITEM, stack),
-                            x, y, z,
-                            Utilities.RANDOM.nextGaussian() * 0.15,
-                            Utilities.RANDOM.nextDouble() * 0.2,
-                            Utilities.RANDOM.nextGaussian() * 0.15
-                    );
+                if (spawnItem) {
+                    for (int i = 0; i < (particlesMode != ParticlesMode.DECREASED ? 8 : 4); ++i) {
+                        (MinecraftClient.getInstance()).particleManager.addParticle(
+                                new ItemStackParticleEffect(ParticleTypes.ITEM, stack),
+                                x, y, z,
+                                Utilities.RANDOM.nextGaussian() * 0.15,
+                                Utilities.RANDOM.nextDouble() * 0.2,
+                                Utilities.RANDOM.nextGaussian() * 0.15
+                        );
+                    }
                 }
 
                 if (spawnColor) {

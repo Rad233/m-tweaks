@@ -2,7 +2,6 @@ package me.melontini.tweaks.util;
 
 import me.melontini.crackerutil.util.ColorUtil;
 import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.entity.FlyingItemEntity;
 import me.melontini.tweaks.networks.TweaksPackets;
 import me.melontini.tweaks.util.data.ItemBehaviorData;
@@ -53,23 +52,22 @@ public class ItemBehaviorAdder {
             Items.LIME_DYE, Items.MAGENTA_DYE, Items.LIGHT_GRAY_DYE,
             Items.GRAY_DYE);
 
-    public static final ItemBehavior DATA_PACK = (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
-        if (!world.isClient()) {
-            ItemBehaviorData data = Tweaks.ITEM_BEHAVIOR_DATA.get(stack.getItem());
-            if (data == null) return;
+    public static ItemBehavior dataPack(ItemBehaviorData data) {
+        return (stack, flyingItemEntity, world, user, hitResult) -> {//default behavior to handle datapacks
+            if (!world.isClient()) {
+                ServerWorld serverWorld = (ServerWorld) world;
 
-            ServerWorld serverWorld = (ServerWorld) world;
+                switch (hitResult.getType()) {
+                    case ENTITY -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_entity_hit);
+                    case BLOCK -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_block_hit);
+                    case MISS -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_miss);
+                }
+                executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_any_hit);
 
-            switch (hitResult.getType()) {
-                case ENTITY -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_entity_hit);
-                case BLOCK -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_block_hit);
-                case MISS -> executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_miss);
+                sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), data.spawn_item_particles, stack, data.spawn_colored_particles, ColorUtil.toColor(data.particle_colors.red, data.particle_colors.green, data.particle_colors.blue));
             }
-            executeCommands(serverWorld, flyingItemEntity, user, hitResult, data.on_any_hit);
-
-            sendParticlePacket(flyingItemEntity, flyingItemEntity.getPos(), stack, data.spawn_colored_particles, ColorUtil.toColor(data.particle_colors.red, data.particle_colors.green, data.particle_colors.blue));
-        }
-    };
+        };
+    }
 
     private static void executeCommands(ServerWorld serverWorld, FlyingItemEntity flyingItemEntity, Entity user, HitResult hitResult, ItemBehaviorData.CommandHolder data) {
         if (data.item_commands != null) {
@@ -119,8 +117,8 @@ public class ItemBehaviorAdder {
         }
     }
 
-    public static void init() {
-        addBehavior(Items.BONE_MEAL, (stack, flyingItemEntity, world, user, hitResult) -> {
+    public static void addDefaults() {
+        ItemBehaviorManager.addBehavior(Items.BONE_MEAL, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient && hitResult.getType() == HitResult.Type.BLOCK) {
                 BlockHitResult result = (BlockHitResult) hitResult;
                 BlockPos blockPos = result.getBlockPos();
@@ -137,19 +135,19 @@ public class ItemBehaviorAdder {
                 }
             }
         });
-        addBehavior(Items.INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
+        ItemBehaviorManager.addBehavior(Items.INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0));
             }
         });
-        addBehavior(Items.GLOW_INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
+        ItemBehaviorManager.addBehavior(Items.GLOW_INK_SAC, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 addEffects(hitResult, world, user, new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0), new StatusEffectInstance(StatusEffects.GLOWING, 100, 0));
             }
         });
 
         for (Item item : DYE_ITEMS) {
-            addBehavior(item, (stack, flyingItemEntity, world, user, hitResult) -> {
+            ItemBehaviorManager.addBehavior(item, (stack, flyingItemEntity, world, user, hitResult) -> {
                 if (!world.isClient) {
                     if (hitResult.getType() == HitResult.Type.ENTITY) {
                         EntityHitResult entityHitResult = (EntityHitResult) hitResult;
@@ -185,7 +183,7 @@ public class ItemBehaviorAdder {
             });
         }
 
-        addBehavior((stack, flyingItemEntity, world, user, hitResult) -> {
+        ItemBehaviorManager.addBehaviors((stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 if (hitResult.getType() == HitResult.Type.ENTITY) {
                     EntityHitResult entityHitResult = (EntityHitResult) hitResult;
@@ -202,7 +200,7 @@ public class ItemBehaviorAdder {
             }
         }, Items.BRICK, Items.NETHER_BRICK);
 
-        addBehavior(Items.FIRE_CHARGE, (stack, flyingItemEntity, world, user, hitResult) -> {
+        ItemBehaviorManager.addBehavior(Items.FIRE_CHARGE, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 if (hitResult.getType() == HitResult.Type.BLOCK) {
                     BlockHitResult result = (BlockHitResult) hitResult;
@@ -223,7 +221,7 @@ public class ItemBehaviorAdder {
             }
         });
 
-        addBehavior(Items.GUNPOWDER, (stack, flyingItemEntity, world, user, hitResult) -> {
+        ItemBehaviorManager.addBehavior(Items.GUNPOWDER, (stack, flyingItemEntity, world, user, hitResult) -> {
             if (!world.isClient) {
                 world.createExplosion(user, flyingItemEntity.getX(), flyingItemEntity.getY(), flyingItemEntity.getZ(), 1, Explosion.DestructionType.BREAK);
             }
@@ -260,15 +258,19 @@ public class ItemBehaviorAdder {
         }
     }
 
+    public static void sendParticlePacketInt(FlyingItemEntity flyingItemEntity, Vec3d pos, boolean item, ItemStack stack, boolean colored, int red, int green, int blue) {
+        sendParticlePacket(flyingItemEntity, pos, item, stack, colored, ColorUtil.toColor(red, green, blue));
+    }
     public static void sendParticlePacketInt(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int red, int green, int blue) {
-        sendParticlePacket(flyingItemEntity, pos, stack, colored, ColorUtil.toColor(red, green, blue));
+        sendParticlePacket(flyingItemEntity, pos, true, stack, colored, ColorUtil.toColor(red, green, blue));
     }
 
-    public static void sendParticlePacket(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int color) {
+    public static void sendParticlePacket(FlyingItemEntity flyingItemEntity, Vec3d pos, boolean item, ItemStack stack, boolean colored, int color) {
         PacketByteBuf byteBuf = PacketByteBufs.create();
         byteBuf.writeDouble(pos.getX());
         byteBuf.writeDouble(pos.getY());
         byteBuf.writeDouble(pos.getZ());
+        byteBuf.writeBoolean(item);
         byteBuf.writeItemStack(stack);
         byteBuf.writeBoolean(colored);
         byteBuf.writeVarInt(color);
@@ -276,14 +278,15 @@ public class ItemBehaviorAdder {
             ServerPlayNetworking.send(serverPlayerEntity, TweaksPackets.FLYING_STACK_LANDED, byteBuf);
         }
     }
+    public static void sendParticlePacket(FlyingItemEntity flyingItemEntity, Vec3d pos, ItemStack stack, boolean colored, int color) {
+        sendParticlePacket(flyingItemEntity, pos, true, stack, colored, color);
+    }
 
     public static void addBehavior(Item item, ItemBehavior behavior) {
-        ((ThrowableBehaviorDuck) item).mTweaks$setBehavior(behavior);
+        ItemBehaviorManager.addBehavior(item, behavior);
     }
 
     public static void addBehavior(ItemBehavior behavior, Item... items) {
-        for (Item item : items) {
-            addBehavior(item, behavior);
-        }
+        ItemBehaviorManager.addBehaviors(behavior, items);
     }
 }

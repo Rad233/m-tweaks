@@ -8,11 +8,10 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
-import me.melontini.tweaks.util.ItemBehaviorAdder;
+import me.melontini.tweaks.util.ItemBehaviorManager;
 import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.WorldUtil;
 import me.melontini.tweaks.util.data.EggProcessingData;
-import me.melontini.tweaks.util.data.ItemBehaviorData;
 import me.melontini.tweaks.util.data.PlantData;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
@@ -50,7 +49,6 @@ public class Tweaks implements ModInitializer {
     public static ScreenHandlerType<FletchingScreenHandler> FLETCHING_SCREEN_HANDLER;
     public static Map<Block, PlantData> PLANT_DATA = new HashMap<>();
     public static Map<Item, EggProcessingData> EGG_DATA = new HashMap<>();
-    public static Map<Item, ItemBehaviorData> ITEM_BEHAVIOR_DATA = new HashMap<>();//datapack overrides
     public static DefaultParticleType KNOCKOFF_TOTEM_PARTICLE;
     public static final DamageSource AGONY = new DamageSource("m_tweaks_agony");
     public static final Map<PlayerEntity, AbstractMinecartEntity> LINKING_CARTS = new HashMap<>();
@@ -101,6 +99,12 @@ public class Tweaks implements ModInitializer {
             }
         });
 
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+            Tweaks.LINKING_CARTS.clear();
+            Tweaks.UNLINKING_CARTS.clear();
+            ItemBehaviorManager.clear();
+        });
+
         ServerTickEvents.END_WORLD_TICK.register(world -> {
             if (CONFIG.tradingGoatHorn) if (world.getRegistryKey() == World.OVERWORLD) {
                 var manager = world.getPersistentStateManager();
@@ -113,8 +117,6 @@ public class Tweaks implements ModInitializer {
             MiscUtil.generateRecipeAdvancements(server);
             server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
-
-        ItemBehaviorAdder.init();
     }
 
     private static class BrickedDamageSource extends DamageSource {

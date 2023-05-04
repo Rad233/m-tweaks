@@ -1,12 +1,14 @@
 package me.melontini.tweaks.util.data;
 
+import net.minecraft.item.Item;
+
 public class ItemBehaviorData {
-    public String item_id;
+    public Item item;
     public CommandHolder on_entity_hit;
     public CommandHolder on_block_hit;
     public CommandHolder on_miss;
     public CommandHolder on_any_hit;
-    public boolean complement;
+    public boolean spawn_item_particles;
     public boolean spawn_colored_particles;
     public ParticleColors particle_colors;
 

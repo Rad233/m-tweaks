@@ -1,9 +1,8 @@
 package me.melontini.tweaks.entity;
 
-import me.melontini.tweaks.Tweaks;
-import me.melontini.tweaks.duck.ThrowableBehaviorDuck;
 import me.melontini.tweaks.registries.EntityTypeRegistry;
-import me.melontini.tweaks.util.ItemBehaviorAdder;
+import me.melontini.tweaks.util.ItemBehavior;
+import me.melontini.tweaks.util.ItemBehaviorManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
@@ -32,17 +31,8 @@ public class FlyingItemEntity extends ThrownItemEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        ThrowableBehaviorDuck duck = (ThrowableBehaviorDuck) getItem().getItem();
-        if (Tweaks.ITEM_BEHAVIOR_DATA.containsKey(getItem().getItem())) {
-            ItemBehaviorAdder.DATA_PACK.onCollision(getItem(), this, this.world, getOwner(), hitResult);
-            if (!Tweaks.ITEM_BEHAVIOR_DATA.get(getItem().getItem()).complement) {
-                this.discard();
-                return;
-            }
-        }
-        if (duck.mTweaks$hasBehavior()) {
-            duck.mTweaks$getBehavior().onCollision(getItem(), this, this.world, getOwner(), hitResult);
-
+        for (ItemBehavior itemBehavior : ItemBehaviorManager.getBehaviors(getItem().getItem())) {
+            if (!this.isRemoved()) itemBehavior.onCollision(getItem(), this, world, getOwner(), hitResult);
         }
         this.discard();
     }

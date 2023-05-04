@@ -27,6 +27,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -35,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.explosion.Explosion;
@@ -213,10 +216,14 @@ public class ItemBehaviorAdder {
                     } else if (FlammableBlockRegistry.getDefaultInstance().get(blockState.getBlock()) != null) {
                         world.setBlockState(blockPos.offset(result.getSide()), FireBlock.getState(world, blockPos.offset(result.getSide())));
                     }
+                    Random random = world.getRandom();
+                    world.playSound(null, flyingItemEntity.getBlockPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 } else if (hitResult.getType() == HitResult.Type.ENTITY) {
                     EntityHitResult result = (EntityHitResult) hitResult;
                     Entity entity = result.getEntity();
                     entity.setOnFireFor(8);
+                    Random random = world.getRandom();
+                    world.playSound(null, flyingItemEntity.getBlockPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 }
             }
         });

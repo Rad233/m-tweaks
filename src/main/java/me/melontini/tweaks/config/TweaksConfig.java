@@ -332,6 +332,7 @@ public class TweaksConfig implements ConfigData {
 
     @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.Tooltip(count = 2)
+    @ConfigEntry.Gui.RequiresRestart
     public boolean sendOptionalData = true;
 
     @ConfigEntry.Category("misc")

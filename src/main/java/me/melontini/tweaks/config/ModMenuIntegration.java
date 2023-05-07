@@ -20,7 +20,7 @@ public class ModMenuIntegration implements ModMenuApi {
             Screen c = AutoConfig.getConfigScreen(TweaksConfig.class, parent).get();
             ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
                 if (screen == c) {
-                    ((ScreenAccessor) screen).mTweaks$addDrawableChild(new TexturedButtonWidget(screen.width - 40, 13, 20, 20, 0, 0, 20, TweaksClient.WIKI_BUTTON_TEXTURE, 32, 64, button -> screen.handleTextClick(TweaksClient.EVENT)));
+                    ((ScreenAccessor) screen).mTweaks$addDrawableChild(new TexturedButtonWidget(screen.width - 40, 13, 20, 20, 0, 0, 20, TweaksClient.WIKI_BUTTON_TEXTURE, 32, 64, button -> screen.handleTextClick(TweaksClient.WIKI_LINK)));
                 }
             });
             return c;

@@ -207,13 +207,13 @@ public class ResourceConditionRegistry {
 
                         boolean override_vanilla = JsonHelper.getBoolean(json, "override_vanilla",  false);
                         boolean complement = JsonHelper.getBoolean(json, "complement",  true);
-                        boolean cooldown = JsonHelper.getBoolean(json, "cooldown",  false);
+                        int cooldown_time = JsonHelper.getInt(json, "cooldown", 50);
                         for (Item item : items) {
                             ItemBehaviorManager.addBehavior(item, ItemBehaviorAdder.dataPack(data), complement);
                             if (override_vanilla) ItemBehaviorManager.overrideVanilla(item);
 
-                            if (cooldown) {
-                                ItemBehaviorManager.addCustomCooldown(item, JsonHelper.getInt(json, "cooldown", 50));
+                            if (cooldown_time != 50) {
+                                ItemBehaviorManager.addCustomCooldown(item, cooldown_time);
                             }
                         }
                     } catch (IOException e) {

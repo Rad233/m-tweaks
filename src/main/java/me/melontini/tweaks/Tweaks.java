@@ -1,6 +1,11 @@
 package me.melontini.tweaks;
 
+import com.google.gson.Gson;
+import me.melontini.crackerutil.analytics.Analytics;
+import me.melontini.crackerutil.analytics.Prop;
+import me.melontini.crackerutil.analytics.mixpanel.MixpanelAnalytics;
 import me.melontini.crackerutil.util.TextUtil;
+import me.melontini.crackerutil.util.mixin.ExtendedPlugin;
 import me.melontini.tweaks.config.TweaksConfig;
 import me.melontini.tweaks.networks.ServerSideNetworking;
 import me.melontini.tweaks.registries.BlockRegistry;
@@ -8,6 +13,7 @@ import me.melontini.tweaks.registries.EntityTypeRegistry;
 import me.melontini.tweaks.registries.ItemRegistry;
 import me.melontini.tweaks.registries.ResourceConditionRegistry;
 import me.melontini.tweaks.screens.FletchingScreenHandler;
+import me.melontini.tweaks.util.DamageCommand;
 import me.melontini.tweaks.util.ItemBehaviorManager;
 import me.melontini.tweaks.util.MiscUtil;
 import me.melontini.tweaks.util.WorldUtil;
@@ -15,10 +21,12 @@ import me.melontini.tweaks.util.data.EggProcessingData;
 import me.melontini.tweaks.util.data.PlantData;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -36,13 +44,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Tweaks implements ModInitializer {
-
+    private static final MixpanelAnalytics.Handler HANDLER = MixpanelAnalytics.init(new String(Base64.getDecoder().decode("NGQ3YWVhZGRjN2M5M2JkNzhiODRmNDViZWI3Y2NlOTE=")), true);
     public static final String MODID = "m-tweaks";
     public static EntityAttributeModifier LEAF_SLOWNESS;
     public static TweaksConfig CONFIG = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
@@ -59,8 +66,41 @@ public class Tweaks implements ModInitializer {
         return new BrickedDamageSource(attacker);
     }
 
+    private static void stripNonBooleans(JSONObject object) {
+        for (String s : new HashSet<>(object.keySet())) {
+            try {
+                stripNonBooleans(object.getJSONObject(s));
+            } catch (Exception ignored) {
+                try {
+                    object.getBoolean(s);
+                } catch (Exception ignored2) {
+                    object.remove(s);
+                }
+            }
+        }
+    }
+
     @Override
     public void onInitialize() {
+        if (!FabricLoader.getInstance().isDevelopmentEnvironment() && CONFIG.sendOptionalData) {
+            HANDLER.send(messageBuilder -> {
+                JSONObject object = new JSONObject();
+                object.put("mod_version", FabricLoader.getInstance().getModContainer(MODID).get().getMetadata().getVersion().getFriendlyString());
+                object.put("mc_version", ExtendedPlugin.parseMCVersion().getFriendlyString());
+                return messageBuilder.set(Analytics.getUUIDString(), MixpanelAnalytics.attachProps(object, Prop.ENVIRONMENT));
+            });
+            HANDLER.send(messageBuilder -> {
+                Gson gson = new Gson();
+                JSONObject object = new JSONObject();
+                JSONObject config = new JSONObject(gson.toJson(CONFIG));
+                stripNonBooleans(config);
+                object.put("config", config);
+                return messageBuilder.event(Analytics.getUUIDString(), "Config Save", object);
+            });
+        } else if (!CONFIG.sendOptionalData) {
+            HANDLER.send(messageBuilder -> messageBuilder.delete(Analytics.getUUIDString()));
+        }
+
         BlockRegistry.register();
         ItemRegistry.register();
         EntityTypeRegistry.register();
@@ -117,10 +157,15 @@ public class Tweaks implements ModInitializer {
             MiscUtil.generateRecipeAdvancements(server);
             server.getPlayerManager().getPlayerList().forEach(entity -> server.getPlayerManager().getAdvancementTracker(entity).reload(server.getAdvancementLoader()));
         });
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            if (CONFIG.damageBackport) DamageCommand.register(dispatcher);
+        });
     }
 
     private static class BrickedDamageSource extends DamageSource {
         private final Entity attacker;
+
         public BrickedDamageSource(Entity attacker) {
             super("m_tweaks_bricked");
             this.attacker = attacker;
@@ -128,7 +173,8 @@ public class Tweaks implements ModInitializer {
 
         @Override
         public Text getDeathMessage(LivingEntity entity) {
-            if (attacker != null) return TextUtil.translatable("death.attack.m_tweaks_bricked.entity", entity.getDisplayName(), attacker.getDisplayName());
+            if (attacker != null)
+                return TextUtil.translatable("death.attack.m_tweaks_bricked.entity", entity.getDisplayName(), attacker.getDisplayName());
             else return TextUtil.translatable("death.attack.m_tweaks_bricked", entity.getDisplayName());
         }
     }

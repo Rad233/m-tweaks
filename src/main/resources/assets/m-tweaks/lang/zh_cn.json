@@ -11,6 +11,9 @@
   "death.attack.m_tweaks_bricked": "%1$s受到了砖块猛击",
   "death.attack.m_tweaks_bricked.entity": "%1$s被%2$s用砖块砸晕了",
 
+  "m-tweaks.commands.damage.invulnerable": "Target is invulnerable to the given damage type",
+  "m-tweaks.commands.damage.success": "Applied %s damage to %s",
+
   "block.m-tweaks.rose_of_the_valley": "山谷玫瑰",
   "block.m-tweaks.incubator": "孵蛋器",
 
@@ -198,6 +201,11 @@
   "text.autoconfig.m-tweaks.option.properlyAlignedRecipeAlternatives.@Tooltip": "在组内配方繁多时，配方组别不会再看着一团糟了",
 
   "text.autoconfig.m-tweaks.category.misc": "杂项",
+  "text.autoconfig.m-tweaks.option.damageBackport": "/damage backport",
+  "text.autoconfig.m-tweaks.option.damageBackport.@Tooltip": "A backport of the /damage command. Not a 1-1 copy!",
+  "text.autoconfig.m-tweaks.option.sendOptionalData": "Send Optional Data",
+  "text.autoconfig.m-tweaks.option.sendOptionalData.@Tooltip[0]": "Sends analytics at game startup.",
+  "text.autoconfig.m-tweaks.option.sendOptionalData.@Tooltip[1]": "Data sent: Mod version, Minecraft version, Environment (client/server), and config options.",
   "text.autoconfig.m-tweaks.option.noMoreAdventure": "无冒险模式",
   "text.autoconfig.m-tweaks.option.noMoreAdventure.@Tooltip": "从游戏模式切换界面移除了“冒险模式”选项",
   "text.autoconfig.m-tweaks.option.guiParticles": "GUI粒子效果",

@@ -130,6 +130,7 @@ public class TweaksConfig implements ConfigData {
     @Comment("Enables a few improvement to make FM suck a little less")
     @ConfigEntry.Gui.Tooltip(count = 3)
     public boolean betterFurnaceMinecart = true;
+
     @ConfigEntry.Category("entities")
     @Comment("Set the max allowed fuel for the furnace minecart. default 45000, doesn't work if better furnace minecart is off")
     @ConfigEntry.Gui.Tooltip()
@@ -154,10 +155,12 @@ public class TweaksConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isAnvilMinecartOn = true;
+
         @ConfigEntry.Category("entities")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
         public boolean isNoteBlockMinecartOn = true;
+
         @ConfigEntry.Category("entities")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.RequiresRestart
@@ -204,7 +207,6 @@ public class TweaksConfig implements ConfigData {
     @Comment("Shows item durability (in %) if durability is < 100% or item count if count is > 1")
     @ConfigEntry.Gui.Tooltip
     public boolean slightlyBetterItemNames = true;
-
 
     @ConfigEntry.Category("items")
     @Comment("Infinite Totem settings. Pleas see the wiki for proper descriptions")
@@ -258,6 +260,11 @@ public class TweaksConfig implements ConfigData {
     @ConfigEntry.Category("bugfixes")
     @ConfigEntry.Gui.Tooltip
     public boolean properlyAlignedRecipeAlternatives = true;
+
+    @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.Tooltip
+    public boolean damageBackport = true;
+
     @ConfigEntry.Category("misc")
     @ConfigEntry.Gui.Tooltip
     public boolean noMoreAdventure = false;
@@ -324,10 +331,15 @@ public class TweaksConfig implements ConfigData {
     public boolean minorInconvenience = false;
 
     @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.Tooltip(count = 2)
+    public boolean sendOptionalData = true;
+
+    @ConfigEntry.Category("misc")
     @Comment("Doesn't load mixins if their related option is disabled, improving mod compatibility. The only downside is that you'd need to restart the game after enabling/disabling any option.")
     @ConfigEntry.Gui.Tooltip(count = 2)
     @ConfigEntry.Gui.RequiresRestart
     public boolean compatMode = false;
+
     @ConfigEntry.Category("misc")
     @Comment("enable additional debug info, this will spam your log into oblivion")
     @ConfigEntry.Gui.Tooltip

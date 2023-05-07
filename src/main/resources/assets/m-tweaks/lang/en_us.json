@@ -11,6 +11,9 @@
   "death.attack.m_tweaks_bricked": "%1$s was bricked",
   "death.attack.m_tweaks_bricked.entity": "%1$s was bricked by %2$s",
 
+  "m-tweaks.commands.damage.invulnerable": "Target is invulnerable to the given damage type",
+  "m-tweaks.commands.damage.success": "Applied %s damage to %s",
+
   "block.m-tweaks.rose_of_the_valley": "Rose of the Valley",
   "block.m-tweaks.incubator": "Incubator",
 
@@ -198,6 +201,11 @@
   "text.autoconfig.m-tweaks.option.properlyAlignedRecipeAlternatives.@Tooltip": "Now recipe groups won't look janky when there's a lot of recipes in one group.",
 
   "text.autoconfig.m-tweaks.category.misc": "Misc",
+  "text.autoconfig.m-tweaks.option.damageBackport": "/damage backport",
+  "text.autoconfig.m-tweaks.option.damageBackport.@Tooltip": "A backport of the /damage command. Not a 1-1 copy!",
+  "text.autoconfig.m-tweaks.option.sendOptionalData": "Send Optional Data",
+  "text.autoconfig.m-tweaks.option.sendOptionalData.@Tooltip[0]": "Sends analytics at game startup.",
+  "text.autoconfig.m-tweaks.option.sendOptionalData.@Tooltip[1]": "Data sent: Mod version, Minecraft version, Environment (client/server), and config options.",
   "text.autoconfig.m-tweaks.option.noMoreAdventure": "No More Adventure",
   "text.autoconfig.m-tweaks.option.noMoreAdventure.@Tooltip": "Removes \"Adventure Mode\" from the gamemode switcher",
   "text.autoconfig.m-tweaks.option.guiParticles": "GUI Particles",

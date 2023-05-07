@@ -54,7 +54,7 @@ import static me.melontini.tweaks.Tweaks.MODID;
 @Environment(EnvType.CLIENT)
 public class TweaksClient implements ClientModInitializer {
     public static final Identifier WIKI_BUTTON_TEXTURE = new Identifier(MODID, "textures/gui/wiki_button.png");
-    public static final Style EVENT = Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/melontini/m-tweaks/wiki"));
+    public static final Style WIKI_LINK = Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/melontini/m-tweaks/wiki"));
 
     public static String DEBUG_SPLASH;
     public static ItemStack FRAME_STACK = ItemStack.EMPTY;

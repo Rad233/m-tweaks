@@ -160,10 +160,27 @@ public class ResourceConditionRegistry {
                     try {
                         JsonObject json = JsonHelper.deserialize(new InputStreamReader(entry.getValue().getInputStream()));
                         ItemBehaviorData data = new ItemBehaviorData();
-                        data.item = Registry.ITEM.get(Identifier.tryParse(JsonHelper.getString(json, "item_id")));
 
-                        if (data.item == Items.AIR) {
-                            throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", data.item));
+                        Set<Item> items = new HashSet<>();
+
+                        if (!json.has("item_id")) {
+                            throw new InvalidIdentifierException("(m-tweaks) missing item_id!");
+                        }
+                        JsonElement element = json.get("item_id");
+                        if (element.isJsonArray()) {
+                            for (JsonElement e : element.getAsJsonArray()) {
+                                Item item = Registry.ITEM.get(Identifier.tryParse(e.getAsString()));
+                                if (item == Items.AIR) {
+                                    throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", item));
+                                }
+                                items.add(item);
+                            }
+                        } else {
+                            Item item = Registry.ITEM.get(Identifier.tryParse(element.getAsString()));
+                            if (item == Items.AIR) {
+                                throw new InvalidIdentifierException(String.format("(m-tweaks) invalid identifier provided! %s", item));
+                            }
+                            items.add(item);
                         }
 
                         data.on_entity_hit = new ItemBehaviorData.CommandHolder();
@@ -188,12 +205,16 @@ public class ResourceConditionRegistry {
                         data.particle_colors.green = JsonHelper.getInt(colors, "green", 0);
                         data.particle_colors.blue = JsonHelper.getInt(colors, "blue", 0);
 
-                        //Tweaks.ITEM_BEHAVIOR_DATA.putIfAbsent(Registries.ITEM.get(Identifier.tryParse(data.item_id)), data);
-                        ItemBehaviorManager.addBehavior(data.item, ItemBehaviorAdder.dataPack(data), JsonHelper.getBoolean(json, "complement",  true));
-                        if (JsonHelper.getBoolean(json, "override_vanilla",  false)) ItemBehaviorManager.overrideVanilla(data.item);
+                        boolean override_vanilla = JsonHelper.getBoolean(json, "override_vanilla",  false);
+                        boolean complement = JsonHelper.getBoolean(json, "complement",  true);
+                        boolean cooldown = JsonHelper.getBoolean(json, "cooldown",  false);
+                        for (Item item : items) {
+                            ItemBehaviorManager.addBehavior(item, ItemBehaviorAdder.dataPack(data), complement);
+                            if (override_vanilla) ItemBehaviorManager.overrideVanilla(item);
 
-                        if (json.has("cooldown")) {
-                            ItemBehaviorManager.addCustomCooldown(data.item, JsonHelper.getInt(json, "cooldown", 50));
+                            if (cooldown) {
+                                ItemBehaviorManager.addCustomCooldown(item, JsonHelper.getInt(json, "cooldown", 50));
+                            }
                         }
                     } catch (IOException e) {
                         TweaksLog.error("Error while parsing JSON for mt_item_drop_behavior", e);

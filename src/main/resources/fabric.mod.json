@@ -7,7 +7,14 @@
   "authors": [
     "melontini"
   ],
-  "contact": {},
+  "contributors": [
+    "Rad233"
+  ],
+  "contact": {
+    "sources": "https://github.com/melontini/m-tweaks",
+    "issues": "https://github.com/melontini/m-tweaks/issues",
+    "homepage": "https://modrinth.com/mod/m-tweaks"
+  },
   "license": "MIT",
   "icon": "assets/m-tweaks/icon.png",
   "environment": "*",

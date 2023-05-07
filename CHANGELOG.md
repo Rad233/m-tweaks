@@ -2,6 +2,7 @@
 
 * Fixed a number of issues with Throwable Items datapacks.
 * * You can now add multiple behaviors per item.
+* * `item_id` now accepts arrays of ids.
 * * Now `complement` is true by default.
 * * Added the `spawn_item_particles` parameter. If false, prevents item particles from being spawned. True by default.
 * * Added the `cooldown` parameter. Allows you to set a custom cooldown.

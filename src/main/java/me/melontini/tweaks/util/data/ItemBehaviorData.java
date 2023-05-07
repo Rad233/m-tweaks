@@ -1,9 +1,6 @@
 package me.melontini.tweaks.util.data;
 
-import net.minecraft.item.Item;
-
 public class ItemBehaviorData {
-    public Item item;
     public CommandHolder on_entity_hit;
     public CommandHolder on_block_hit;
     public CommandHolder on_miss;

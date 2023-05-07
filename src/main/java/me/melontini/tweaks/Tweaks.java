@@ -97,7 +97,7 @@ public class Tweaks implements ModInitializer {
                 object.put("config", config);
                 return messageBuilder.event(Analytics.getUUIDString(), "Config Save", object);
             });
-        } else if (!CONFIG.sendOptionalData) {
+        } else if (!FabricLoader.getInstance().isDevelopmentEnvironment() && !CONFIG.sendOptionalData) {
             HANDLER.send(messageBuilder -> messageBuilder.delete(Analytics.getUUIDString()));
         }
 

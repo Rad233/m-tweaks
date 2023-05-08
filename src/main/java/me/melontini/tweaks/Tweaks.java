@@ -88,7 +88,7 @@ public class Tweaks implements ModInitializer {
             JSONObject config = new JSONObject(gson.toJson(CONFIG));
             stripNonBooleans(config);
             object.put("config", config);
-            return messageBuilder.event(Analytics.getUUIDString(), "Config Save", object);
+            return messageBuilder.event(Analytics.getUUIDString(), "Config", object);
         });
     }
 

@@ -46,6 +46,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Tweaks implements ModInitializer {
@@ -80,25 +82,56 @@ public class Tweaks implements ModInitializer {
         }
     }
 
+    private static void sendConfig(Gson gson) {
+        HANDLER.send(messageBuilder -> {
+            JSONObject object = new JSONObject();
+            JSONObject config = new JSONObject(gson.toJson(CONFIG));
+            stripNonBooleans(config);
+            object.put("config", config);
+            return messageBuilder.event(Analytics.getUUIDString(), "Config Save", object);
+        });
+    }
+
     @Override
     public void onInitialize() {
-        if (!FabricLoader.getInstance().isDevelopmentEnvironment() && CONFIG.sendOptionalData) {
-            HANDLER.send(messageBuilder -> {
-                JSONObject object = new JSONObject();
-                object.put("mod_version", FabricLoader.getInstance().getModContainer(MODID).get().getMetadata().getVersion().getFriendlyString());
-                object.put("mc_version", ExtendedPlugin.parseMCVersion().getFriendlyString());
-                return messageBuilder.set(Analytics.getUUIDString(), MixpanelAnalytics.attachProps(object, Prop.ENVIRONMENT));
-            });
-            HANDLER.send(messageBuilder -> {
+        if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            if (CONFIG.sendOptionalData) {
+                HANDLER.send(messageBuilder -> {
+                    JSONObject object = new JSONObject();
+                    object.put("mod_version", FabricLoader.getInstance().getModContainer(MODID).get().getMetadata().getVersion().getFriendlyString());
+                    object.put("mc_version", ExtendedPlugin.parseMCVersion().getFriendlyString());
+                    return messageBuilder.set(Analytics.getUUIDString(), MixpanelAnalytics.attachProps(object, Prop.ENVIRONMENT));
+                });
+
                 Gson gson = new Gson();
-                JSONObject object = new JSONObject();
-                JSONObject config = new JSONObject(gson.toJson(CONFIG));
-                stripNonBooleans(config);
-                object.put("config", config);
-                return messageBuilder.event(Analytics.getUUIDString(), "Config Save", object);
-            });
-        } else if (!FabricLoader.getInstance().isDevelopmentEnvironment() && !CONFIG.sendOptionalData) {
-            HANDLER.send(messageBuilder -> messageBuilder.delete(Analytics.getUUIDString()));
+                Path fakeConfig = FabricLoader.getInstance().getGameDir().resolve(".m_tweaks/config_copy.json");
+                String currentConfig = gson.toJson(CONFIG);
+                if (!Files.exists(fakeConfig)) {
+                    try {
+                        Files.createDirectories(fakeConfig.getParent());
+                        Files.write(fakeConfig, currentConfig.getBytes());
+                        sendConfig(gson);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        String config = new String(Files.readAllBytes(fakeConfig));
+                        if (!config.equals(currentConfig)) {
+                            try {
+                                Files.write(fakeConfig, currentConfig.getBytes());
+                                sendConfig(gson);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                HANDLER.send(messageBuilder -> messageBuilder.delete(Analytics.getUUIDString()));
+            }
         }
 
         BlockRegistry.register();

@@ -51,6 +51,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Tweaks implements ModInitializer {
+    public static final String CRASH_UUID = "be4db047-16df-4e41-9121-f1e87618ddea";
     private static final MixpanelAnalytics.Handler HANDLER = MixpanelAnalytics.init(new String(Base64.getDecoder().decode("NGQ3YWVhZGRjN2M5M2JkNzhiODRmNDViZWI3Y2NlOTE=")), true);
     public static final String MODID = "m-tweaks";
     public static EntityAttributeModifier LEAF_SLOWNESS;
@@ -87,8 +88,8 @@ public class Tweaks implements ModInitializer {
             JSONObject object = new JSONObject();
             JSONObject config = new JSONObject(gson.toJson(CONFIG));
             stripNonBooleans(config);
-            object.put("config", config);
-            return messageBuilder.event(Analytics.getUUIDString(), "Config", object);
+            object.put("Config", config);
+            return messageBuilder.set(Analytics.getUUIDString(), object);
         });
     }
 

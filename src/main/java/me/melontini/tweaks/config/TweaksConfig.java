@@ -336,6 +336,10 @@ public class TweaksConfig implements ConfigData {
     public boolean sendOptionalData = true;
 
     @ConfigEntry.Category("misc")
+    @ConfigEntry.Gui.Tooltip(count = 3)
+    public boolean sendCrashReports = true;
+
+    @ConfigEntry.Category("misc")
     @Comment("Doesn't load mixins if their related option is disabled, improving mod compatibility. The only downside is that you'd need to restart the game after enabling/disabling any option.")
     @ConfigEntry.Gui.Tooltip(count = 2)
     @ConfigEntry.Gui.RequiresRestart

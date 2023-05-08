@@ -1,8 +1,8 @@
 package me.melontini.tweaks.mixin.misc;
 
-import me.melontini.crackerutil.analytics.Analytics;
 import me.melontini.crackerutil.analytics.mixpanel.MixpanelAnalytics;
 import me.melontini.crackerutil.util.Utilities;
+import me.melontini.crackerutil.util.mixin.ExtendedPlugin;
 import me.melontini.tweaks.Tweaks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -24,7 +24,7 @@ public abstract class CrashReportMixin {
 
     @Inject(at = @At(value = "HEAD"), method = "printCrashReport")
     private static void mTweaks$uploadCrashReport(CrashReport report, CallbackInfo ci) {
-        if (!FabricLoader.getInstance().isDevelopmentEnvironment() && Tweaks.CONFIG.sendOptionalData) {
+        if (!FabricLoader.getInstance().isDevelopmentEnvironment() && Tweaks.CONFIG.sendCrashReports) {
             List<String> trace = report.getCauseAsString().lines().toList();
 
             boolean upload = Utilities.process(trace, strings -> {
@@ -47,7 +47,10 @@ public abstract class CrashReportMixin {
                         if (!mod.getMetadata().getId().startsWith("fabric-")) mods.put(mod.getMetadata().getId() + " (" + mod.getMetadata().getVersion().getFriendlyString() + ")");
                     object.put("mods", mods);
 
-                    return messageBuilder.event(Analytics.getUUIDString(), "Crash", object);
+                    object.put("mod_version", FabricLoader.getInstance().getModContainer(Tweaks.MODID).get().getMetadata().getVersion().getFriendlyString());
+                    object.put("mc_version", ExtendedPlugin.parseMCVersion().getFriendlyString());
+
+                    return messageBuilder.event(Tweaks.CRASH_UUID, "Crash", object);
                 }, true);
             }
         }

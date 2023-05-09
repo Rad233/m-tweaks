@@ -2,7 +2,7 @@
 ### A configurable minecraft mod providing various tweaks & features of varying gameplay impact levels.
 
 <br/>
-<a href="https://www.curseforge.com/minecraft/mc-mods/m-tweaks"><img style="float: left;padding-right: 10px;" src="https://cf.way2muchnoise.eu/title/639198.svg" alt="" height="24" /></a><a href="https://donate.melontini.me/"><img style="float: left;" src="https://img.shields.io/badge/support-me-yellow" alt="" height="24" /></a><a href="https://modrinth.com/mod/m-tweaks"><img style="float: left;padding-left: 10px" src="https://img.shields.io/modrinth/dt/TseYlb0f?label=modrinth" alt="" height="24" /></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/m-tweaks"><img src="https://cf.way2muchnoise.eu/title/639198.svg" alt="" height="24" /></a><a href="https://modrinth.com/mod/m-tweaks"><img src="https://img.shields.io/modrinth/dt/TseYlb0f?label=modrinth" alt="" height="24" /></a>
 <br/>
 
 <img src="https://cdn.modrinth.com/data/P7dR8mSH/icon.png" width="50" height="50"></img> [Fabric API](https://modrinth.com/mod/fabric-api) required!

@@ -17,7 +17,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,42 +46,42 @@ public abstract class AbstractMinecartEntityMixin extends Entity implements Link
         }
     }
 
-    @Shadow
-    protected abstract double getMaxSpeed();
-
     @Inject(at = @At("HEAD"), method = "tick")
     private void mTweaks$tick(CallbackInfo ci) {
         if (Tweaks.CONFIG.simpleMinecartLinking) {
             if (!world.isClient()) {
                 if (mTweaks$getFollowing() != null) {
-                    double dist = Math.abs(distanceTo(mTweaks$getFollowing()) - 1.2d);
-                    Vec3d start = getPos().relativize(mTweaks$getFollowing().getPos()).normalize();
-                    Vec3d vec3d = new Vec3d(Math.min(start.getX(), getMaxSpeed()), Math.min(start.getY(), getMaxSpeed()), Math.min(start.getZ(), getMaxSpeed()));
+                    if (mTweaks$getFollowing().isRemoved() || this.isRemoved()) {
+                        mTweaks$unlink();
+                    }
+                    double dist = Math.abs(distanceTo(mTweaks$getFollowing())) - 1.2d;
+                    Vec3d vec3d = getPos().relativize(mTweaks$getFollowing().getPos()).normalize();
 
-                    if (dist <= 0.7) {
-                        if (dist <= 0.3) {
-                            setVelocity(Vec3d.ZERO);
-                        } else {
-                            setVelocity(vec3d.multiply(dist * 0.75));
-                        }
+                    if (dist <= 1) {
+                        setVelocity(vec3d.multiply(dist * 0.6));
                     } else {
                         if (dist <= 6) {
                             setVelocity(vec3d);
                         } else {
-                            LinkableMinecartsDuck duck = (LinkableMinecartsDuck) mTweaks$getFollowing();
-
-                            mTweaks$spawnChainParticles(mTweaks$getFollowing());
-                            mTweaks$spawnChainParticles((AbstractMinecartEntity) (Object) this);
-
-                            duck.mTweaks$setFollower(null);
-                            mTweaks$setFollowing(null);
-
-                            ItemStackUtil.spawn(getPos(), Items.CHAIN.getDefaultStack(), world);
+                            mTweaks$unlink();
                         }
                     }
                 }
             }
         }
+    }
+
+    @Unique
+    private void mTweaks$unlink() {
+        LinkableMinecartsDuck duck = (LinkableMinecartsDuck) mTweaks$getFollowing();
+
+        mTweaks$spawnChainParticles(mTweaks$getFollowing());
+        mTweaks$spawnChainParticles((AbstractMinecartEntity) (Object) this);
+
+        duck.mTweaks$setFollower(null);
+        mTweaks$setFollowing(null);
+
+        ItemStackUtil.spawn(getPos(), Items.CHAIN.getDefaultStack(), world);
     }
 
     @Inject(at = @At("HEAD"), method = "pushAwayFrom", cancellable = true)
